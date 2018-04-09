@@ -1,0 +1,6 @@
+.idea
+.DS_Store
+coverage.xml
+node_modules
+tests/logs
+vendor

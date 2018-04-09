@@ -1,0 +1,66 @@
+{
+	"name": "pressbooks/pressbooks-lti-provider",
+	"license": "GPL-3.0-or-later",
+	"type": "wordpress-plugin",
+	"description": "A plugin which turns Pressbooks into an LTI provider.",
+	"homepage": "https://github.com/pressbooks/pressbooks-lti-provider",
+	"authors": [
+		{
+			"name": "Book Oven Inc.",
+			"email": "code@pressbooks.com",
+			"homepage": "https://pressbooks.org"
+		}
+	],
+	"keywords": ["pressbooks", "lti", "lms"],
+	"support": {
+		"email": "code@pressbooks.com",
+		"issues": "https://github.com/pressbooks/pressbooks-lti-provider/issues/",
+		"source": "https://github.com/pressbooks/pressbooks-lti-provider/"
+	},
+	"require": {
+		"php": ">=7.0",
+		"composer/installers": "~1.4",
+		"yahnis-elsts/plugin-update-checker": "^4.4"
+	},
+	"require-dev": {
+		"humanmade/coding-standards": "^0.2",
+		"phpunit/phpunit": "^5.7",
+		"wpreadme2markdown/wp2md": "^3.0"
+	},
+	"archive": {
+		"exclude": [
+			".editorconfig",
+			".gitattributes",
+			".github",
+			".gitignore",
+			".phpstorm.meta.php",
+			".stylelintrc",
+			".travis.yml",
+			".tx",
+			"assets/src",
+			"bin",
+			"codecov.yml",
+			"phpcs.ruleset.xml",
+			"phpunit.xml",
+			"tests",
+			"webpack.mix.js",
+			"yarn.lock"
+		]
+	},
+	"scripts": {
+		"test": [
+			"vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml",
+			"@standards"
+		],
+		"standards": [
+			"vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/"
+		],
+		"localize": [
+			"wp-pot -s \"**/*.php\" -o languages/pressbooks-plugin-scaffold.pot -p \"Pressbooks\" -t \"Pressbooks (Book Oven Inc.) <code@pressbooks.com>\"",
+			"tx push -s",
+			"tx pull -a",
+			"bash bin/localize.sh"
+		],
+		"readme": ["vendor/bin/wp2md -i readme.txt -o README.md"]
+	}
+}

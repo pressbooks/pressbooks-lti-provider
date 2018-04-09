@@ -1,0 +1,60 @@
+language: php
+sudo: required
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+branches:
+  only:
+  - dev
+  - "/\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+php:
+- 7.0.8
+- 7.1
+- nightly
+env:
+- WP_VERSION=latest WP_MULTISITE=1 TRAVIS_NODE_VERSION="6"
+matrix:
+  fast_finish: true
+  allow_failures:
+  - php: nightly
+cache:
+  apt: true
+  directories:
+  - "$HOME/.composer/cache"
+  - node_modules
+  - vendor
+before_install:
+- source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION && nvm use $TRAVIS_NODE_VERSION
+install:
+- node -v
+- npm install -g yarn
+- yarn
+- composer install
+before_script:
+- bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+script:
+- yarn run test
+- yarn run build:production
+- vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml
+- vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+# before_deploy:
+# - export TRAVIS_PROJECT_SLUG="$(basename $TRAVIS_BUILD_DIR)"
+# - composer install --no-dev --optimize-autoloader
+# - cd ../
+# - zip -9 -ry $TRAVIS_BUILD_DIR/$TRAVIS_PROJECT_SLUG-$TRAVIS_TAG.zip $TRAVIS_PROJECT_SLUG
+#   -x *.git* *assets/\* *bin/\* *node_modules/\* *tests/\* *.editorconfig* *.gitattributes*
+#   *.github* *.gitignore* *.phpstorm.meta.php* *.travis.yml* *.tx* *phpcs.ruleset.xml*
+#   *phpunit.xml* *webpack.mix.js* *yarn.lock*
+# - cd $TRAVIS_BUILD_DIR
+# deploy:
+#   provider: releases
+#   skip_cleanup: true
+#   api_key:
+#     secure:
+#   file: "pressbooks-lti-provider-$TRAVIS_TAG.zip"
+#   on:
+#     tags: true
+#     repo: pressbooks/pressbooks-lti-provider
