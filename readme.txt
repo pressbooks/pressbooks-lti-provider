@@ -1,5 +1,5 @@
 === Pressbooks LTI Provider ===
-Contributors: greatislander
+Contributors: conner_bw, greatislander
 Donate link: https://opencollective.com/pressbooks/
 Tags: pressbooks, lti, lms
 Requires at least: 4.9.5
