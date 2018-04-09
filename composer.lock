@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "49baa085e07b0afbd0033a1bfc164995",
+    "content-hash": "4134d4272e77ba52b062b50e82979f3c",
     "packages": [
         {
             "name": "composer/installers",
@@ -125,6 +125,49 @@
                 "zikula"
             ],
             "time": "2017-12-29T09:13:20+00:00"
+        },
+        {
+            "name": "izumi-kun/lti",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP.git",
+                "reference": "e21f093e39e319c54f3dd379925a01ab4aaa87f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/e21f093e39e319c54f3dd379925a01ab4aaa87f4",
+                "reference": "e21f093e39e319c54f3dd379925a01ab4aaa87f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "replace": {
+                "imsglobal/lti": "3.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IMSGlobal\\LTI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Vickers",
+                    "email": "svickers@imsglobal.org"
+                }
+            ],
+            "description": "LTI Tool Provider Library",
+            "homepage": "https://www.imsglobal.org/lti",
+            "keywords": [
+                "LTI"
+            ],
+            "time": "2017-12-28T11:57:04+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

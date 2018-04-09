@@ -17,10 +17,16 @@
 		"issues": "https://github.com/pressbooks/pressbooks-lti-provider/issues/",
 		"source": "https://github.com/pressbooks/pressbooks-lti-provider/"
 	},
+	"config": {
+		"platform": {
+			"php": "7.0.29"
+		}
+	},
 	"require": {
 		"php": ">=7.0",
 		"composer/installers": "~1.4",
-		"yahnis-elsts/plugin-update-checker": "^4.4"
+		"yahnis-elsts/plugin-update-checker": "^4.4",
+		"izumi-kun/lti": "^1.0"
 	},
 	"require-dev": {
 		"humanmade/coding-standards": "^0.2",
