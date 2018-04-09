@@ -26,12 +26,14 @@ if ( ! function_exists( 'pb_meets_minimum_requirements' ) && ! @include_once( WP
 // -------------------------------------------------------------------------------------------------------------------
 // Class autoloader
 // -------------------------------------------------------------------------------------------------------------------
+
 \HM\Autoloader\register_class_path( 'Pressbooks\Lti\Provider', __DIR__ . '/inc' );
 
 // -------------------------------------------------------------------------------------------------------------------
 // Composer autoloader
 // -------------------------------------------------------------------------------------------------------------------
-/* if ( ! class_exists( '\SomeRequiredClass' ) ) {
+
+if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		require_once __DIR__ . '/vendor/autoload.php';
 	} else {
@@ -40,17 +42,17 @@ if ( ! function_exists( 'pb_meets_minimum_requirements' ) && ! @include_once( WP
 		$message = "<h1>{$title}</h1><p>{$body}</p>";
 		wp_die( $message, $title );
 	}
-} */
+}
 
 // -------------------------------------------------------------------------------------------------------------------
-// Check for updates
+// Requires
 // -------------------------------------------------------------------------------------------------------------------
-if ( ! \Pressbooks\Book::isBook() ) {
-	$updater = new \Puc_v4p4_Vcs_PluginUpdateChecker(
-		new \Pressbooks\Updater( 'https://github.com/pressbooks/pressbooks-lti-provider/' ),
-		__FILE__, // Fully qualified path to the main plugin file
-		'pressbooks-lti-provider',
-		24
-	);
-	$updater->setBranch( 'master' );
-}
+
+require( __DIR__ . '/inc/db/tables/namespace.php' );
+
+// -------------------------------------------------------------------------------------------------------------------
+// Hooks
+// -------------------------------------------------------------------------------------------------------------------
+
+register_activation_hook( __FILE__, '\Pressbooks\Lti\Provider\Db\Tables\install' );
+\Pressbooks\Lti\Provider\Updates::init();
