@@ -13,12 +13,13 @@
     <rule ref="vendor/humanmade/coding-standards">
         <!-- Disable all ESLint checks -->
         <exclude name="HM.Debug.ESLint"/>
-        <!-- Disable rules Pressbooks disagrees with -->
+        <!-- Disable rules Pressbooks LTI Provider disagrees with -->
         <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid"/>
         <exclude name="WordPress.NamingConventions.ValidVariableName.MemberNotSnakeCase"/>
         <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar"/>
         <exclude name="WordPress.VIP.SessionVariableUsage"/>
         <exclude name="WordPress.VIP.SessionFunctionsUsage"/>
+        <exclude name="WordPress.DB.RestrictedClasses"/>
         <!-- Disable LayoutOrder until humanmade/coding-standards#5 is fixed -->
         <exclude name="HM.Layout.Order.WrongOrder"/>
     </rule>

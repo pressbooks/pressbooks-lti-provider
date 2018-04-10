@@ -14,6 +14,7 @@ Network: True
 // -------------------------------------------------------------------------------------------------------------------
 // Check requirements
 // -------------------------------------------------------------------------------------------------------------------
+
 if ( ! function_exists( 'pb_meets_minimum_requirements' ) && ! @include_once( WP_PLUGIN_DIR . '/pressbooks/compatibility.php' ) ) { // @codingStandardsIgnoreLine
 	add_action('admin_notices', function () {
 		echo '<div id="message" class="error fade"><p>' . __( 'Cannot find Pressbooks install.', 'pressbooks-lti-provider' ) . '</p></div>';
@@ -22,6 +23,14 @@ if ( ! function_exists( 'pb_meets_minimum_requirements' ) && ! @include_once( WP
 } elseif ( ! pb_meets_minimum_requirements() ) {
 	return;
 }
+
+if ( ! class_exists( '\PDO' ) || ! in_array( 'mysql', \PDO::getAvailableDrivers(), true ) ) {
+	add_action('admin_notices', function () {
+		echo '<div id="message" class="error fade"><p>' . __( 'Cannot find PDO for MySQL.', 'pressbooks-lti-provider' ) . '</p></div>';
+	});
+	return;
+}
+
 
 // -------------------------------------------------------------------------------------------------------------------
 // Class autoloader
@@ -48,11 +57,11 @@ if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 // Requires
 // -------------------------------------------------------------------------------------------------------------------
 
-require( __DIR__ . '/inc/db/tables/namespace.php' );
+
 
 // -------------------------------------------------------------------------------------------------------------------
 // Hooks
 // -------------------------------------------------------------------------------------------------------------------
 
-register_activation_hook( __FILE__, '\Pressbooks\Lti\Provider\Db\Tables\install' );
-\Pressbooks\Lti\Provider\Updates::init();
+register_activation_hook( __FILE__, [ '\Pressbooks\Lti\Provider\Db\Connector', 'installDatabaseTables' ] );
+add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Updates', 'init' ] );
