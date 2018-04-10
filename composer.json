@@ -29,7 +29,7 @@
 		"izumi-kun/lti": "^1.0"
 	},
 	"require-dev": {
-		"humanmade/coding-standards": "^0.2",
+		"humanmade/coding-standards": "^0.3.0",
 		"phpunit/phpunit": "^5.7",
 		"wpreadme2markdown/wp2md": "^3.0"
 	},

@@ -57,11 +57,11 @@ if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 // Requires
 // -------------------------------------------------------------------------------------------------------------------
 
-
+require( __DIR__ . '/inc/namespace.php' );
 
 // -------------------------------------------------------------------------------------------------------------------
 // Hooks
 // -------------------------------------------------------------------------------------------------------------------
 
-register_activation_hook( __FILE__, [ '\Pressbooks\Lti\Provider\Db\Connector', 'installDatabaseTables' ] );
+register_activation_hook( __FILE__, [ '\Pressbooks\Lti\Provider\Database', 'installTables' ] );
 add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Updates', 'init' ] );

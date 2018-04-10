@@ -1,10 +1,10 @@
 <?php
 
-namespace Pressbooks\Lti\Provider\Db;
+namespace Pressbooks\Lti\Provider;
 
 use IMSGlobal\LTI\ToolProvider\DataConnector;
 
-class Connector {
+class Database {
 
 	const VERSION = 1;
 
@@ -32,7 +32,7 @@ class Connector {
 	/**
 	 * @return DataConnector\DataConnector
 	 */
-	public static function get() {
+	public static function getConnector() {
 		if ( empty( self::$connector ) ) {
 			$host = DB_HOST;
 			$db = DB_NAME;
@@ -64,7 +64,7 @@ class Connector {
 	 * @see https://github.com/IMSGlobal/LTI-Tool-Provider-Library-PHP/wiki/Installation#database-tables
 	 * @see https://github.com/IMSGlobal/LTI-Tool-Provider-Library-PHP/issues/38
 	 */
-	public static function installDatabaseTables() {
+	public static function installTables() {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
