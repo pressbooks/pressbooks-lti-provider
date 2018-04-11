@@ -8,14 +8,27 @@ use IMSGlobal\LTI\ToolProvider;
 class Tool extends ToolProvider\ToolProvider {
 
 	/**
+	 * @var string
+	 */
+	protected $action;
+
+	/**
+	 * @var array
+	 */
+	protected $params;
+
+	/**
 	 * Tool constructor.
+	 * Launched by do_format()
+	 * @see \Pressbooks\Lti\Provider\do_format
 	 *
-	 * @param $data_connector
+	 * @param \IMSGlobal\LTI\ToolProvider\DataConnector\DataConnector $data_connector
 	 */
 	public function __construct( $data_connector ) {
 		parent::__construct( $data_connector );
 
 		$this->debugMode = WP_DEBUG;
+
 		$this->baseUrl = network_site_url();
 
 		// Vendor details
@@ -38,8 +51,8 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// Resource handlers for Tool Provider
 
-		$launch_url = '/path/to/lti'; // TODO
-		$icon_url = 'images/icon50.png';
+		$launch_url = 'format/lti';
+		$icon_url = null;
 
 		$required_messages = [
 			new Profile\Message( 'basic-lti-launch-request', $launch_url, [ 'User.id', 'Membership.role' ] ),
@@ -59,6 +72,36 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getAction() {
+		return $this->action;
+	}
+
+	/**
+	 * @param string $action
+	 */
+	public function setAction( $action ) {
+		$this->action = $action;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getParams() {
+		return $this->params;
+	}
+
+	/**
+	 * @param array $params
+	 */
+	public function setParams( $params ) {
+		$this->params = $params;
+	}
+
+	/**
+	 * Process a valid launch request
+	 *
 	 * Insert code here to handle incoming launches - use the user, context
 	 * and resourceLink properties to access the current user, context and resource link.
 	 */
@@ -67,6 +110,8 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
+	 * Process a valid content-item request
+	 *
 	 * Insert code here to handle incoming content-item requests - use the user and context
 	 * properties to access the current user and context.
 	 */
@@ -75,8 +120,10 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
+	 * Process a valid tool proxy registration request
+	 *
 	 * Insert code here to handle incoming registration requests - use the user
-	 * property of the $tool_provider parameter to access the current user.
+	 * property to access the current user.
 	 */
 	protected function onRegister() {
 		// Sanity check
@@ -110,13 +157,22 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
+	 * Process a response to an invalid request
+	 *
 	 * Insert code here to handle errors on incoming connections - do not expect
 	 * the user, context and resourceLink properties to be populated but check the reason
 	 * property for the cause of the error.  Return TRUE if the error was fully
 	 * handled by this method.
 	 */
 	protected function onError() {
-
+		$message = $this->message;
+		if ( $this->debugMode && ! empty( $this->reason ) ) {
+			$message = $this->reason;
+		}
+		// Display the error message from the provider's side if the consumer has not specified a URL to pass the error to.
+		if ( empty( $this->returnUrl ) ) {
+			$this->errorOutput = $message;
+		}
 	}
 
 }
