@@ -29,7 +29,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		$this->debugMode = WP_DEBUG;
 
-		$this->baseUrl = network_site_url();
+		$this->baseUrl  = trailingslashit( home_url() );
 
 		// Vendor details
 		$this->vendor = new Profile\Item(
