@@ -54,7 +54,7 @@ class Database {
 	 */
 	public static function tablePrefix() {
 		global $wpdb;
-		return "{$wpdb->prefix}pressbooks_";
+		return "{$wpdb->base_prefix}pressbooks_";
 	}
 
 	/**
