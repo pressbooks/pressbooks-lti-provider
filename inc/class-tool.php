@@ -43,8 +43,8 @@ class Tool extends ToolProvider\ToolProvider {
 		$plugin_info = get_plugin_data( __DIR__ . '/../pressbooks-lti-provider.php', false, false );
 		$this->product = new Profile\Item(
 			globally_unique_identifier(),
-			$plugin_info['Name'],
-			$plugin_info['Description'],
+			'Pressbooks: ' . get_bloginfo( 'name' ),
+			"{$plugin_info['Name']}: {$plugin_info['Description']}",
 			$plugin_info['AuthorURI'],
 			$plugin_info['Version']
 		);
@@ -143,17 +143,23 @@ class Tool extends ToolProvider\ToolProvider {
 			return;
 		}
 
-		// Redirect back to consumer
-		$this->ok = true;
-		$success = __( 'Successful registration', 'pressbooks-lti-provider' );
-		$this->message = $success;
-		$args = [
-			'lti_msg' => $success,
+		// Show a page with options to redirect back to consumer
+
+		$success_args = [
+			'lti_msg' => __( 'Successful registration', 'pressbooks-lti-provider' ),
 			'tool_proxy_guid' => $this->consumer->getKey(),
+			'status' => 'success',
 		];
-		$return_url = add_query_arg( $args, $this->returnUrl );
-		$return_url = esc_url( $return_url );
-		$this->redirectUrl = $return_url;
+		$success_url = esc_url( add_query_arg( $success_args, $this->returnUrl ) );
+
+		$cancel_args = [
+			'lti_msg' => __( 'The tool registration has been cancelled', 'pressbooks-lti-provider' ),
+			'status' => 'failure',
+		];
+		$cancel_url = esc_url( add_query_arg( $cancel_args, $this->returnUrl ) );
+
+		// TODO: Better UI
+		$this->output = "<html><head><title>Pressbooks</title></head><body><p><a href='{$success_url}'>Register</a> <a href='{$cancel_url}'>Cancel</a></p></body></html>";
 	}
 
 	/**
