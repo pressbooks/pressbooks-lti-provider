@@ -55,6 +55,6 @@
 
 <p>There are probably some LTI conventions we don't know about. We should ask someone who knows more about LTI what they think.</p>
 
-<p><a href='{!! $success_url !!}' class='button'>Register</a></p>
+<p><a href='{!! $success_url !!}' class='button'>Register</a> <a href='{!! $cancel_url !!}' class='button'>Cancel</a></p>
 </body>
 </html>
