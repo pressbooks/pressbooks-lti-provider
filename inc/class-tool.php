@@ -43,8 +43,8 @@ class Tool extends ToolProvider\ToolProvider {
 		$plugin_info = get_plugin_data( __DIR__ . '/../pressbooks-lti-provider.php', false, false );
 		$this->product = new Profile\Item(
 			globally_unique_identifier(),
-			'Pressbooks: ' . get_bloginfo( 'name' ),
-			"{$plugin_info['Name']}: {$plugin_info['Description']}",
+			$plugin_info['Name'],
+			$plugin_info['Description'],
 			$plugin_info['AuthorURI'],
 			$plugin_info['Version']
 		);
@@ -158,8 +158,15 @@ class Tool extends ToolProvider\ToolProvider {
 		];
 		$cancel_url = esc_url( add_query_arg( $cancel_args, $this->returnUrl ) );
 
-		// TODO: Better UI
-		$this->output = "<html><head><title>Pressbooks</title></head><body><p><a href='{$success_url}'>Register</a> <a href='{$cancel_url}'>Cancel</a></p></body></html>";
+		$html = blade()->render(
+			'register', [
+				'title' => get_bloginfo( 'name ' ),
+				'success_url' => $success_url,
+				'cancel_url' => $cancel_url,
+			]
+		);
+
+		$this->output = $html;
 	}
 
 	/**
