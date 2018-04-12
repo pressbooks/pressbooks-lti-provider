@@ -117,6 +117,38 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	protected function onContentItem() {
 
+		if ( in_array( 'application/vnd.ims.lti.v1.contentitems+json', $this->mediaTypes, true ) ) {
+			// TODO: This specification doesn't seem widely supported? Returns multiple LtiLinkItem links at the same time
+			// https://www.imsglobal.org/lti/model/mediatype/application/vnd/ims/lti/v1/contentitems%2Bjson/index.html
+		}
+
+		$this->ok = in_array( ToolProvider\ContentItem::LTI_LINK_MEDIA_TYPE, $this->mediaTypes, true ) || in_array( '*/*', $this->mediaTypes, true );
+		if ( ! $this->ok ) {
+			$this->reason = __( 'Return of an LTI link not offered', 'pressbooks-lti-provider' );
+		} else {
+			$this->ok = ! in_array( 'none', $this->documentTargets, true ) || ( count( $this->documentTargets ) > 1 );
+			if ( ! $this->ok ) {
+				$this->reason = __( 'No visible document target offered', 'pressbooks-lti-provider' );
+			}
+		}
+		if ( ! $this->ok ) {
+			$this->onError();
+			return;
+		}
+
+		$_SESSION['data'] = $_POST['data'] ?? null; // @codingStandardsIgnoreLine
+		$_SESSION['consumer_pk'] = $this->consumer->getRecordId();
+		$_SESSION['lti_version'] = $this->consumer->ltiVersion;
+		$_SESSION['return_url'] = $this->returnUrl;
+
+		$html = blade()->render(
+			'selection', [
+				'title' => get_bloginfo( 'name' ),
+				'url' => $this->baseUrl . 'format/lti/ContentItemSelection',
+			]
+		);
+
+		$this->output = $html;
 	}
 
 	/**
@@ -160,7 +192,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		$html = blade()->render(
 			'register', [
-				'title' => get_bloginfo( 'name ' ),
+				'title' => get_bloginfo( 'name' ),
 				'success_url' => $success_url,
 				'cancel_url' => $cancel_url,
 			]
