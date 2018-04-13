@@ -40,7 +40,7 @@ class Table extends \WP_List_Table {
 		return [
 			'cb' => '<input type="checkbox" />',
 			'name' => __( 'Name', 'pressbooks-lti-provider' ),
-			'base_url' => __( 'Version', 'pressbooks-lti-provider' ),
+			'base_url' => __( 'Book URL', 'pressbooks-lti-provider' ),
 			'key' => __( 'Key', 'pressbooks-lti-provider' ),
 			'version' => __( 'Version', 'pressbooks-lti-provider' ),
 			'available' => __( 'Available', 'pressbooks-lti-provider' ),
@@ -79,11 +79,7 @@ class Table extends \WP_List_Table {
 		$data = [];
 		foreach ( $consumers as $consumer ) {
 			/** @var ToolConsumer $consumer */
-			if ( isset( $consumer->profile, $consumer->profile->base_url_choice, $consumer->profile->base_url_choice[0], $consumer->profile->base_url_choice[0]->default_base_url ) ) {
-				$base_url = $consumer->profile->base_url_choice[0]->default_base_url;
-			} else {
-				$base_url = '';
-			}
+			$base_url = 'https://site/book/todo'; // TODO
 			$data[] = [
 				'ID' => $consumer->getRecordId(),
 				'base_url' => $base_url,
