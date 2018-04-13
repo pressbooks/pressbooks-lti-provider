@@ -82,7 +82,11 @@ class Tool extends ToolProvider\ToolProvider {
 	 * and resourceLink properties to access the current user, context and resource link.
 	 */
 	protected function onLaunch() {
-
+		if ( $this->getAction() === 'launch' ) {
+			$this->initSessionVars();
+			$this->setupUser( $this->user );
+			$this->setupDeepLink();
+		}
 	}
 
 	/**
@@ -111,6 +115,7 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 		if ( $this->ok ) {
 			$this->initSessionVars();
+			$_SESSION['pb_lti_data'] = $_POST['data'] ?? null;
 			$url = $this->baseUrl . 'format/lti/contentItemSubmit';
 			$this->output = $this->renderContentItemForm( $url );
 			return;
@@ -215,10 +220,125 @@ class Tool extends ToolProvider\ToolProvider {
 	 * Initialize $_SESSION variables
 	 */
 	public function initSessionVars() {
-		$_SESSION['pb_lti_data'] = $_POST['data'] ?? null;
+		// Consumer
 		$_SESSION['pb_lti_consumer_pk'] = $this->consumer->getRecordId() ?? null;
 		$_SESSION['pb_lti_consumer_version'] = $this->consumer->ltiVersion ?? null;
+		// Resource
+		$_SESSION['pb_lti_resource_pk'] = $this->resourceLink->getRecordId() ?? null;
+		// User
+		$_SESSION['pb_lti_user_consumer_pk'] = $this->user->getResourceLink()->getConsumer()->getRecordId() ?? null;
+		$_SESSION['pb_lti_user_resource_pk'] = $this->user->getResourceLink()->getRecordId() ?? null;
+		$_SESSION['pb_lti_user_pk'] = $this->user->getRecordId() ?? null;
+		// Return URL
 		$_SESSION['pb_lti_return_url'] = $this->returnUrl ?? null;
+	}
+
+	/**
+	 * @param \IMSGlobal\LTI\ToolProvider\User $user
+	 */
+	public function setupUser( $user ) {
+		$wp_user = get_user_by( 'email', $user->email );
+		if ( ! $wp_user ) {
+			if ( $user->isAdmin() ) {
+				// TODO: Create editor
+			} elseif ( $user->isStaff() ) {
+				// TODO: Create reviewer
+			} elseif ( $user->isLearner() ) {
+				// TODO: Create subscriber
+			}
+		}
+		if ( $wp_user ) {
+			$this->programmaticLogin( $wp_user->user_login );
+		}
+	}
+
+	/**
+	 * Programmatically logs a user in
+	 *
+	 * @param string $username
+	 *
+	 * @return bool True if the login was successful; false if it wasn't
+	 */
+	public function programmaticLogin( $username ) {
+		if ( is_user_logged_in() ) {
+			wp_logout();
+		}
+
+		$credentials = [
+			'user_login' => $username,
+		];
+
+		add_filter( 'authenticate', [ $this, 'allowProgrammaticLogin' ], 10, 3 ); // hook in earlier than other callbacks to short-circuit them
+		$user = wp_signon( $credentials );
+		remove_filter( 'authenticate', [ $this, 'allowProgrammaticLogin' ], 10 );
+
+		if ( is_a( $user, 'WP_User' ) ) {
+			wp_set_current_user( $user->ID, $user->user_login );
+			if ( is_user_logged_in() ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * An 'authenticate' filter callback that authenticates the user using only the username.
+	 *
+	 * To avoid potential security vulnerabilities, this should only be used in the context of a programmatic login,
+	 * and unhooked immediately after it fires.
+	 *
+	 * @param \WP_User $user
+	 * @param string $username
+	 * @param string $password
+	 *
+	 * @return bool|\WP_User a WP_User object if the username matched an existing user, or false if it didn't
+	 */
+	public function allowProgrammaticLogin( $user, $username, $password ) {
+		return get_user_by( 'login', $username );
+	}
+
+	/**
+	 * Setup Deep Link
+	 */
+	public function setupDeepLink() {
+
+		$params = $this->getParams();
+
+		if ( empty( $params[0] ) ) {
+			// Format: https://book/format/lti/launch
+			$this->redirectUrl = home_url();
+		} elseif ( empty( $params[1] ) ) {
+			if ( is_numeric( $params[0] ) ) {
+				// Format: https://book/format/lti/launch/123
+				$url = wp_get_shortlink( $params[0] );
+				if ( $url ) {
+					$this->redirectUrl = $url;
+				}
+			} else {
+				// Format: https://book/format/lti/launch/Hello%20World
+				// TODO
+			}
+		} else {
+			if ( in_array( $params[0], [ 'front-matter', 'part', 'chapter', 'back-matter' ], true ) ) {
+				// Format: https://book/format/lti/launch/front-matter/introduction
+				$args = [
+					'name' => $params[1],
+					'post_type' => $params[0],
+					'post_status' => [ 'draft', 'web-only', 'private', 'publish' ],
+					'numberposts' => 1,
+				];
+				$posts = get_posts( $args );
+				if ( $posts ) {
+					$this->redirectUrl = get_permalink( $posts[0]->ID );
+				}
+			}
+		}
+
+		if ( empty( $this->redirectUrl ) ) {
+			$this->reason = __( 'Deep link was not found.', 'pressbooks-lti-provider' );
+			$this->onError();
+		}
 	}
 
 	/**
