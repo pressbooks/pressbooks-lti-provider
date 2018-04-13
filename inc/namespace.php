@@ -2,8 +2,6 @@
 
 namespace Pressbooks\Lti\Provider;
 
-use IMSGlobal\LTI\ToolProvider;
-
 /**
  * Generate a globally unique identifier (GUID)
  *

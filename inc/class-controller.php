@@ -15,7 +15,6 @@ class Controller {
 	 */
 	public function handleRequest( $action, $params ) {
 
-		// @codingStandardsIgnoreStart
 		if ( function_exists( 'wp_magic_quotes' ) ) {
 			// Thanks but no thanks WordPress...
 			$_GET = stripslashes_deep( $_GET );
@@ -23,7 +22,6 @@ class Controller {
 			$_COOKIE = stripslashes_deep( $_COOKIE );
 			$_SERVER = stripslashes_deep( $_SERVER );
 		}
-		// @codingStandardsIgnoreEnd
 
 		switch ( $action ) {
 			case 'ContentItemSelection':
@@ -54,7 +52,7 @@ class Controller {
 	 * @param array $params
 	 */
 	public function contentItemSelection( $params ) {
-		if ( empty( $_SESSION['consumer_pk'] ) || empty( $_SESSION['lti_version'] ) || empty( $_SESSION['return_url'] ) ) {
+		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
 			wp_die( __( 'You do not have permission to do that.' ) );
 		}
 
@@ -65,13 +63,13 @@ class Controller {
 		$item->setUrl( 'https://manga.shiekasai.com' );
 
 		$form_params['content_items'] = ToolProvider\ContentItem::toJson( $item );
-		if ( ! is_null( $_SESSION['data'] ) ) {
-			$form_params['data'] = $_SESSION['data'];
+		if ( ! is_null( $_SESSION['pb_lti_data'] ) ) {
+			$form_params['data'] = $_SESSION['pb_lti_data'];
 		}
 		$data_connector = Database::getConnector();
-		$consumer = ToolProvider\ToolConsumer::fromRecordId( $_SESSION['consumer_pk'], $data_connector );
-		$form_params = $consumer->signParameters( $_SESSION['return_url'], 'ContentItemSelection', $_SESSION['lti_version'], $form_params );
-		$page = ToolProvider\ToolProvider::sendForm( $_SESSION['return_url'], $form_params );
+		$consumer = ToolProvider\ToolConsumer::fromRecordId( $_SESSION['pb_lti_consumer_pk'], $data_connector );
+		$form_params = $consumer->signParameters( $_SESSION['pb_lti_return_url'], 'ContentItemSelection', $_SESSION['pb_lti_consumer_version'], $form_params );
+		$page = ToolProvider\ToolProvider::sendForm( $_SESSION['pb_lti_return_url'], $form_params );
 		echo $page;
 	}
 

@@ -136,10 +136,10 @@ class Tool extends ToolProvider\ToolProvider {
 			return;
 		}
 
-		$_SESSION['data'] = $_POST['data'] ?? null; // @codingStandardsIgnoreLine
-		$_SESSION['consumer_pk'] = $this->consumer->getRecordId();
-		$_SESSION['lti_version'] = $this->consumer->ltiVersion;
-		$_SESSION['return_url'] = $this->returnUrl;
+		$_SESSION['pb_lti_data'] = $_POST['data'] ?? null;
+		$_SESSION['pb_lti_consumer_pk'] = $this->consumer->getRecordId();
+		$_SESSION['pb_lti_consumer_version'] = $this->consumer->ltiVersion;
+		$_SESSION['pb_lti_return_url'] = $this->returnUrl;
 
 		$html = blade()->render(
 			'selection', [
