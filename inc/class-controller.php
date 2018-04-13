@@ -56,11 +56,19 @@ class Controller {
 			wp_die( __( 'You do not have permission to do that.' ) );
 		}
 
+		$title = get_bloginfo( 'name' );
+		$url = untrailingslashit( home_url() ) . '/format/lti/launch';
+		if ( ! empty( $_POST['section'] ) ) {
+			$post_id = (int) $_POST['section'];
+			$title = get_the_title( $post_id );
+			$url .= "/{$post_id}";
+		}
+
 		$item = new ToolProvider\ContentItem( 'LtiLinkItem' );
 		$item->setMediaType( ToolProvider\ContentItem::LTI_LINK_MEDIA_TYPE );
-		$item->setTitle( 'Shie Kasai' );
-		$item->setText( "Returning a link to Shie's web comic to see what happens" );
-		$item->setUrl( 'https://manga.shiekasai.com' );
+		$item->setTitle( $title );
+		$item->setText( 'Returning a link from Pressbooks to see what happens' );
+		$item->setUrl( $url );
 
 		$form_params['content_items'] = ToolProvider\ContentItem::toJson( $item );
 		if ( ! is_null( $_SESSION['pb_lti_data'] ) ) {

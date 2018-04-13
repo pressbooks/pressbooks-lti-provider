@@ -4,6 +4,7 @@ namespace Pressbooks\Lti\Provider;
 
 use IMSGlobal\LTI\Profile;
 use IMSGlobal\LTI\ToolProvider;
+use Pressbooks\Book;
 
 class Tool extends ToolProvider\ToolProvider {
 
@@ -353,6 +354,7 @@ class Tool extends ToolProvider\ToolProvider {
 			'selection', [
 				'title' => get_bloginfo( 'name' ),
 				'url' => $url,
+				'book_structure' => Book::getBookStructure(),
 			]
 		);
 

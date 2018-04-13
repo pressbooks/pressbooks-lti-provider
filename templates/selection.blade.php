@@ -44,10 +44,28 @@
 
 <p>This is a great place to make some <b>product management decisions</b>. This is simply a web form. What do we want to do here? </p>
 
-<p>For example, we could build a form with radio buttons. The user could select a section. Once they press submit we would send back a link to that chapter.</p>
+<p>For example, we could build a form with radio buttons. The user could select a section. Once they press submit we would send back a link.</p>
 
-<p>For now when you press Submit, we'll returbn link to my wife's web comic, just to see what happenss</p>
+<form action="{!! $url !!}" method="post">
 
-<p><a href='{!! $url !!}' class='button'>Submit</a></p>
+    <input type="radio" name="section" value="0" checked> Home Page<br>
+
+    @foreach ($book_structure['front-matter'] as $k => $v)
+        <input type="radio" name="section" value="{{ $v['ID'] }}"> Front-matter: {{ $v['post_title']  }}<br>
+    @endforeach
+
+    @foreach ($book_structure['part'] as $key => $value)
+        @foreach ($value['chapters'] as $k => $v)
+            <input type="radio" name="section" value="{{ $v['ID'] }}"> Chapter: {{ $v['post_title']  }}<br>
+        @endforeach
+    @endforeach
+
+    @foreach ($book_structure['back-matter'] as $k => $v)
+        <input type="radio" name="section" value="{{ $v['ID'] }}"> Back-matter: {{ $v['post_title']  }}<br>
+    @endforeach
+
+    <p><input type="submit" value="Submit"/></p>
+</form>
+
 </body>
 </html>
