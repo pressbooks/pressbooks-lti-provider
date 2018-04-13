@@ -13,7 +13,23 @@ This plugin turns Pressbooks into an LTI provider.
 
 ## Description 
 
-N/A.
+### Connect URL (supports automatic tool proxy registration)
+
+> https://site/book/format/lti
+
+### Deep Link URLs:
+
+Book cover page
+> https://site/book/format/lti/launch
+
+Post_id
+> https://site/book/format/lti/launch/123
+
+Post_type + Post_name
+> https://site/book/format/lti/launch/front-matter/introduction
+ 
+TODO? 
+> https://site/book/format/lti/launch/Hello%20World
 
 
 ## Installation 
