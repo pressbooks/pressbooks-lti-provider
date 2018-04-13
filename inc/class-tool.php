@@ -237,12 +237,16 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// User
 		$_SESSION['pb_lti_user_pk'] = null;
-		$_SESSION['pb_lti_user_consumer_pk'] = null;
 		$_SESSION['pb_lti_user_resource_pk'] = null;
+		$_SESSION['pb_lti_user_consumer_pk'] = null;
 		if ( is_object( $this->user ) ) {
 			$_SESSION['pb_lti_user_pk'] = $this->user->getRecordId();
-			$_SESSION['pb_lti_user_consumer_pk'] = $this->user->getResourceLink()->getConsumer()->getRecordId();
-			$_SESSION['pb_lti_user_resource_pk'] = $this->user->getResourceLink()->getRecordId();
+			if ( is_object( $this->user->getResourceLink() ) ) {
+				$_SESSION['pb_lti_user_resource_pk'] = $this->user->getResourceLink()->getRecordId();
+				if ( is_object( $this->user->getResourceLink()->getConsumer() ) ) {
+					$_SESSION['pb_lti_user_consumer_pk'] = $this->user->getResourceLink()->getConsumer()->getRecordId();
+				}
+			}
 		}
 
 		// Return URL
