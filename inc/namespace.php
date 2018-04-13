@@ -64,7 +64,19 @@ function admin_menu() {
 			}
 			$table = new Table();
 			$table->prepare_items();
+
+			$message = '';
+			if ( 'delete' === $table->current_action() ) {
+				/* translators: 1: Number of consumers deleted */
+				$message = '<div class="updated below-h2" id="message"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
+			}
+			echo '<div class="wrap">';
+			echo $message;
+			echo '<form id="pressbooks-lti-admin" method="GET">';
+			echo '<input type="hidden" name="page" value="' . $_REQUEST['page'] . '" />';
 			$table->display();
+			echo '</form>';
+			echo '</div>';
 		}
 	);
 }

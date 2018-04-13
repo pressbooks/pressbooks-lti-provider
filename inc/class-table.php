@@ -73,7 +73,7 @@ class Table extends \WP_List_Table {
 				'version' => $consumer->consumerVersion,
 				'available' => $consumer->getIsAvailable(),
 				'protected' => $consumer->protected,
-				'last_access' => date( 'j-M-Y', $consumer->lastAccess ),
+				'last_access' => ! empty( $consumer->lastAccess ) ? date( 'j-M-Y', $consumer->lastAccess ) : 'Never',
 			];
 		}
 
