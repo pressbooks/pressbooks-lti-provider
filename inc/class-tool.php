@@ -58,12 +58,18 @@ class Tool extends ToolProvider\ToolProvider {
 
 		$launch_url = 'format/lti';
 		$icon_url = null;
+		$ask_for = [
+			'User.id',
+			'User.username',
+			'Person.email.primary',
+			'Membership.role',
+		];
 
 		$required_messages = [
-			new Profile\Message( 'basic-lti-launch-request', $launch_url, [ 'User.id', 'Membership.role' ] ),
+			new Profile\Message( 'basic-lti-launch-request', $launch_url, $ask_for ),
 		];
 		$optional_messages = [
-			new Profile\Message( 'ContentItemSelectionRequest', $launch_url, [ 'User.id', 'Membership.role' ] ),
+			new Profile\Message( 'ContentItemSelectionRequest', $launch_url, $ask_for ),
 		];
 		$this->resourceHandlers[] = new Profile\ResourceHandler(
 			new Profile\Item( globally_unique_identifier(), $plugin_info['Name'], $plugin_info['Description'] ),
