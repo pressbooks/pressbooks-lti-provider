@@ -32,7 +32,7 @@ function do_format( $format ) {
 	$params = explode( '/', $format );
 	$controller = array_shift( $params );
 	$action = array_shift( $params );
-	if ( 'lti' === $controller ) {
+	if ( 'lti' === $controller && \Pressbooks\Book::isBook() ) {
 		$controller = new Controller();
 		$controller->handleRequest( $action, $params );
 		exit;

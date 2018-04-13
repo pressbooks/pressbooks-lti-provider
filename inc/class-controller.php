@@ -24,8 +24,8 @@ class Controller {
 		}
 
 		switch ( $action ) {
-			case 'ContentItemSelection':
-				$this->contentItemSelection( $params );
+			case 'contentItemSubmit':
+				$this->contentItemSubmit( $params );
 				break;
 			default:
 				$this->default( $action, $params );
@@ -51,7 +51,7 @@ class Controller {
 	/**
 	 * @param array $params
 	 */
-	public function contentItemSelection( $params ) {
+	public function contentItemSubmit( $params ) {
 		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
 			wp_die( __( 'You do not have permission to do that.' ) );
 		}

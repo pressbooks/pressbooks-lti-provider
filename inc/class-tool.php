@@ -17,6 +17,10 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	protected $params;
 
+	// ------------------------------------------------------------------------
+	// Overrides
+	// ------------------------------------------------------------------------
+
 	/**
 	 * Tool constructor.
 	 * Launched by do_format()
@@ -29,7 +33,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		$this->debugMode = WP_DEBUG;
 
-		$this->baseUrl  = trailingslashit( home_url() );
+		$this->baseUrl = trailingslashit( home_url() );
 
 		// Vendor details
 		$this->vendor = new Profile\Item(
@@ -72,6 +76,114 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
+	 * Process a valid launch request
+	 *
+	 * Insert code here to handle incoming launches - use the user, context
+	 * and resourceLink properties to access the current user, context and resource link.
+	 */
+	protected function onLaunch() {
+
+	}
+
+	/**
+	 * Process a valid content-item request
+	 *
+	 * Insert code here to handle incoming content-item requests - use the user and context
+	 * properties to access the current user and context.
+	 */
+	protected function onContentItem() {
+		// Content Items (more than one LtiLinkItem)
+		$this->ok = in_array( 'application/vnd.ims.lti.v1.contentitems+json', $this->mediaTypes, true );
+		if ( $this->ok ) {
+			// TODO: This specification doesn't seem widely supported?
+			// https://www.imsglobal.org/lti/model/mediatype/application/vnd/ims/lti/v1/contentitems%2Bjson/index.html
+		}
+
+		// Content Item (a single LtiLinkItem)
+		$this->ok = in_array( ToolProvider\ContentItem::LTI_LINK_MEDIA_TYPE, $this->mediaTypes, true ) || in_array( '*/*', $this->mediaTypes, true );
+		if ( ! $this->ok ) {
+			$this->reason = __( 'Return of an LTI link not offered', 'pressbooks-lti-provider' );
+		} else {
+			$this->ok = ! in_array( 'none', $this->documentTargets, true ) || ( count( $this->documentTargets ) > 1 );
+			if ( ! $this->ok ) {
+				$this->reason = __( 'No visible document target offered', 'pressbooks-lti-provider' );
+			}
+		}
+		if ( $this->ok ) {
+			$this->initSessionVars();
+			$url = $this->baseUrl . 'format/lti/contentItemSubmit';
+			$this->output = $this->renderContentItemForm( $url );
+			return;
+		}
+
+		// Error
+		$this->onError();
+	}
+
+	/**
+	 * Process a valid tool proxy registration request
+	 *
+	 * Insert code here to handle incoming registration requests - use the user
+	 * property to access the current user.
+	 */
+	protected function onRegister() {
+		// Sanity check
+		if ( empty( $this->consumer ) ) {
+			$this->ok = false;
+			$this->message = __( 'Invalid tool consumer.', 'pressbooks-lti-provider' );
+			return;
+		}
+		if ( empty( $this->returnUrl ) ) {
+			$this->ok = false;
+			$this->message = __( 'Return URL was not set.', 'pressbooks-lti-provider' );
+			return;
+		}
+		if ( ! $this->doToolProxyService() ) {
+			$this->ok = false;
+			$this->message = __( 'Could not establish proxy with consumer.', 'pressbooks-lti-provider' );
+			return;
+		}
+
+		$success_args = [
+			'lti_msg' => __( 'Successful registration', 'pressbooks-lti-provider' ),
+			'tool_proxy_guid' => $this->consumer->getKey(),
+			'status' => 'success',
+		];
+		$success_url = esc_url( add_query_arg( $success_args, $this->returnUrl ) );
+
+		$cancel_args = [
+			'lti_msg' => __( 'The tool registration has been cancelled', 'pressbooks-lti-provider' ),
+			'status' => 'failure',
+		];
+		$cancel_url = esc_url( add_query_arg( $cancel_args, $this->returnUrl ) );
+
+		$this->output = $this->renderRegisterForm( $success_url, $cancel_url );
+	}
+
+	/**
+	 * Process a response to an invalid request
+	 *
+	 * Insert code here to handle errors on incoming connections - do not expect
+	 * the user, context and resourceLink properties to be populated but check the reason
+	 * property for the cause of the error.  Return TRUE if the error was fully
+	 * handled by this method.
+	 */
+	protected function onError() {
+		$message = $this->message;
+		if ( $this->debugMode && ! empty( $this->reason ) ) {
+			$message = $this->reason;
+		}
+		// Display the error message from the provider's side if the consumer has not specified a URL to pass the error to.
+		if ( empty( $this->returnUrl ) ) {
+			$this->errorOutput = $message;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// Chunks of (ideally) testable code
+	// ------------------------------------------------------------------------
+
+	/**
 	 * @return string
 	 */
 	public function getAction() {
@@ -100,96 +212,42 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
-	 * Process a valid launch request
-	 *
-	 * Insert code here to handle incoming launches - use the user, context
-	 * and resourceLink properties to access the current user, context and resource link.
+	 * Initialize $_SESSION variables
 	 */
-	protected function onLaunch() {
-
+	public function initSessionVars() {
+		$_SESSION['pb_lti_data'] = $_POST['data'] ?? null;
+		$_SESSION['pb_lti_consumer_pk'] = $this->consumer->getRecordId() ?? null;
+		$_SESSION['pb_lti_consumer_version'] = $this->consumer->ltiVersion ?? null;
+		$_SESSION['pb_lti_return_url'] = $this->returnUrl ?? null;
 	}
 
 	/**
-	 * Process a valid content-item request
+	 * Output a form to select a single LTI link
 	 *
-	 * Insert code here to handle incoming content-item requests - use the user and context
-	 * properties to access the current user and context.
+	 * @param string $url
+	 *
+	 * @return string
 	 */
-	protected function onContentItem() {
-
-		if ( in_array( 'application/vnd.ims.lti.v1.contentitems+json', $this->mediaTypes, true ) ) {
-			// TODO: This specification doesn't seem widely supported? Returns multiple LtiLinkItem links at the same time
-			// https://www.imsglobal.org/lti/model/mediatype/application/vnd/ims/lti/v1/contentitems%2Bjson/index.html
-		}
-
-		$this->ok = in_array( ToolProvider\ContentItem::LTI_LINK_MEDIA_TYPE, $this->mediaTypes, true ) || in_array( '*/*', $this->mediaTypes, true );
-		if ( ! $this->ok ) {
-			$this->reason = __( 'Return of an LTI link not offered', 'pressbooks-lti-provider' );
-		} else {
-			$this->ok = ! in_array( 'none', $this->documentTargets, true ) || ( count( $this->documentTargets ) > 1 );
-			if ( ! $this->ok ) {
-				$this->reason = __( 'No visible document target offered', 'pressbooks-lti-provider' );
-			}
-		}
-		if ( ! $this->ok ) {
-			$this->onError();
-			return;
-		}
-
-		$_SESSION['pb_lti_data'] = $_POST['data'] ?? null;
-		$_SESSION['pb_lti_consumer_pk'] = $this->consumer->getRecordId();
-		$_SESSION['pb_lti_consumer_version'] = $this->consumer->ltiVersion;
-		$_SESSION['pb_lti_return_url'] = $this->returnUrl;
-
+	public function renderContentItemForm( $url ) {
 		$html = blade()->render(
 			'selection', [
 				'title' => get_bloginfo( 'name' ),
-				'url' => $this->baseUrl . 'format/lti/ContentItemSelection',
+				'url' => $url,
 			]
 		);
 
-		$this->output = $html;
+		return $html;
 	}
 
 	/**
-	 * Process a valid tool proxy registration request
+	 * Show a page with options to redirect back to consumer
 	 *
-	 * Insert code here to handle incoming registration requests - use the user
-	 * property to access the current user.
+	 * @param string $success_url
+	 * @param string $cancel_url
+	 *
+	 * @return string
 	 */
-	protected function onRegister() {
-		// Sanity check
-		if ( empty( $this->consumer ) ) {
-			$this->ok = false;
-			$this->message = __( 'Invalid tool consumer.', 'pressbooks-lti-provider' );
-			return;
-		}
-		if ( empty( $this->returnUrl ) ) {
-			$this->ok = false;
-			$this->message = __( 'Return URL was not set.', 'pressbooks-lti-provider' );
-			return;
-		}
-		if ( ! $this->doToolProxyService() ) {
-			$this->ok = false;
-			$this->message = __( 'Could not establish proxy with consumer.', 'pressbooks-lti-provider' );
-			return;
-		}
-
-		// Show a page with options to redirect back to consumer
-
-		$success_args = [
-			'lti_msg' => __( 'Successful registration', 'pressbooks-lti-provider' ),
-			'tool_proxy_guid' => $this->consumer->getKey(),
-			'status' => 'success',
-		];
-		$success_url = esc_url( add_query_arg( $success_args, $this->returnUrl ) );
-
-		$cancel_args = [
-			'lti_msg' => __( 'The tool registration has been cancelled', 'pressbooks-lti-provider' ),
-			'status' => 'failure',
-		];
-		$cancel_url = esc_url( add_query_arg( $cancel_args, $this->returnUrl ) );
-
+	public function renderRegisterForm( $success_url, $cancel_url ) {
 		$html = blade()->render(
 			'register', [
 				'title' => get_bloginfo( 'name' ),
@@ -198,26 +256,7 @@ class Tool extends ToolProvider\ToolProvider {
 			]
 		);
 
-		$this->output = $html;
-	}
-
-	/**
-	 * Process a response to an invalid request
-	 *
-	 * Insert code here to handle errors on incoming connections - do not expect
-	 * the user, context and resourceLink properties to be populated but check the reason
-	 * property for the cause of the error.  Return TRUE if the error was fully
-	 * handled by this method.
-	 */
-	protected function onError() {
-		$message = $this->message;
-		if ( $this->debugMode && ! empty( $this->reason ) ) {
-			$message = $this->reason;
-		}
-		// Display the error message from the provider's side if the consumer has not specified a URL to pass the error to.
-		if ( empty( $this->returnUrl ) ) {
-			$this->errorOutput = $message;
-		}
+		return $html;
 	}
 
 }
