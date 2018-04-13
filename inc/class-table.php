@@ -2,8 +2,18 @@
 
 namespace Pressbooks\Lti\Provider;
 
+use IMSGlobal\LTI\ToolProvider\ToolConsumer;
+
 class Table extends \WP_List_Table {
 
+	/**
+	 * @var \IMSGlobal\LTI\ToolProvider\DataConnector\DataConnector
+	 */
+	protected $connector;
+
+	/**
+	 * @var Tool
+	 */
 	protected $tool;
 
 	function __construct() {
@@ -14,8 +24,8 @@ class Table extends \WP_List_Table {
 		];
 		parent::__construct( $args );
 
-		$connector = Database::getConnector();
-		$this->tool = new Tool( $connector );
+		$this->connector = Database::getConnector();
+		$this->tool = new Tool( $this->connector );
 	}
 
 	function column_default( $item, $column_name ) {
@@ -58,6 +68,8 @@ class Table extends \WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = [ $columns, $hidden, $sortable ];
 
+		$this->process_bulk_action();
+
 		// Pagination
 		$per_page = 1000;
 		$current_page = $this->get_pagenum();
@@ -65,7 +77,7 @@ class Table extends \WP_List_Table {
 
 		$data = [];
 		foreach ( $consumers as $consumer ) {
-			/** @var \IMSGlobal\LTI\ToolProvider\ToolConsumer $consumer */
+			/** @var ToolConsumer $consumer */
 			$data[] = [
 				'ID' => $consumer->getRecordId(),
 				'name' => $consumer->name,
@@ -92,5 +104,20 @@ class Table extends \WP_List_Table {
 				'total_pages' => ceil( $total_items / $per_page ),
 			]
 		);
+	}
+
+	protected function process_bulk_action() {
+		if ( 'delete' === $this->current_action() ) {
+			$ids = isset( $_REQUEST['ID'] ) ? $_REQUEST['ID'] : [];
+			if ( ! is_array( $ids ) ) {
+				$ids = [ $ids ];
+			}
+			if ( ! empty( $ids ) ) {
+				foreach ( $ids as $id ) {
+					$consumer = ToolConsumer::fromRecordId( $id, $this->connector );
+					$consumer->delete();
+				}
+			}
+		}
 	}
 }
