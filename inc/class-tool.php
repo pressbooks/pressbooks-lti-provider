@@ -222,16 +222,31 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function initSessionVars() {
 		// Consumer
-		$_SESSION['pb_lti_consumer_pk'] = $this->consumer->getRecordId() ?? null;
-		$_SESSION['pb_lti_consumer_version'] = $this->consumer->ltiVersion ?? null;
+		$_SESSION['pb_lti_consumer_pk'] = null;
+		$_SESSION['pb_lti_consumer_version'] = null;
+		if ( is_object( $this->consumer ) ) {
+			$_SESSION['pb_lti_consumer_pk'] = $this->consumer->getRecordId();
+			$_SESSION['pb_lti_consumer_version'] = $this->consumer->ltiVersion;
+		}
+
 		// Resource
-		$_SESSION['pb_lti_resource_pk'] = $this->resourceLink->getRecordId() ?? null;
+		$_SESSION['pb_lti_resource_pk'] = null;
+		if ( is_object( $this->resourceLink ) ) {
+			$_SESSION['pb_lti_resource_pk'] = $this->resourceLink->getRecordId();
+		}
+
 		// User
-		$_SESSION['pb_lti_user_consumer_pk'] = $this->user->getResourceLink()->getConsumer()->getRecordId() ?? null;
-		$_SESSION['pb_lti_user_resource_pk'] = $this->user->getResourceLink()->getRecordId() ?? null;
-		$_SESSION['pb_lti_user_pk'] = $this->user->getRecordId() ?? null;
+		$_SESSION['pb_lti_user_pk'] = null;
+		$_SESSION['pb_lti_user_consumer_pk'] = null;
+		$_SESSION['pb_lti_user_resource_pk'] = null;
+		if ( is_object( $this->user ) ) {
+			$_SESSION['pb_lti_user_pk'] = $this->user->getRecordId();
+			$_SESSION['pb_lti_user_consumer_pk'] = $this->user->getResourceLink()->getConsumer()->getRecordId();
+			$_SESSION['pb_lti_user_resource_pk'] = $this->user->getResourceLink()->getRecordId();
+		}
+
 		// Return URL
-		$_SESSION['pb_lti_return_url'] = $this->returnUrl ?? null;
+		$_SESSION['pb_lti_return_url'] = $this->returnUrl;
 	}
 
 	/**
