@@ -51,3 +51,20 @@ function blade() {
 	}
 	return $blade;
 }
+
+function admin_menu() {
+	add_menu_page(
+		__( 'LTI Admin', 'pressbooks-lti-provider' ),
+		__( 'LTI Admin', 'pressbooks-lti-provider' ),
+		'manage_network',
+		'pb_lti_admin',
+		function () {
+			if ( ! class_exists( 'WP_List_Table' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+			}
+			$table = new Table();
+			$table->prepare_items();
+			$table->display();
+		}
+	);
+}
