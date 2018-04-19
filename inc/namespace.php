@@ -53,9 +53,13 @@ function blade() {
 }
 
 function admin_menu() {
-	add_menu_page(
-		__( 'LTI Admin', 'pressbooks-lti-provider' ),
-		__( 'LTI Admin', 'pressbooks-lti-provider' ),
+
+	$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
+
+	add_submenu_page(
+		$parent_slug,
+		__( 'LTI', 'pressbooks-lti-provider' ),
+		__( 'LTI', 'pressbooks-lti-provider' ),
 		'manage_network',
 		'pb_lti_admin',
 		function () {
