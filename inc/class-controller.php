@@ -92,6 +92,7 @@ class Controller {
 	 */
 	public function validateRegistrationRequest() {
 		if ( isset( $_POST['lti_message_type'] ) && $_POST['lti_message_type'] === 'ToolProxyRegistrationRequest' ) {
+
 			if ( ! empty( $_POST['tc_profile_url'] ) ) {
 				$url = $_POST['tc_profile_url'];
 			} elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
@@ -99,7 +100,41 @@ class Controller {
 			} else {
 				return false;
 			}
-			return is_whitelisted( wp_parse_url( $url, PHP_URL_HOST ) );
+
+			$domain = wp_parse_url( $url, PHP_URL_HOST );
+			$whitelist = ( new Admin() )->getSettings()['whitelist'];
+			if ( ! is_array( $whitelist ) ) {
+				$whitelist = explode( "\n", $whitelist );
+			}
+
+			// Remove empty entries
+			$whitelist = array_filter(
+				$whitelist,
+				function ( $var ) {
+					if ( is_string( $var ) ) {
+						$var = trim( $var );
+					}
+					return ! empty( $var );
+				}
+			);
+			if ( empty( $whitelist ) ) {
+				return true;
+			}
+
+			$whitelist = array_map( 'strtolower', $whitelist );
+			$domain = strtolower( $domain );
+			foreach ( $whitelist as $allowed ) {
+				if ( $domain === $allowed ) {
+					return true;
+				}
+				$dotted_domain = ".$allowed";
+				if ( $dotted_domain === substr( $domain, -strlen( $dotted_domain ) ) ) {
+					return true;
+				}
+			}
+
+			return false;
+
 		}
 		return true;
 	}

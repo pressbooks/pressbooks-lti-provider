@@ -8,8 +8,6 @@ class Admin {
 
 	const OPTIION_GUID = 'pressbooks_lti_GUID';
 
-	const OPTION_WHITELIST = 'pressbooks_lti_whitelist';
-
 	/**
 	 * @var Admin
 	 */

@@ -40,6 +40,6 @@
 <body>
 <h1>{{ __('Registration request for', 'pressbooks-lti-provider') }}: {{ $title }}</h1>
 
-<p><a href='{!! $success_url !!}' class='button'>{{ __('Register', 'pressbooks-lti-provider') }}</a> <a href='{!! $cancel_url !!}' class='button'>{{ __('Cancel', 'pressbooks-lti-provider') }}<</a></p>
+<p><a href='{!! $success_url !!}' class='button'>{{ __('Register', 'pressbooks-lti-provider') }}</a> <a href='{!! $cancel_url !!}' class='button'>{{ __('Cancel', 'pressbooks-lti-provider') }}</a></p>
 </body>
 </html>
