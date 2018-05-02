@@ -65,5 +65,5 @@ require( __DIR__ . '/inc/namespace.php' );
 
 register_activation_hook( __FILE__, [ '\Pressbooks\Lti\Provider\Database', 'installTables' ] );
 add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Updates', 'init' ] );
+add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Admin', 'init' ] );
 add_action( 'pb_do_format', '\Pressbooks\Lti\Provider\do_format' );
-add_action( 'network_admin_menu', '\Pressbooks\Lti\Provider\admin_menu', 1000 );

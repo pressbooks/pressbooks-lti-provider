@@ -8,15 +8,14 @@ namespace Pressbooks\Lti\Provider;
  * @return string
  */
 function globally_unique_identifier() {
-	$option = 'pressbooks_lti_GUID';
-	$guid = get_site_option( $option );
+	$guid = get_site_option( Admin::OPTIION_GUID );
 	if ( ! $guid ) {
 		if ( function_exists( 'com_create_guid' ) === true ) {
 			$guid = trim( com_create_guid(), '{}' );
 		} else {
 			$guid = sprintf( '%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 16384, 20479 ), mt_rand( 32768, 49151 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ) );
 		}
-		update_site_option( $option, $guid );
+		update_site_option( Admin::OPTIION_GUID, $guid );
 	}
 	return $guid;
 }
@@ -49,35 +48,45 @@ function blade() {
 	return $blade;
 }
 
-function admin_menu() {
+/**
+ * Check if a domain is whitelisted
+ *
+ * @param $domain
+ *
+ * @return bool
+ */
+function is_whitelisted( $domain ) {
 
-	$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
+	$whitelist = get_site_option( Admin::OPTION_WHITELIST, '' );
+	if ( ! is_array( $whitelist ) ) {
+		$whitelist = explode( "\n", $whitelist );
+	}
 
-	add_submenu_page(
-		$parent_slug,
-		__( 'LTI', 'pressbooks-lti-provider' ),
-		__( 'LTI', 'pressbooks-lti-provider' ),
-		'manage_network',
-		'pb_lti_admin',
-		function () {
-			if ( ! class_exists( 'WP_List_Table' ) ) {
-				require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	// Remove empty entries
+	$whitelist = array_filter(
+		$whitelist,
+		function ( $var ) {
+			if ( is_string( $var ) ) {
+				$var = trim( $var );
 			}
-			$table = new Table();
-			$table->prepare_items();
-
-			$message = '';
-			if ( 'delete' === $table->current_action() ) {
-				/* translators: 1: Number of consumers deleted */
-				$message = '<div class="updated below-h2" id="message"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
-			}
-			echo '<div class="wrap">';
-			echo $message;
-			echo '<form id="pressbooks-lti-admin" method="GET">';
-			echo '<input type="hidden" name="page" value="' . $_REQUEST['page'] . '" />';
-			$table->display();
-			echo '</form>';
-			echo '</div>';
+			return ! empty( $var );
 		}
 	);
+	if ( empty( $whitelist ) ) {
+		return true;
+	}
+
+	$whitelist = array_map( 'strtolower', $whitelist );
+	$domain = strtolower( $domain );
+	foreach ( $whitelist as $allowed ) {
+		if ( $domain === $allowed ) {
+			return true;
+		}
+		$dotted_domain = ".$allowed";
+		if ( $dotted_domain === substr( $domain, -strlen( $dotted_domain ) ) ) {
+			return true;
+		}
+	}
+
+	return false;
 }
