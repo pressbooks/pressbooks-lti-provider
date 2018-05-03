@@ -63,7 +63,7 @@ class Table extends \WP_List_Table {
 
 		$delete_url = sprintf( '/admin.php?page=%s&action=%s&ID=%s', $_REQUEST['page'], 'delete', $item['ID'] );
 		$delete_url = network_admin_url( $delete_url );
-		$delete_url = esc_url( add_query_arg( '_wpnonce', wp_create_nonce( $item['ID'] ), $delete_url ) );
+		$delete_url = esc_url( add_query_arg( '_wpnonce', wp_create_nonce( 'bulk-consumers' ), $delete_url ) );
 		$onclick = 'onclick="if ( !confirm(\'' . esc_attr( __( 'Are you sure you want to delete this?', 'pressbooks' ) ) . '\') ) { return false }"';
 		$actions['trash'] = sprintf(
 			'<a href="%s" class="submitdelete" aria-label="%s" ' . $onclick . '>%s</a>',
@@ -81,10 +81,44 @@ class Table extends \WP_List_Table {
 		);
 	}
 
+	/**
+	 * @param array $item A singular item (one full row's worth of data)
+	 *
+	 * @return string Text to be placed inside the column <td>
+	 */
+	function column_available( $item ) {
+		if ( ! empty( $item['available'] ) ) {
+			return '✅';
+		} else {
+			return '❌';
+		}
+	}
+
+	/**
+	 * @param array $item A singular item (one full row's worth of data)
+	 *
+	 * @return string Text to be placed inside the column <td>
+	 */
+	function column_protected( $item ) {
+		if ( ! empty( $item['protected'] ) ) {
+			return '✅';
+		} else {
+			return '❌';
+		}
+	}
+
+	/**
+	 * @param array $item
+	 *
+	 * @return string
+	 */
 	function column_cb( $item ) {
 		return sprintf( '<input type="checkbox" name=ID[]" value="%s" />', $item['ID'] );
 	}
 
+	/**
+	 * @return array
+	 */
 	function get_columns() {
 		return [
 			'cb' => '<input type="checkbox" />',
@@ -92,16 +126,22 @@ class Table extends \WP_List_Table {
 			'base_url' => __( 'Base URL', 'pressbooks-lti-provider' ),
 			'key' => __( 'Key', 'pressbooks-lti-provider' ),
 			'version' => __( 'Version', 'pressbooks-lti-provider' ),
+			'last_access' => __( 'Last access', 'pressbooks-lti-provider' ),
 			'available' => __( 'Available', 'pressbooks-lti-provider' ),
 			'protected' => __( 'Protected', 'pressbooks-lti-provider' ),
-			'last_access' => __( 'Last access', 'pressbooks-lti-provider' ),
 		];
 	}
 
+	/**
+	 * @return array
+	 */
 	function get_sortable_columns() {
 		return [];
 	}
 
+	/**
+	 * @return array
+	 */
 	function get_bulk_actions() {
 		return [
 			'delete' => 'Delete',
@@ -141,6 +181,9 @@ class Table extends \WP_List_Table {
 		return '';
 	}
 
+	/**
+	 * Prepares the list of items for displaying.
+	 */
 	function prepare_items() {
 
 		// Process any actions first
@@ -170,9 +213,9 @@ class Table extends \WP_List_Table {
 				'name' => $consumer->name,
 				'key' => $consumer->getKey(),
 				'version' => $consumer->consumerVersion,
+				'last_access' => ! empty( $consumer->lastAccess ) ? date( 'Y-m-d', $consumer->lastAccess ) : __( 'Never', 'pressbooks-lti-provider' ),
 				'available' => $consumer->getIsAvailable(),
 				'protected' => $consumer->protected,
-				'last_access' => ! empty( $consumer->lastAccess ) ? date( 'j-M-Y', $consumer->lastAccess ) : 'Never',
 			];
 		}
 
@@ -193,8 +236,12 @@ class Table extends \WP_List_Table {
 		);
 	}
 
+	/**
+	 * Delete
+	 */
 	protected function processBulkActions() {
 		if ( 'delete' === $this->current_action() ) {
+			check_admin_referer( 'bulk-consumers' );
 			$ids = isset( $_REQUEST['ID'] ) ? $_REQUEST['ID'] : [];
 			if ( ! is_array( $ids ) ) {
 				$ids = [ $ids ];

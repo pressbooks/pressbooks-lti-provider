@@ -10,7 +10,7 @@
             </tr>
             <tr>
                 <th><label for="key">{{ __('Key', 'pressbooks-lti-provider') }}</label></th>
-                <td><input name="key" id="key" type="text" value="{{ $options['key'] }}" class="regular-text"/></td>
+                <td><input name="key" id="key" type="text" value="{{ $options['key'] }}" class="regular-text" required/></td>
             </tr>
             <tr>
                 <th><label for="secret">{{ __('Secret', 'pressbooks-lti-provider') }}</label></th>

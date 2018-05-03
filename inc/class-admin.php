@@ -32,12 +32,32 @@ class Admin {
 	static public function hooks( Admin $obj ) {
 		add_action( 'network_admin_menu', [ $obj, 'addConsumersMenu' ], 1000 );
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
+		add_action( 'admin_head', [ $obj, 'addConsumersHeader' ] );
 	}
 
 	/**
 	 *
 	 */
 	public function __construct() {
+	}
+
+	/**
+	 * Add styles for WP_List_Table
+	 */
+	function addConsumersHeader() {
+		$page = ( isset( $_GET['page'] ) ) ? esc_attr( $_GET['page'] ) : false;
+		if ( 'pb_lti_consumers' !== $page ) {
+			return;
+		}
+		echo '<style type="text/css">';
+		echo '.wp-list-table .column-name { width: 20%; }';
+		echo '.wp-list-table .column-base_url { width: 20%; }';
+		echo '.wp-list-table .column-key { width: 20%; }';
+		echo '.wp-list-table .column-version { width: 20%; }';
+		echo '.wp-list-table .column-last_access { width: 10%; }';
+		echo '.wp-list-table .column-available { width: 5%; text-align: center; }';
+		echo '.wp-list-table .column-protected { width: 5%; text-align: center; }';
+		echo '</style>';
 	}
 
 	/**
@@ -82,6 +102,7 @@ class Admin {
 		$add_new_url = sprintf( '/admin.php?page=%s&action=edit', $_REQUEST['page'] );
 		$add_new_url = network_admin_url( $add_new_url );
 		echo '<a class="page-title-action" href="' . $add_new_url . '">' . __( 'Add new', 'pressbooks-lti-provider' ) . '</a>';
+		echo '<hr class="wp-header-end">';
 		$message = '';
 		if ( 'delete' === $table->current_action() ) {
 			/* translators: 1: Number of consumers deleted */
