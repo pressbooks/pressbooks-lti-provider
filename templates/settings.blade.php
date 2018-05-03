@@ -30,6 +30,13 @@
                     </td>
                 </tr>
             @endforeach
+            <tr>
+                <th>{{ __('Appearance', 'pressbooks-lti-provider') }}</th>
+                <td>
+                    <label><input name="hide_navigation" id="hide_navigation" type="radio" value="0" {!! checked( 0, $options['hide_navigation'] ) !!} />{{ __('Display Pressbooks navigation elements in your LMS along with book content.', 'pressbooks-lti-provider') }}</label><br/>
+                    <label><input name="hide_navigation" id="hide_navigation" type="radio" value="1" {!! checked( 1, $options['hide_navigation'] ) !!} />{{ __('Display only book content in LMS.', 'pressbooks-lti-provider') }}</label>
+                </td>
+            </tr>
         </table>
         {!! get_submit_button() !!}
     </form>

@@ -63,13 +63,14 @@ class Admin {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 		}
 		$table = new Table();
+		echo '<div class="wrap">';
+		echo '<h1>' . __( 'LTI Consumers', 'pressbooks-lti-provider' ) . '</h1>';
 		$message = '';
 		if ( 'delete' === $table->current_action() ) {
 			/* translators: 1: Number of consumers deleted */
-			$message = '<div class="updated below-h2" id="message"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
+			$message = '<div id="message" class="updated notice is-dismissible"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
 		}
 		$table->prepare_items();
-		echo '<div class="wrap">';
 		echo $message;
 		echo '<form id="pressbooks-lti-admin" method="GET">';
 		echo '<input type="hidden" name="page" value="' . $_REQUEST['page'] . '" />';
@@ -122,6 +123,7 @@ class Admin {
 				'admin_default' => in_array( $_POST['admin_default'], $valid_roles, true ) ? $_POST['admin_default'] : 'subscriber',
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
 				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
+				'hide_navigation' => (int) $_POST['hide_navigation'],
 			];
 			$result = update_site_option( self::OPTION, $update );
 			return $result;
@@ -147,6 +149,9 @@ class Admin {
 		}
 		if ( empty( $options['learner_default'] ) ) {
 			$options['learner_default'] = 'subscriber';
+		}
+		if ( empty( $options['hide_navigation'] ) ) {
+			$options['hide_navigation'] = 0;
 		}
 
 		return $options;
