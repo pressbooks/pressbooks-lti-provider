@@ -94,6 +94,10 @@ class Table extends \WP_List_Table {
 
 	function prepare_items() {
 
+		// Process any actions first
+		$this->processBulkActions();
+
+		// Load up our consumers
 		$consumers = $this->tool->getConsumers();
 
 		// Define Columns
@@ -101,8 +105,6 @@ class Table extends \WP_List_Table {
 		$hidden = [];
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = [ $columns, $hidden, $sortable ];
-
-		$this->process_bulk_action();
 
 		// Pagination
 		$per_page = 1000;
@@ -142,7 +144,7 @@ class Table extends \WP_List_Table {
 		);
 	}
 
-	protected function process_bulk_action() {
+	protected function processBulkActions() {
 		if ( 'delete' === $this->current_action() ) {
 			$ids = isset( $_REQUEST['ID'] ) ? $_REQUEST['ID'] : [];
 			if ( ! is_array( $ids ) ) {
