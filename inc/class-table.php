@@ -28,8 +28,58 @@ class Table extends \WP_List_Table {
 		$this->tool = new Tool( $this->connector );
 	}
 
+	/**
+	 * This method is called when the parent class can't find a method
+	 * for a given column. For example, if the class needs to process a column
+	 * named 'title', it would first see if a method named $this->column_title()
+	 * exists. If it doesn't this one will be used.
+	 *
+	 * @see WP_List_Table::single_row_columns()
+	 *
+	 * @param object $item A singular item (one full row's worth of data)
+	 * @param string $column_name The name/slug of the column to be processed
+	 *
+	 * @return string Text or HTML to be placed inside the column <td>
+	 */
 	function column_default( $item, $column_name ) {
 		return esc_html( $item[ $column_name ] );
+	}
+
+	/**
+	 * @param array $item A singular item (one full row's worth of data)
+	 *
+	 * @return string Text to be placed inside the column <td>
+	 */
+	function column_name( $item ) {
+		$edit_url = sprintf( '/admin.php?page=%s&action=%s&ID=%s', $_REQUEST['page'], 'edit', $item['ID'] );
+		$edit_url = network_admin_url( $edit_url );
+		$edit_url = esc_url( add_query_arg( '_wpnonce', wp_create_nonce( $item['ID'] ), $edit_url ) );
+		$actions['edit'] = sprintf(
+			'<a href="%s" aria-label="%s">%s</a>',
+			$edit_url,
+			/* translators: %s: post title */
+			esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $item['name'] ) ),
+			__( 'Edit' )
+		);
+
+		$delete_url = sprintf( '/admin.php?page=%s&action=%s&ID=%s', $_REQUEST['page'], 'delete', $item['ID'] );
+		$delete_url = network_admin_url( $delete_url );
+		$delete_url = esc_url( add_query_arg( '_wpnonce', wp_create_nonce( $item['ID'] ), $delete_url ) );
+		$onclick = 'onclick="if ( !confirm(\'' . esc_attr( __( 'Are you sure you want to delete this?', 'pressbooks' ) ) . '\') ) { return false }"';
+		$actions['trash'] = sprintf(
+			'<a href="%s" class="submitdelete" aria-label="%s" ' . $onclick . '>%s</a>',
+			$delete_url,
+			/* translators: %s: post title */
+			esc_attr( sprintf( __( 'Move &#8220;%s&#8221; to the Trash' ), $item['name'] ) ),
+			_x( 'Trash', 'verb' )
+		);
+
+		return sprintf(
+			'<div class="row-title"><a href="%1$s" class="title">%2$s</a></div> %3$s',
+			$edit_url,
+			$item['name'],
+			$this->row_actions( $actions )
+		);
 	}
 
 	function column_cb( $item ) {

@@ -68,7 +68,8 @@ class Admin {
 		$message = '';
 		if ( 'delete' === $table->current_action() ) {
 			/* translators: 1: Number of consumers deleted */
-			$message = '<div id="message" class="updated notice is-dismissible"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
+			$message = sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), is_array( $_REQUEST['ID'] ) ? count( $_REQUEST['ID'] ) : 1 );
+			$message = '<div id="message" class="updated notice is-dismissible"><p>' . $message . '</p></div>';
 		}
 		$table->prepare_items();
 		echo $message;
