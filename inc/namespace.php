@@ -57,3 +57,15 @@ function blade() {
 	$blade = new \Jenssegers\Blade\Blade( $views, $cache, new \Pressbooks\Container() );
 	return $blade;
 }
+
+/**
+ * Is JSON?
+ *
+ * @param string $string
+ *
+ * @return bool
+ */
+function is_json( $string ) {
+	json_decode( $string );
+	return ( json_last_error() === JSON_ERROR_NONE );
+}

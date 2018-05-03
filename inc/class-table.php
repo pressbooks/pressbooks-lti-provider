@@ -40,7 +40,7 @@ class Table extends \WP_List_Table {
 		return [
 			'cb' => '<input type="checkbox" />',
 			'name' => __( 'Name', 'pressbooks-lti-provider' ),
-			'base_url' => __( 'Book URL', 'pressbooks-lti-provider' ),
+			'base_url' => __( 'Base URL', 'pressbooks-lti-provider' ),
 			'key' => __( 'Key', 'pressbooks-lti-provider' ),
 			'version' => __( 'Version', 'pressbooks-lti-provider' ),
 			'available' => __( 'Available', 'pressbooks-lti-provider' ),
@@ -57,6 +57,39 @@ class Table extends \WP_List_Table {
 		return [
 			'delete' => 'Delete',
 		];
+	}
+
+	/**
+	 * @param ToolConsumer $consumer
+	 *
+	 * @return string
+	 */
+	protected function determineBaseUrl( $consumer ) {
+		if ( empty( $consumer->toolProxy ) ) {
+			return '';
+		}
+
+		if ( is_object( $consumer->toolProxy ) ) {
+			$tool_proxy = $consumer->toolProxy;
+		} elseif ( is_json( $consumer->toolProxy ) ) {
+			$tool_proxy = json_decode( $consumer->toolProxy );
+		} else {
+			$tool_proxy = null;
+		}
+		if ( ! is_object( $tool_proxy ) ) {
+			return '';
+		}
+
+		if ( isset(
+			$tool_proxy->tool_profile,
+			$tool_proxy->tool_profile->base_url_choice,
+			$tool_proxy->tool_profile->base_url_choice[0],
+			$tool_proxy->tool_profile->base_url_choice[0]->default_base_url
+		) ) {
+			return $tool_proxy->tool_profile->base_url_choice[0]->default_base_url;
+		}
+
+		return '';
 	}
 
 	function prepare_items() {
@@ -79,7 +112,7 @@ class Table extends \WP_List_Table {
 		$data = [];
 		foreach ( $consumers as $consumer ) {
 			/** @var ToolConsumer $consumer */
-			$base_url = 'https://site/book/todo'; // TODO
+			$base_url = $this->determineBaseUrl( $consumer );
 			$data[] = [
 				'ID' => $consumer->getRecordId(),
 				'base_url' => $base_url,

@@ -51,28 +51,31 @@ class Admin {
 			__( 'LTI Consumers', 'pressbooks-lti-provider' ),
 			'manage_network',
 			'pb_lti_consumers',
-			function () {
-				// TODO
-				if ( ! class_exists( 'WP_List_Table' ) ) {
-					require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-				}
-				$table = new Table();
-				$table->prepare_items();
-
-				$message = '';
-				if ( 'delete' === $table->current_action() ) {
-					/* translators: 1: Number of consumers deleted */
-					$message = '<div class="updated below-h2" id="message"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
-				}
-				echo '<div class="wrap">';
-				echo $message;
-				echo '<form id="pressbooks-lti-admin" method="GET">';
-				echo '<input type="hidden" name="page" value="' . $_REQUEST['page'] . '" />';
-				$table->display();
-				echo '</form>';
-				echo '</div>';
-			}
+			[ $this, 'printConsumersMenu' ]
 		);
+	}
+
+	/**
+	 *
+	 */
+	public function printConsumersMenu() {
+		if ( ! class_exists( 'WP_List_Table' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+		}
+		$table = new Table();
+		$message = '';
+		if ( 'delete' === $table->current_action() ) {
+			/* translators: 1: Number of consumers deleted */
+			$message = '<div class="updated below-h2" id="message"><p>' . sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), count( $_REQUEST['ID'] ) ) . '</p></div>';
+		}
+		$table->prepare_items();
+		echo '<div class="wrap">';
+		echo $message;
+		echo '<form id="pressbooks-lti-admin" method="GET">';
+		echo '<input type="hidden" name="page" value="' . $_REQUEST['page'] . '" />';
+		$table->display();
+		echo '</form>';
+		echo '</div>';
 	}
 
 	/**
