@@ -9,6 +9,11 @@ use Pressbooks\Book;
 class Tool extends ToolProvider\ToolProvider {
 
 	/**
+	 * @var Admin
+	 */
+	protected $admin;
+
+	/**
 	 * @var string
 	 */
 	protected $action;
@@ -194,6 +199,13 @@ class Tool extends ToolProvider\ToolProvider {
 	// ------------------------------------------------------------------------
 	// Chunks of (ideally) testable code
 	// ------------------------------------------------------------------------
+
+	/**
+	 * @param Admin $admin
+	 */
+	public function setAdmin( Admin $admin ) {
+		$this->admin = $admin;
+	}
 
 	/**
 	 * @return string
@@ -404,6 +416,65 @@ class Tool extends ToolProvider\ToolProvider {
 		);
 
 		return $html;
+	}
+
+	/**
+	 * Check ToolProxyRegistrationRequest against a whitelist
+	 *
+	 * @return bool
+	 */
+	public function validateRegistrationRequest() {
+		if ( isset( $_POST['lti_message_type'] ) && $_POST['lti_message_type'] === 'ToolProxyRegistrationRequest' ) {
+
+			if ( ! empty( $_POST['tc_profile_url'] ) ) {
+				$url = $_POST['tc_profile_url'];
+			} elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+				$url = $_SERVER['HTTP_REFERER'];
+			} else {
+				return false;
+			}
+
+			if ( ! is_object( $this->admin ) ) {
+				throw new \LogicException( '$this->admin is not an object. It must be set before calling validateRegistrationRequest' );
+			}
+
+			$domain = wp_parse_url( $url, PHP_URL_HOST );
+			$whitelist = $this->admin->getSettings()['whitelist'];
+			if ( ! is_array( $whitelist ) ) {
+				$whitelist = explode( "\n", $whitelist );
+			}
+
+			// Remove empty entries
+			$whitelist = array_filter(
+				$whitelist,
+				function ( $var ) {
+					if ( is_string( $var ) ) {
+						$var = trim( $var );
+					}
+					return ! empty( $var );
+				}
+			);
+			if ( empty( $whitelist ) ) {
+				return true;
+			}
+
+			$whitelist = array_map( 'strtolower', $whitelist );
+			$domain = strtolower( $domain );
+			foreach ( $whitelist as $allowed ) {
+				if ( $domain === $allowed ) {
+					return true;
+				}
+				$dotted_domain = ".$allowed";
+				if ( $dotted_domain === substr( $domain, -strlen( $dotted_domain ) ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		// This is not even a ToolProxyRegistrationRequest, so yes, it's valid
+		return true;
 	}
 
 }

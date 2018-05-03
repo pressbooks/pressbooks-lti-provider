@@ -6,7 +6,7 @@ class Admin {
 
 	const OPTION = 'pressbooks_lti';
 
-	const OPTIION_GUID = 'pressbooks_lti_GUID';
+	const OPTION_GUID = 'pressbooks_lti_GUID';
 
 	/**
 	 * @var Admin
