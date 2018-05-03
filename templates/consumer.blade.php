@@ -6,15 +6,15 @@
         <table class="form-table">
             <tr>
                 <th><label for="name">{{ __('Name', 'pressbooks-lti-provider') }}</label></th>
-                <td><input name="name" id="name" type="text" value="{{ $options['name'] }}" class="regular-text"/></td>
+                <td><input name="name" id="name" type="text" value="{{ $options['name'] }}" class="regular-text" required/></td>
             </tr>
             <tr>
                 <th><label for="key">{{ __('Key', 'pressbooks-lti-provider') }}</label></th>
-                <td><input name="key" id="key" type="text" value="{{ $options['key'] }}" class="regular-text" required/></td>
+                <td><input name="key" id="key" type="text" value="{{ $options['key'] }}" class="regular-text" required @if ($options['ID'])readonly="readonly"@endif/></td>
             </tr>
             <tr>
                 <th><label for="secret">{{ __('Secret', 'pressbooks-lti-provider') }}</label></th>
-                <td><input name="secret" id="secret" type="text" value="{{ $options['secret'] }}" class="regular-text"/></td>
+                <td><input name="secret" id="secret" type="text" value="{{ $options['secret'] }}" class="regular-text" required @if ($options['ID'])readonly="readonly"@endif/></td>
             </tr>
             <tr>
                 <th>{{ __(' Enabled', 'pressbooks-cas-sso') }}</th>
