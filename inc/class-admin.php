@@ -2,6 +2,8 @@
 
 namespace Pressbooks\Lti\Provider;
 
+use IMSGlobal\LTI\ToolProvider;
+
 class Admin {
 
 	const OPTION = 'pressbooks_lti';
@@ -51,12 +53,24 @@ class Admin {
 			__( 'LTI Consumers', 'pressbooks-lti-provider' ),
 			'manage_network',
 			'pb_lti_consumers',
-			[ $this, 'printConsumersMenu' ]
+			[ $this, 'handleConsumerActions' ]
 		);
 	}
 
 	/**
-	 *
+	 * Do something about LTI Consumers
+	 */
+	public function handleConsumerActions() {
+		$action = $_REQUEST['action'] ?? null;
+		if ( $action === 'edit' ) {
+			$this->printConsumerForm();
+		} else {
+			$this->printConsumersMenu();
+		}
+	}
+
+	/**
+	 * Print LTI Consumer listing
 	 */
 	public function printConsumersMenu() {
 		if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -64,7 +78,10 @@ class Admin {
 		}
 		$table = new Table();
 		echo '<div class="wrap">';
-		echo '<h1>' . __( 'LTI Consumers', 'pressbooks-lti-provider' ) . '</h1>';
+		echo '<h1 class="wp-heading-inline">' . __( 'LTI Consumers', 'pressbooks-lti-provider' ) . '</h1>';
+		$add_new_url = sprintf( '/admin.php?page=%s&action=edit', $_REQUEST['page'] );
+		$add_new_url = network_admin_url( $add_new_url );
+		echo '<a class="page-title-action" href="' . $add_new_url . '">' . __( 'Add new', 'pressbooks-lti-provider' ) . '</a>';
 		$message = '';
 		if ( 'delete' === $table->current_action() ) {
 			/* translators: 1: Number of consumers deleted */
@@ -78,6 +95,85 @@ class Admin {
 		$table->display();
 		echo '</form>';
 		echo '</div>';
+	}
+
+	/**
+	 * Print LTI Consumer Form
+	 */
+	public function printConsumerForm() {
+		if ( $this->saveConsumer() ) {
+			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Consumer saved.' ) . '</p></div>';
+		}
+
+		$id = (int) ( $_REQUEST['ID'] ?? $_REQUEST['id'] ?? 0 );
+
+		$data_connector = Database::getConnector();
+		if ( $id ) {
+			$consumer = ToolProvider\ToolConsumer::fromRecordId( $id, $data_connector );
+		} else {
+			$consumer = new ToolProvider\ToolConsumer( null, $data_connector );
+		}
+
+		$options = [
+			'ID' => $consumer->getRecordId(),
+			'name' => $consumer->name,
+			'key' => $consumer->getKey(),
+			'secret' => $consumer->secret,
+			'enabled' => $consumer->enabled,
+			'enable_from' => $consumer->enableFrom ? date( 'Y-m-d', $consumer->enableFrom ) : '',
+			'enable_until' => $consumer->enableUntil ? date( 'Y-m-d', $consumer->enableUntil ) : '',
+			'protected' => $consumer->protected,
+		];
+		$html = blade()->render(
+			'consumer', [
+				'form_url' => network_admin_url( '/admin.php?page=pb_lti_consumers&action=edit' ),
+				'options' => $options,
+			]
+		);
+		echo $html;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function saveConsumer() {
+		if ( ! empty( $_POST ) && check_admin_referer( 'pb-lti-provider' ) ) {
+
+			$id = (int) ( $_REQUEST['ID'] ?? $_REQUEST['id'] ?? 0 );
+
+			$data_connector = Database::getConnector();
+			if ( $id ) {
+				$consumer = ToolProvider\ToolConsumer::fromRecordId( $id, $data_connector );
+			} else {
+				$consumer = new ToolProvider\ToolConsumer( $_POST['key'], $data_connector );
+				$consumer->ltiVersion = ToolProvider\ToolProvider::LTI_VERSION1;
+			}
+
+			$consumer->name = trim( $_POST['name'] );
+			$consumer->secret = trim( $_POST['secret'] );
+			$consumer->enabled = ! empty( $_POST['enabled'] ) ? true : false;
+			$consumer->protected = ! empty( $_POST['protected'] ) ? true : false;
+
+			$date_from = $_POST['enable_from'];
+			if ( empty( $date_from ) ) {
+				$consumer->enableFrom = null;
+			} else {
+				$consumer->enableFrom = strtotime( $date_from );
+			}
+
+			$date_to = $_POST['enable_until'];
+			if ( empty( $date_to ) ) {
+				$consumer->enableUntil = null;
+			} else {
+				$consumer->enableUntil = strtotime( $date_to );
+			}
+
+			if ( $consumer->save() ) {
+				$_REQUEST['ID'] = $consumer->getRecordId();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -98,7 +194,7 @@ class Admin {
 	}
 
 	/**
-	 *
+	 * Print LTI Settings Form
 	 */
 	public function printSettingsMenu() {
 		if ( $this->saveSettings() ) {

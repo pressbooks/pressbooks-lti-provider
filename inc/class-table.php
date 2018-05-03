@@ -53,7 +53,6 @@ class Table extends \WP_List_Table {
 	function column_name( $item ) {
 		$edit_url = sprintf( '/admin.php?page=%s&action=%s&ID=%s', $_REQUEST['page'], 'edit', $item['ID'] );
 		$edit_url = network_admin_url( $edit_url );
-		$edit_url = esc_url( add_query_arg( '_wpnonce', wp_create_nonce( $item['ID'] ), $edit_url ) );
 		$actions['edit'] = sprintf(
 			'<a href="%s" aria-label="%s">%s</a>',
 			$edit_url,
