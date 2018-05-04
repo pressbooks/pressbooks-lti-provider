@@ -429,7 +429,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function renderContentItemForm( $url ) {
 		$html = blade()->render(
-			'network.lti-selection', [
+			'lti.selection', [
 				'title' => get_bloginfo( 'name' ),
 				'url' => $url,
 				'book_structure' => Book::getBookStructure(),
@@ -449,7 +449,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function renderRegisterForm( $success_url, $cancel_url ) {
 		$html = blade()->render(
-			'network.lti-register', [
+			'lti.register', [
 				'title' => get_bloginfo( 'name' ),
 				'success_url' => $success_url,
 				'cancel_url' => $cancel_url,

@@ -12,7 +12,25 @@ This plugin turns Pressbooks into an LTI provider.
 
 == Description ==
 
-N/A.
+[![Packagist](https://img.shields.io/packagist/v/pressbooks/pressbooks-lti-provider.svg?style=flat-square)](https://packagist.org/packages/pressbooks/pressbooks-lti-provider) [![GitHub release](https://img.shields.io/github/release/pressbooks/pressbooks-lti-provider.svg?style=flat-square)](https://github.com/pressbooks/pressbooks-lti-provider/releases) [![Travis](https://img.shields.io/travis/pressbooks/pressbooks-lti-provider.svg?style=flat-square)](https://travis-ci.org/pressbooks/pressbooks-lti-provider/) [![Codecov](https://img.shields.io/codecov/c/github/pressbooks/pressbooks-lti-provider.svg?style=flat-square)](https://codecov.io/gh/pressbooks/pressbooks-lti-provider)
+
+### Connect URL (supports automatic tool proxy registration)
+
+> https://site/book/format/lti
+
+### Deep Link URLs:
+
+Book cover page
+> https://site/book/format/lti/launch
+
+Post_id
+> https://site/book/format/lti/launch/123
+
+Post_type + Post_name
+> https://site/book/format/lti/launch/front-matter/introduction
+
+TODO?
+> https://site/book/format/lti/launch/Hello%20World
 
 == Installation ==
 

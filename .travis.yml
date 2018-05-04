@@ -4,6 +4,8 @@ notifications:
   email:
     on_success: never
     on_failure: change
+  slack:
+    secure: TODO
 branches:
   only:
   - dev
@@ -32,7 +34,11 @@ install:
 - yarn
 - composer install
 before_script:
+- if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.1" ]] && php -v | grep -q 'Xdebug'; then phpenv config-rm xdebug.ini; fi
 - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+- git clone --depth=1 https://github.com/pressbooks/pressbooks.git ../pressbooks
+- cd ../pressbooks && composer install --no-dev
+- cd ../pressbooks-lti-provider
 script:
 - yarn run test
 - yarn run build:production
@@ -40,21 +46,21 @@ script:
 - vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-# before_deploy:
-# - export TRAVIS_PROJECT_SLUG="$(basename $TRAVIS_BUILD_DIR)"
-# - composer install --no-dev --optimize-autoloader
-# - cd ../
-# - zip -9 -ry $TRAVIS_BUILD_DIR/$TRAVIS_PROJECT_SLUG-$TRAVIS_TAG.zip $TRAVIS_PROJECT_SLUG
-#   -x *.git* *assets/\* *bin/\* *node_modules/\* *tests/\* *.editorconfig* *.gitattributes*
-#   *.github* *.gitignore* *.phpstorm.meta.php* *.travis.yml* *.tx* *phpcs.ruleset.xml*
-#   *phpunit.xml* *webpack.mix.js* *yarn.lock*
-# - cd $TRAVIS_BUILD_DIR
-# deploy:
-#   provider: releases
-#   skip_cleanup: true
-#   api_key:
-#     secure:
-#   file: "pressbooks-lti-provider-$TRAVIS_TAG.zip"
-#   on:
-#     tags: true
-#     repo: pressbooks/pressbooks-lti-provider
+before_deploy:
+- export TRAVIS_PROJECT_SLUG="$(basename $TRAVIS_BUILD_DIR)"
+- composer install --no-dev --optimize-autoloader
+- cd ../
+- zip -9 -ry $TRAVIS_BUILD_DIR/$TRAVIS_PROJECT_SLUG-$TRAVIS_TAG.zip $TRAVIS_PROJECT_SLUG
+  -x *.git* *assets/\* *bin/\* *node_modules/\* *tests/\* *.editorconfig* *.gitattributes*
+  *.github* *.gitignore* *.phpstorm.meta.php* *.travis.yml* *.tx/\* *Gruntfile.js*
+  *package-lock.json* *phpcs.ruleset.xml* *phpunit.xml* *webpack.mix.js* *yarn.lock*
+- cd $TRAVIS_BUILD_DIR
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: TODO
+  file: "pressbooks-lti-provider-$TRAVIS_TAG.zip"
+  on:
+    tags: true
+    repo: pressbooks/pressbooks-lti-provider
