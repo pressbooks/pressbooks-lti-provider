@@ -48,7 +48,7 @@ class Admin {
 	/**
 	 * Add styles for WP_List_Table
 	 */
-	function addConsumersHeader() {
+	public function addConsumersHeader() {
 		$page = ( isset( $_GET['page'] ) ) ? esc_attr( $_GET['page'] ) : false;
 		if ( 'pb_lti_consumers' !== $page ) {
 			return;
@@ -100,10 +100,11 @@ class Admin {
 		if ( ! class_exists( 'WP_List_Table' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 		}
+		$page = 'pb_lti_consumers';
 		$table = new Table();
 		echo '<div class="wrap">';
 		echo '<h1 class="wp-heading-inline">' . __( 'LTI Consumers', 'pressbooks-lti-provider' ) . '</h1>';
-		$add_new_url = sprintf( '/admin.php?page=%s&action=edit', $_REQUEST['page'] );
+		$add_new_url = sprintf( '/admin.php?page=%s&action=edit', $page );
 		$add_new_url = network_admin_url( $add_new_url );
 		echo '<a class="page-title-action" href="' . $add_new_url . '">' . __( 'Add new', 'pressbooks-lti-provider' ) . '</a>';
 		echo '<hr class="wp-header-end">';
@@ -116,7 +117,7 @@ class Admin {
 		$table->prepare_items();
 		echo $message;
 		echo '<form id="pressbooks-lti-admin" method="GET">';
-		echo '<input type="hidden" name="page" value="' . $_REQUEST['page'] . '" />';
+		echo '<input type="hidden" name="page" value="' . $page . '" />';
 		$table->display();
 		echo '</form>';
 		echo '</div>';

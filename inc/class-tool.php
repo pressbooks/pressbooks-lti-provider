@@ -197,8 +197,15 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	// ------------------------------------------------------------------------
-	// Chunks of (ideally) testable code
+	// Overrides, sort of
 	// ------------------------------------------------------------------------
+
+	/**
+	 * @return string
+	 */
+	public function getRedirectUrl() {
+		return $this->redirectUrl;
+	}
 
 	/**
 	 * @param Admin $admin
@@ -206,6 +213,10 @@ class Tool extends ToolProvider\ToolProvider {
 	public function setAdmin( Admin $admin ) {
 		$this->admin = $admin;
 	}
+
+	// ------------------------------------------------------------------------
+	// Chunks of (ideally) testable code
+	// ------------------------------------------------------------------------
 
 	/**
 	 * @return string
