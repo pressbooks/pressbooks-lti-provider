@@ -1,5 +1,7 @@
 <div class="wrap">
     <h1>@if ($options['ID']) {{ __( 'Editing', 'pressbooks-lti-provider') }} @else {{ __( 'Adding', 'pressbooks-lti-provider') }} @endif {{ __( 'LTI Consumer', 'pressbooks-lti-provider') }}</h1>
+    <hr class="wp-header-end">
+    <p><a href='{{ $back_url }}' rel='previous'><span aria-hidden='true'>&larr;</span> {{ __( 'Back to LTI Consumers listing', 'pressbooks-lti-provider') }} </a></p>
     <form method="POST" action="{{ $form_url }}" method="post">
         {!! wp_nonce_field( 'pb-lti-provider' ) !!}
         <input type="hidden" name="ID" value="{{ $options['ID'] }}"/>

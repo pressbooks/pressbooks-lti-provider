@@ -3,6 +3,7 @@
 namespace Pressbooks\Lti\Provider;
 
 use IMSGlobal\LTI\ToolProvider;
+use Pressbooks\Book;
 
 class Admin {
 
@@ -33,6 +34,9 @@ class Admin {
 		add_action( 'network_admin_menu', [ $obj, 'addConsumersMenu' ], 1000 );
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
 		add_action( 'admin_head', [ $obj, 'addConsumersHeader' ] );
+		if ( Book::isBook() ) {
+			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
+		}
 	}
 
 	/**
@@ -146,8 +150,9 @@ class Admin {
 			'protected' => $consumer->protected,
 		];
 		$html = blade()->render(
-			'consumer', [
+			'network.consumer', [
 				'form_url' => network_admin_url( '/admin.php?page=pb_lti_consumers&action=edit' ),
+				'back_url' => network_admin_url( '/admin.php?page=pb_lti_consumers' ),
 				'options' => $options,
 			]
 		);
@@ -222,7 +227,7 @@ class Admin {
 			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
 		}
 		$html = blade()->render(
-			'settings', [
+			'network.settings', [
 				'form_url' => network_admin_url( '/admin.php?page=pb_lti_settings' ),
 				'options' => $this->getSettings(),
 			]
@@ -268,8 +273,83 @@ class Admin {
 		if ( empty( $options['learner_default'] ) ) {
 			$options['learner_default'] = 'subscriber';
 		}
-		if ( empty( $options['hide_navigation'] ) ) {
+		if ( ! isset( $options['hide_navigation'] ) ) {
 			$options['hide_navigation'] = 0;
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Add LTI Settings menu (Book)
+	 */
+	public function addBookSettingsMenu() {
+
+		$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
+
+		add_submenu_page(
+			$parent_slug,
+			__( 'LTI Settings', 'pressbooks-lti-provider' ),
+			__( 'LTI Settings', 'pressbooks-lti-provider' ),
+			'manage_network',
+			'pb_lti_settings',
+			[ $this, 'printBookSettingsMenu' ]
+		);
+	}
+
+	/**
+	 * Print LTI Settings Form (Book)
+	 */
+	public function printBookSettingsMenu() {
+		if ( $this->saveBookSettings() ) {
+			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
+		}
+		$html = blade()->render(
+			'book.settings', [
+				'form_url' => admin_url( '/admin.php?page=pb_lti_settings' ),
+				'options' => $this->getBookSettings(),
+			]
+		);
+		echo $html;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function saveBookSettings() {
+		if ( ! empty( $_POST ) && check_admin_referer( 'pb-lti-provider-book' ) ) {
+			$valid_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber', 'anonymous' ];
+			$update = [
+				'admin_default' => in_array( $_POST['admin_default'], $valid_roles, true ) ? $_POST['admin_default'] : 'subscriber',
+				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
+				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
+				'hide_navigation' => (int) $_POST['hide_navigation'],
+			];
+			$result = update_option( self::OPTION, $update );
+			return $result;
+		}
+		return false;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getBookSettings() {
+
+		$options = get_option( self::OPTION, [] );
+		$defaults = $this->getSettings();
+
+		if ( empty( $options['admin_default'] ) ) {
+			$options['admin_default'] = $defaults['admin_default'];
+		}
+		if ( empty( $options['staff_default'] ) ) {
+			$options['staff_default'] = $defaults['staff_default'];
+		}
+		if ( empty( $options['learner_default'] ) ) {
+			$options['learner_default'] = $defaults['learner_default'];
+		}
+		if ( ! isset( $options['hide_navigation'] ) ) {
+			$options['hide_navigation'] = $defaults['hide_navigation'];
 		}
 
 		return $options;

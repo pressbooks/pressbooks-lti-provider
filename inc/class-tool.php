@@ -276,6 +276,11 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function setupUser( $user ) {
 		$wp_user = get_user_by( 'email', $user->email );
+
+		// TODO:
+		// Step 1: Check whether or not we should create a user (Anonymous Access = No, Everything Else = Yes)
+		// Step 2: If the user does not have rights to the book, check what rols we should assign to them
+
 		if ( ! $wp_user ) {
 			if ( $user->isAdmin() ) {
 				// TODO: Create editor
@@ -342,7 +347,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function renderContentItemForm( $url ) {
 		$html = blade()->render(
-			'selection', [
+			'network.lti-selection', [
 				'title' => get_bloginfo( 'name' ),
 				'url' => $url,
 				'book_structure' => Book::getBookStructure(),
@@ -362,7 +367,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function renderRegisterForm( $success_url, $cancel_url ) {
 		$html = blade()->render(
-			'register', [
+			'network.lti-register', [
 				'title' => get_bloginfo( 'name' ),
 				'success_url' => $success_url,
 				'cancel_url' => $cancel_url,
