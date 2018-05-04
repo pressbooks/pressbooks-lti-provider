@@ -273,26 +273,97 @@ class Tool extends ToolProvider\ToolProvider {
 
 	/**
 	 * @param \IMSGlobal\LTI\ToolProvider\User $user
+	 *
+	 * @throws \LogicException
 	 */
 	public function setupUser( $user ) {
+
+		if ( ! is_object( $this->admin ) ) {
+			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
+		}
+		$settings = $this->admin->getBookSettings();
+		if ( $user->isAdmin() ) {
+			$role = $settings['admin_default'];
+		} elseif ( $user->isStaff() ) {
+			$role = $settings['staff_default'];
+		} elseif ( $user->isLearner() ) {
+			$role = $settings['learner_default'];
+		} else {
+			$role = 'anonymous';
+		}
+
 		$wp_user = get_user_by( 'email', $user->email );
 
-		// TODO:
-		// Step 1: Check whether or not we should create a user (Anonymous Access = No, Everything Else = Yes)
-		// Step 2: If the user does not have rights to the book, check what rols we should assign to them
-
-		if ( ! $wp_user ) {
-			if ( $user->isAdmin() ) {
-				// TODO: Create editor
-			} elseif ( $user->isStaff() ) {
-				// TODO: Create reviewer
-			} elseif ( $user->isLearner() ) {
-				// TODO: Create subscriber
+		// Check whether or not we should create a user (Anonymous Access = No, Everything Else = Yes)
+		if ( ! $wp_user && $role !== 'anonymous' ) {
+			try {
+				list( $user_id, $username ) = $this->createUser( $user->getId(), $user->email );
+				$wp_user = get_userdata( $user_id );
+			} catch ( \Exception $e ) {
+				return; // TODO: What should we do on fail?!
 			}
 		}
+
 		if ( $wp_user ) {
+			// If the user does not have rights to the book, and role != Anonymous Access, then add them to the book with appropriate role
+			if ( ! is_user_member_of_blog( $wp_user->ID ) && $role !== 'anonymous' ) {
+				add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
+			}
+			// Login the user
 			\Pressbooks\Redirect\programmatic_login( $wp_user->user_login );
 		}
+	}
+
+	/**
+	 * Create user (redirects if there is an error)
+	 *
+	 * @param string $username
+	 * @param string $email
+	 *
+	 * @throws \Exception
+	 *
+	 * @return array [ (int) user_id, (string) sanitized username ]
+	 */
+	public function createUser( $username, $email ) {
+		$i = 1;
+		$unique_username = $this->sanitizeUser( $username );
+		while ( username_exists( $unique_username ) ) {
+			$unique_username = $this->sanitizeUser( "{$username}{$i}" );
+			++$i;
+		}
+
+		$username = $unique_username;
+		$email = sanitize_email( $email );
+
+		// Attempt to generate the user and get the user id
+		// we use wp_create_user instead of wp_insert_user so we can handle the error when the user being registered already exists
+		$user_id = wp_create_user( $username, wp_generate_password(), $email );
+
+		// Check if the user was actually created:
+		if ( is_wp_error( $user_id ) ) {
+			// there was an error during registration, redirect and notify the user:
+			throw new \Exception( $user_id->get_error_message() );
+		}
+
+		remove_user_from_blog( $user_id, 1 );
+
+		return [ $user_id, $username ];
+	}
+
+	/**
+	 * Multisite has more restrictions on user login character set
+	 *
+	 * @see https://core.trac.wordpress.org/ticket/17904
+	 *
+	 * @param string $username
+	 *
+	 * @return string
+	 */
+	public function sanitizeUser( $username ) {
+		$unique_username = sanitize_user( $username, true );
+		$unique_username = strtolower( $unique_username );
+		$unique_username = preg_replace( '/[^a-z0-9]/', '', $unique_username );
+		return $unique_username;
 	}
 
 	/**
@@ -381,6 +452,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 * Check ToolProxyRegistrationRequest against a whitelist
 	 *
 	 * @return bool
+	 * @throws \LogicException
 	 */
 	public function validateRegistrationRequest() {
 		if ( isset( $_POST['lti_message_type'] ) && $_POST['lti_message_type'] === 'ToolProxyRegistrationRequest' ) {
@@ -394,7 +466,7 @@ class Tool extends ToolProvider\ToolProvider {
 			}
 
 			if ( ! is_object( $this->admin ) ) {
-				throw new \LogicException( '$this->admin is not an object. It must be set before calling validateRegistrationRequest' );
+				throw new \LogicException( '$this->admin is not an object. It must be set before calling validateRegistrationRequest()' );
 			}
 
 			$domain = wp_parse_url( $url, PHP_URL_HOST );
