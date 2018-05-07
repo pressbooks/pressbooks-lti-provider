@@ -59,7 +59,7 @@ deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: TODO
+    secure: JTRg6+ELSJ78tGhd/V3HvpdkiTtfRcUWFA5Mi6f8EucEFwcSNX2fy4kIIDqDefvVdJxZV5HvPnzj6D13cfc34hIz/MEjOJsa+9/Xw0LKHDDFnlia9PctXUM8gOtFwAnr1LzkXfG2L1TL/w1Bxq5KyWMJ2m8vtIfaLzqcaLV0Wv38csCQk2dJxPnq7SQ92+8aTzaW9lIiSoDNxtuzzFkdOOGzxHAsOKbJHN/5LEdNqnygJb9xGZ10VK/PCl3pd+oCFabzs7uHhxF7jfrFQAkHr/Ajya53X68DHOF00fD0FSzDcmejD0jmj3p4HceLthQVYbScj+wN0OVoGFZluLEbcP/MkRiwzoaHzV9ywtE5CQl0spRaObimiCssxAi8LZ0Nhp3mB5Q1Lo6uVaxfHxwprpgKDZADLphNvMbTB/EvN34Y4+JEQ9ffTzVsGPDhg2dDjymMDCvT8B0jivBz6mitbw2RUjOuykb9RMz6S6YGcbVRDWmUONHR/n6axwLhVD+gd3B/iY6GUvPcCo0wXYG5RqN06htiaJVWencin0MQbnZgfbhQdaGh+P+tXqTDdkuGquv+gvYxuLPqEQiDt/VoL3C4Hh+7pcAz0bStg6CNwbXFUJnXwJnWuX52FJIM474nI7V4S/AZbqDwW+L+kVIqk7UnWEnuNE5tBWWzUTd+4wk=
   file: "pressbooks-lti-provider-$TRAVIS_TAG.zip"
   on:
     tags: true
