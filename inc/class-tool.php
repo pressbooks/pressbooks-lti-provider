@@ -162,14 +162,14 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 
 		$success_args = [
-			'lti_msg' => __( 'Successful registration', 'pressbooks-lti-provider' ),
+			'lti_msg' => __( 'The tool has been successfully registered.', 'pressbooks-lti-provider' ),
 			'tool_proxy_guid' => $this->consumer->getKey(),
 			'status' => 'success',
 		];
 		$success_url = esc_url( add_query_arg( $success_args, $this->returnUrl ) );
 
 		$cancel_args = [
-			'lti_msg' => __( 'The tool registration has been cancelled', 'pressbooks-lti-provider' ),
+			'lti_msg' => __( 'The tool registration has been cancelled.', 'pressbooks-lti-provider' ),
 			'status' => 'failure',
 		];
 		$cancel_url = esc_url( add_query_arg( $cancel_args, $this->returnUrl ) );
