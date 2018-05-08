@@ -31,10 +31,10 @@
 
 <form action="{!! $url !!}" method="post">
 
-    <input type="radio" name="section" value="0" checked> {{ __('Home page', 'pressbooks-lti-provider') }}<br>
+    <input type="radio" name="section" value="0" checked> {{ __('Cover Page', 'pressbooks-lti-provider') }}<br>
 
     @foreach ($book_structure['front-matter'] as $k => $v)
-        <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Front-matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
+        <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Front Matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
     @endforeach
 
     @foreach ($book_structure['part'] as $key => $value)
@@ -44,7 +44,7 @@
     @endforeach
 
     @foreach ($book_structure['back-matter'] as $k => $v)
-        <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Back-matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
+        <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Back Matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
     @endforeach
 
     <p><input type="submit" value="{{ __('Submit', 'pressbooks-lti-provider') }}"/></p>
