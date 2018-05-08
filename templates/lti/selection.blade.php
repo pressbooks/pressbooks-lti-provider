@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-<h1>{{ __('Content item selection request for', 'pressbooks-lti-provider') }}: {{ $title }}</h1>
+<h1>{{ sprintf__('Content item selection request for %s', 'pressbooks-lti-provider'), $title) }}</h1>
 
 <form action="{!! $url !!}" method="post">
 

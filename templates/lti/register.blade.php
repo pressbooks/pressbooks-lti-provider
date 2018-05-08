@@ -20,6 +20,16 @@
             font-variant: normal;
             font-weight: 500;
         }
+
+		a {
+			margin-right: 0.5em;
+			color: #B01109;
+		}
+
+		a:hover,
+		a:active {
+			color: #7F0C07;
+		}
     </style>
 </head>
 <body>
