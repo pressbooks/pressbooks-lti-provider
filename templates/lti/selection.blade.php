@@ -31,20 +31,20 @@
 
 <form action="{!! $url !!}" method="post">
 
-    <input type="radio" name="section" value="0" checked> {{ __('Cover Page', 'pressbooks-lti-provider') }}<br>
+    <input id="item-0" type="radio" name="section" value="0" checked> <label for="item-0">{{ __('Cover Page', 'pressbooks-lti-provider') }}</label><br>
 
     @foreach ($book_structure['front-matter'] as $k => $v)
-        <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Front Matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
+        <input id="item-{{ $v['ID'] }}" type="radio" name="section" value="{{ $v['ID'] }}"> <label for="item-{{ $v['ID'] }}">{{ __('Front Matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}</label><br>
     @endforeach
 
     @foreach ($book_structure['part'] as $key => $value)
         @foreach ($value['chapters'] as $k => $v)
-            <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Chapter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
+            <input id="item-{{ $v['ID'] }}" type="radio" name="section" value="{{ $v['ID'] }}"> <label for="item-{{ $v['ID'] }}">{{ __('Chapter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}</label><br>
         @endforeach
     @endforeach
 
     @foreach ($book_structure['back-matter'] as $k => $v)
-        <input type="radio" name="section" value="{{ $v['ID'] }}"> {{ __('Back Matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}<br>
+        <input id="item-{{ $v['ID'] }}" type="radio" name="section" value="{{ $v['ID'] }}"> <label for="item-{{ $v['ID'] }}">{{ __('Back Matter', 'pressbooks-lti-provider') }}: {{ $v['post_title']  }}</label><br>
     @endforeach
 
     <p><input type="submit" value="{{ __('Submit', 'pressbooks-lti-provider') }}"/></p>
