@@ -128,16 +128,16 @@
         },
         {
             "name": "izumi-kun/lti",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP.git",
-                "reference": "e21f093e39e319c54f3dd379925a01ab4aaa87f4"
+                "reference": "dbb7ddc8e1ed45df10b1a5466c360855320e9c2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/e21f093e39e319c54f3dd379925a01ab4aaa87f4",
-                "reference": "e21f093e39e319c54f3dd379925a01ab4aaa87f4",
+                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/dbb7ddc8e1ed45df10b1a5466c360855320e9c2b",
+                "reference": "dbb7ddc8e1ed45df10b1a5466c360855320e9c2b",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
             "keywords": [
                 "LTI"
             ],
-            "time": "2017-12-28T11:57:04+00:00"
+            "time": "2018-05-08T21:00:35+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
