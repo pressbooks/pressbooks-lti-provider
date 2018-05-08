@@ -4,7 +4,7 @@
     <style>
         body {
             margin: 1em;
-			font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;            font-size: 14px;
+			font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
             font-style: normal;
             font-variant: normal;
             font-weight: 400;
@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-<h1>{{ sprintf__('Content item selection request for %s', 'pressbooks-lti-provider'), $title) }}</h1>
+<h1>{{ sprintf(__('Content item selection request for %s', 'pressbooks-lti-provider'), $title) }}</h1>
 
 <form action="{!! $url !!}" method="post">
 
