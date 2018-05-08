@@ -500,9 +500,9 @@ class Tool extends ToolProvider\ToolProvider {
 				return true;
 			}
 
-			$whitelist = array_map( 'strtolower', $whitelist );
-			$domain = strtolower( $domain );
+			$domain = trim( strtolower( $domain ) );
 			foreach ( $whitelist as $allowed ) {
+				$allowed = trim( strtolower( $allowed ) );
 				if ( $domain === $allowed ) {
 					return true;
 				}
