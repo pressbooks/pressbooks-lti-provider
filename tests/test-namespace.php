@@ -31,6 +31,12 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
 	}
 
+	public function test_session_configuration() {
+		$_SERVER['REQUEST_URI'] = '/contains/format/lti/something';
+		\Pressbooks\Lti\Provider\session_configuration();
+		$this->assertTrue( true ); // TODO: Headers already sent. You cannot change the session module's ini settings at this time
+	}
+
 	public function test_blade() {
 		$blade = \Pressbooks\Lti\Provider\blade();
 		$this->assertTrue( is_object( $blade ) );

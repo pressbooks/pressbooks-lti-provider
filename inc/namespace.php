@@ -49,6 +49,19 @@ function do_format( $format ) {
 }
 
 /**
+ * Deal with blocked 3rd Party Cookies in iframes
+ */
+function session_configuration() {
+	if ( strpos( $_SERVER['REQUEST_URI'], '/format/lti' ) !== false ) {
+		// @codingStandardsIgnoreStart
+		@ini_set( 'session.use_only_cookies', false );
+		@ini_set( 'session.use_trans_sid', true );
+		@ini_set( 'session.use_cookies', true );
+		// @codingStandardsIgnoreEnd
+	}
+}
+
+/**
  * @return \Jenssegers\Blade\Blade
  */
 function blade() {

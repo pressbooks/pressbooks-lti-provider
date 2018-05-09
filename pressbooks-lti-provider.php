@@ -69,9 +69,4 @@ register_activation_hook( __FILE__, [ '\Pressbooks\Lti\Provider\Database', 'inst
 add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Updates', 'init' ] );
 add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Admin', 'init' ] );
 add_action( 'pb_do_format', '\Pressbooks\Lti\Provider\do_format' );
-add_filter( 'pb_session_configuration', function () {
-	// Deal with blocked 3rd Party Cookies in iframes
-	ini_set( 'session.use_only_cookies', false );
-	ini_set( 'session.use_trans_sid', true );
-	ini_set( 'session.use_cookies', true );
-} );
+add_filter( 'pb_session_configuration', '\Pressbooks\Lti\Provider\session_configuration' );
