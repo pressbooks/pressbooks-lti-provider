@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "025510c2232e4085c42f7f262fb62b27",
+    "content-hash": "d67c568b2c965fb763afbc7d0bbba770",
     "packages": [
         {
             "name": "composer/installers",
@@ -128,16 +128,16 @@
         },
         {
             "name": "izumi-kun/lti",
-            "version": "1.0.1",
+            "version": "dev-fixed",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP.git",
-                "reference": "dbb7ddc8e1ed45df10b1a5466c360855320e9c2b"
+                "reference": "27b460e95fdbb6b9099e56da6347216e685a65fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/dbb7ddc8e1ed45df10b1a5466c360855320e9c2b",
-                "reference": "dbb7ddc8e1ed45df10b1a5466c360855320e9c2b",
+                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/27b460e95fdbb6b9099e56da6347216e685a65fe",
+                "reference": "27b460e95fdbb6b9099e56da6347216e685a65fe",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
             "keywords": [
                 "LTI"
             ],
-            "time": "2018-05-08T21:00:35+00:00"
+            "time": "2018-05-09T19:49:59+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
@@ -2041,7 +2041,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "izumi-kun/lti": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
