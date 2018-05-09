@@ -94,11 +94,9 @@ class Tool extends ToolProvider\ToolProvider {
 	 * and resourceLink properties to access the current user, context and resource link.
 	 */
 	protected function onLaunch() {
-		if ( $this->getAction() === 'launch' ) {
 			$this->initSessionVars();
 			$this->setupUser( $this->user );
 			$this->setupDeepLink();
-		}
 	}
 
 	/**
