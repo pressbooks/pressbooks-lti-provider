@@ -37,6 +37,10 @@ class Admin {
 		if ( Book::isBook() ) {
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
 		}
+		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
+		// @see filter_iframe_security_headers() for a better approach?
+		remove_action( 'login_init', 'send_frame_options_header' );
+		remove_action( 'admin_init', 'send_frame_options_header' );
 	}
 
 	/**
