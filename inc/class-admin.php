@@ -35,6 +35,9 @@ class Admin {
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
 		add_action( 'admin_head', [ $obj, 'addConsumersHeader' ] );
 		if ( Book::isBook() ) {
+			if ( $obj->getBookSettings()['hide_navigation'] ) {
+				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
+			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
 		}
 		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
@@ -47,6 +50,22 @@ class Admin {
 	 *
 	 */
 	public function __construct() {
+	}
+
+	/**
+	 * Hooked into `wp_head`
+	 */
+	public function hideNavigation() {
+		$js = <<< EOJS
+<script>
+if ( window.top !== window.self ) {
+	document.addEventListener( 'DOMContentLoaded', function () {
+        document.body.classList.add( 'no-navigation' );
+	} );
+}			
+</script>
+EOJS;
+		echo $js;
 	}
 
 	/**

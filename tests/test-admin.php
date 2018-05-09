@@ -16,6 +16,14 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->admin = new \Pressbooks\Lti\Provider\Admin();
 	}
 
+	public function test_hideNavigation() {
+		ob_start();
+		$this->admin->hideNavigation();
+		$buffer = ob_get_clean();
+		$this->assertContains( 'no-navigation', $buffer );
+		$this->assertContains( '</script>', $buffer );
+	}
+
 	public function test_addConsumersHeader() {
 		ob_start();
 		$this->admin->addConsumersHeader();
