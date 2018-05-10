@@ -291,8 +291,10 @@ class Tool extends ToolProvider\ToolProvider {
 			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
 		}
 
+		// Always logout before running the rest of this procedure
 		wp_logout();
 
+		// Role
 		$settings = $this->admin->getBookSettings();
 		if ( $user->isAdmin() ) {
 			$role = $settings['admin_default'];
@@ -304,12 +306,20 @@ class Tool extends ToolProvider\ToolProvider {
 			$role = 'anonymous';
 		}
 
-		$wp_user = get_user_by( 'email', $user->email );
+		// Email
+		$email = trim( $user->email );
+		if ( empty( $email ) ) {
+			// The LMS did not give us an email address. Make one up based on the user ID.
+			$email = $user->getId() . '@127.0.0.1';
+		}
 
-		// Check whether or not we should create a user (Anonymous Guest = No, Everything Else = Yes)
+		// Try to match the LTI User with their email
+		$wp_user = get_user_by( 'email', $email );
+
+		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
 			try {
-				list( $user_id, $username ) = $this->createUser( $user->getId(), $user->email );
+				list( $user_id, $username ) = $this->createUser( $user->getId(), $email );
 				$wp_user = get_userdata( $user_id );
 			} catch ( \Exception $e ) {
 				return; // TODO: What should we do on fail?!
