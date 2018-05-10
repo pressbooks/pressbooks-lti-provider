@@ -508,7 +508,7 @@ class Tool extends ToolProvider\ToolProvider {
 				}
 			);
 			if ( empty( $whitelist ) ) {
-				return true;
+				return false; // If the whitelist is empty then automatic registrations are disabled.
 			}
 
 			$domain = trim( strtolower( $domain ) );

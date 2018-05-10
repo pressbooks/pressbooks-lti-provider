@@ -21,7 +21,7 @@ class ToolTest extends \WP_UnitTestCase {
 			->method( 'getSettings' )
 			->willReturn(
 				[
-					'whitelist' => 'pressbooks.test',
+					'whitelist' => "pressbooks.test\r\nnpressbooks.education\r\n",
 					'admin_default' => 'subscriber',
 					'staff_default' => 'subscriber',
 					'learner_default' => 'subscriber',
