@@ -32,7 +32,7 @@
                             <option value="author" {!! selected( $options[$id], 'author' ) !!} >{{ __('Author','pressbooks-lti-provider') }}</option>
                             <option value="contributor" {!! selected( $options[$id], 'contributor' ) !!} >{{ __('Contributor','pressbooks-lti-provider') }}</option>
                             <option value="subscriber" {!! selected( $options[$id], 'subscriber' ) !!} >{{ __('Subscriber','pressbooks-lti-provider') }}</option>
-                            <option value="anonymous" {!! selected( $options[$id], 'anonymous' ) !!} >{{ __('Anonymous Access','pressbooks-lti-provider') }}</option>
+                            <option value="anonymous" {!! selected( $options[$id], 'anonymous' ) !!} >{{ __('Anonymous Guest','pressbooks-lti-provider') }}</option>
                         </select>
                     </td>
                 </tr>

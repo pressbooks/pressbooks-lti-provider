@@ -303,7 +303,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		$wp_user = get_user_by( 'email', $user->email );
 
-		// Check whether or not we should create a user (Anonymous Access = No, Everything Else = Yes)
+		// Check whether or not we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
 			try {
 				list( $user_id, $username ) = $this->createUser( $user->getId(), $user->email );
@@ -314,7 +314,7 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 
 		if ( $wp_user ) {
-			// If the user does not have rights to the book, and role != Anonymous Access, then add them to the book with appropriate role
+			// If the user does not have rights to the book, and role != Anonymous Guest, then add them to the book with appropriate role
 			if ( ! is_user_member_of_blog( $wp_user->ID ) && $role !== 'anonymous' ) {
 				add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
 			}
