@@ -290,6 +290,9 @@ class Tool extends ToolProvider\ToolProvider {
 		if ( ! is_object( $this->admin ) ) {
 			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
 		}
+
+		wp_logout();
+
 		$settings = $this->admin->getBookSettings();
 		if ( $user->isAdmin() ) {
 			$role = $settings['admin_default'];
