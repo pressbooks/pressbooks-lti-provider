@@ -4,7 +4,7 @@ Donate link: https://opencollective.com/pressbooks/
 Tags: pressbooks, lti, lms
 Requires at least: 4.9.5
 Tested up to: 4.9.5
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -92,6 +92,10 @@ Configure using the "Paste XML Configuration Type", making sure to replace the U
 ![ContentItemSelectionRequest in Moodle.](screenshot-3.png)
 
 == Changelog ==
+
+= 0.3.0 =
+* Prettier forms.
+* Bug fixes for Canvas.
 
 = 0.2.0 =
 * Demo for Open source Slack channel.
