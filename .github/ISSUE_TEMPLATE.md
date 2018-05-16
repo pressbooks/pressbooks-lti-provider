@@ -4,7 +4,6 @@
 
 * [ ] Can you reproduce the behavior you wish to address with [all plugins except Pressbooks and this plugin deactivated](http://codex.wordpress.org/Multisite_Network_Administration#Plugins)?
 * [ ] Are you running the [latest version of Pressbooks](http://github.com/pressbooks/pressbooks/releases/latest/), the latest version of [this plugin](http://github.com/pressbooks/pressbooks-lti-provider/releases/latest/) and the [latest version of WordPress](http://codex.wordpress.org/Upgrading_WordPress)?
-* [ ] Are you experiencing the issue while using this book theme?
 * [ ] Did you [perform a cursory search](https://github.com/issues?q=+is%3Aissue+repo%3Apressbooks%2Fpressbooks-lti-provider) to see if your bug or enhancement is already listed?
 
 ### Description
