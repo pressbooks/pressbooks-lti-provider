@@ -62,7 +62,7 @@
 			"vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/"
 		],
 		"localize": [
-			"wp-pot -s \"**/*.php\" -o languages/pressbooks-plugin-scaffold.pot -p \"Pressbooks\" -t \"Pressbooks (Book Oven Inc.) <code@pressbooks.com>\"",
+			"wp-pot -s \"**/*.php\" -o languages/pressbooks-lti-provider.pot -p \"Pressbooks\" -t \"Pressbooks (Book Oven Inc.) <code@pressbooks.com>\"",
 			"tx push -s",
 			"tx pull -a",
 			"bash bin/localize.sh"
