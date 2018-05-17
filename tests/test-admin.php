@@ -114,6 +114,11 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertTrue( true ); // Did not crash
 	}
 
+	public function test_addOptionsTab() {
+		$tabs = $this->admin->addOptionsTab( [] );
+		$this->assertArrayHasKey( 'thincc', $tabs );
+	}
+
 	public function test_printBookSettingsMenu() {
 		ob_start();
 		$this->admin->printBookSettingsMenu();

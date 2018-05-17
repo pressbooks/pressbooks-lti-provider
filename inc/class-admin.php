@@ -39,6 +39,7 @@ class Admin {
 				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
 			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
+			add_filter( 'pb_theme_options_tabs', [ $obj, 'addOptionsTab' ] );
 		}
 		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
 		// @see filter_iframe_security_headers() for a better approach?
@@ -319,6 +320,18 @@ EOJS;
 			'pb_lti_settings',
 			[ $this, 'printBookSettingsMenu' ]
 		);
+	}
+
+	/**
+	 * Hooked into `pb_theme_options_tabs`
+	 *
+	 * @param array $tabs
+	 *
+	 * @return array
+	 */
+	public function addOptionsTab( $tabs ) {
+		$tabs['thincc'] = '\Pressbooks\Lti\Provider\Modules\ThemeOptions\ThinCCOptions';
+		return $tabs;
 	}
 
 	/**

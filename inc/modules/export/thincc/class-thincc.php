@@ -17,4 +17,21 @@ class ThinCC extends Export {
 	 */
 	protected $version = 1.2;
 
+	/**
+	 * Mandatory convert method, create $this->outputPath
+	 *
+	 * @return bool
+	 */
+	public function convert() {
+		// TODO: Implement convert() method.
+	}
+
+	/**
+	 * Mandatory validate method, check the sanity of $this->outputPath
+	 *
+	 * @return bool
+	 */
+	public function validate() {
+		// TODO: Implement validate() method.
+	}
 }
