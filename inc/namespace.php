@@ -82,3 +82,16 @@ function is_json( $string ) {
 	json_decode( $string );
 	return ( json_last_error() === JSON_ERROR_NONE );
 }
+
+/**
+ * @param string $suffix
+ *
+ * @return string
+ */
+function deep_link( $suffix = '' ) {
+	$url = untrailingslashit( home_url() ) . '/format/lti/launch';
+	if ( ! empty( $suffix ) ) {
+		$url .= '/' . $suffix;
+	}
+	return $url;
+}

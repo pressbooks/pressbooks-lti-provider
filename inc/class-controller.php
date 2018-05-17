@@ -52,7 +52,7 @@ class Controller {
 		}
 
 		$title = get_bloginfo( 'name' );
-		$url = untrailingslashit( home_url() ) . '/format/lti/launch';
+		$url = deep_link();
 		if ( ! empty( $_POST['section'] ) ) {
 			$post_id = (int) $_POST['section'];
 			$title = get_the_title( $post_id );

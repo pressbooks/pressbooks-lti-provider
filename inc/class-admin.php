@@ -40,6 +40,22 @@ class Admin {
 			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
 			add_filter( 'pb_theme_options_tabs', [ $obj, 'addOptionsTab' ] );
+
+			// WIP
+			add_filter( 'pb_export_formats', function ( $formats ) {
+				$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
+				$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
+				return $formats;
+			} );
+			add_filter( 'pb_active_export_modules', function ( $modules ) {
+				if ( isset( $_POST['export_formats']['thincc12'] ) ) { // @codingStandardsIgnoreLine
+					$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12';
+				}
+				if ( isset( $_POST['export_formats']['thincc13'] ) ) { // @codingStandardsIgnoreLine
+					$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13';
+				}
+				return $modules;
+			} );
 		}
 		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
 		// @see filter_iframe_security_headers() for a better approach?
