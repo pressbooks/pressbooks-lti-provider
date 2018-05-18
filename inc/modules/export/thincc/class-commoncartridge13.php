@@ -29,32 +29,34 @@ class CommonCartridge13 extends CommonCartridge12 {
 	public function getData( $id, $title, $view ) {
 		$data = parent::getData( $id, $title, $view );
 		$data['identifier'] = $this->identifier( $id );
-		$data['points_possible'] = 10;
+		$data['points_possible'] = 10; // TODO
 		return $data;
 	}
 
 	/**
+	 * @param int $post_id
 	 * @param string $title
 	 *
 	 * @return string
 	 */
-	public function getView( $title ) {
-		if ( $this->isAssignment( $title ) ) {
+	public function getView( $post_id, $title ) {
+		if ( $this->isAssignment( $post_id, $title ) ) {
 			return 'assignment';
 		} else {
-			return parent::getView( $title );
+			return parent::getView( $post_id, $title );
 		}
 	}
 
 	/**
+	 * @param int $post_id
 	 * @param string $title
 	 *
 	 * @return string
 	 */
-	public function getResourceType( $title ) {
-		if ( $this->isAssignment( $title ) ) {
+	public function getResourceType( $post_id, $title ) {
+		if ( $this->isAssignment( $post_id, $title ) ) {
 			return 'assignment_xmlv1p0';
-		} elseif ( $this->isDiscussion( $title ) ) {
+		} elseif ( $this->isDiscussion( $post_id, $title ) ) {
 			return 'imsdt_xmlv1p3';
 		} else {
 			return 'imsbasiclti_xmlv1p0';
@@ -62,11 +64,19 @@ class CommonCartridge13 extends CommonCartridge12 {
 	}
 
 	/**
+	 * @param int $post_id
 	 * @param string $title
 	 *
 	 * @return bool
 	 */
-	public function isAssignment( $title ) {
-		return ( 0 === strpos( $title, 'Assignment:' ) );
+	public function isAssignment( $post_id, $title ) {
+		$meta = get_post_meta( $post_id, 'pressbooks_lti_provider_resource_type', true );
+		if ( $meta === 'assignment' ) {
+			return true;
+		}
+		if ( 0 === strpos( $title, 'Assignment:' ) ) {
+			return true;
+		}
+		return false;
 	}
 }

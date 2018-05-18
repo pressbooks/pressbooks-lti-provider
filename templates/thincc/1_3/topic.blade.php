@@ -4,5 +4,4 @@
        xsi:schemaLocation="https://www.imsglobal.org/xsd/imsccv1p3/imsdt_v1p3/profile/cc/ccv1p3/ccv1p3_imsdt_v1p3.xsd" >
     <title>{{ $title }}</title>
     <text texttype="text/html">{!! $content !!}</text>
-    {{ $points_possible_html }}
 </topic>

@@ -211,7 +211,7 @@ class CommonCartridge12 extends Export {
 		$xml = '';
 		$links = $this->getExports();
 		foreach ( $links as $id => $title ) {
-			$xml .= '<resource identifier="' . $this->identifier( $id ) . '" type="' . $this->getResourceType( $title ) . '">';
+			$xml .= '<resource identifier="' . $this->identifier( $id ) . '" type="' . $this->getResourceType( $id, $title ) . '">';
 			$xml .= '<file href="' . $this->identifier( $id ) . '.xml"/>';
 			$xml .= '</resource>';
 
@@ -225,7 +225,7 @@ class CommonCartridge12 extends Export {
 	public function createResources() {
 		$links = $this->getExports();
 		foreach ( $links as $id => $title ) {
-			$view = $this->getView( $title );
+			$view = $this->getView( $id, $title );
 			$data = $this->getData( $id, $title, $view );
 			$file = $this->identifier( $id ) . '.xml';
 			$xml = $this->render( $view, $data );
@@ -332,12 +332,13 @@ class CommonCartridge12 extends Export {
 	/**
 	 * Get name of Blade template view
 	 *
+	 * @param int $post_id
 	 * @param string $title
 	 *
 	 * @return string
 	 */
-	public function getView( $title ) {
-		if ( $this->isDiscussion( $title ) ) {
+	public function getView( $post_id, $title ) {
+		if ( $this->isDiscussion( $post_id, $title ) ) {
 			return 'topic';
 		} else {
 			return 'lti_link';
@@ -345,12 +346,13 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * @param int $post_id
 	 * @param string $title
 	 *
 	 * @return string
 	 */
-	public function getResourceType( $title ) {
-		if ( $this->isDiscussion( $title ) ) {
+	public function getResourceType( $post_id, $title ) {
+		if ( $this->isDiscussion( $post_id, $title ) ) {
 			return 'imsdt_xmlv1p2';
 		} else {
 			return 'imsbasiclti_xmlv1p0';
@@ -358,12 +360,20 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * @param int $post_id
 	 * @param string $title
 	 *
 	 * @return bool
 	 */
-	public function isDiscussion( $title ) {
-		return ( 0 === strpos( $title, 'Discussion:' ) );
+	public function isDiscussion( $post_id, $title ) {
+		$meta = get_post_meta( $post_id, 'pressbooks_lti_provider_resource_type', true );
+		if ( $meta === 'topic' ) {
+			return true;
+		}
+		if ( 0 === strpos( $title, 'Discussion:' ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
