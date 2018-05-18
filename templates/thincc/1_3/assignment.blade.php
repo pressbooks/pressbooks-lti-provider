@@ -9,4 +9,9 @@
     <submission_formats>
         <format type="external_tool"/>
     </submission_formats>
+    <extensions platform="canvas">
+        <assignment>
+            <external_tool_url>{{ $url }}</external_tool_url>
+        </assignment>
+    </extensions>
 </assignment>
