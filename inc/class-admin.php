@@ -46,7 +46,6 @@ class Admin {
 				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
 			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
-			add_filter( 'pb_theme_options_tabs', [ $obj, 'addOptionsTab' ] );
 			add_filter( 'pb_export_formats', [ $obj, 'exportFormats' ] );
 			add_filter( 'pb_active_export_modules', [ $obj, 'activeExportModules' ] );
 			add_filter( 'pb_get_export_file_class', [ $obj, 'getExportFileClass' ] );
@@ -65,8 +64,12 @@ class Admin {
 	 * @return mixed
 	 */
 	public function exportFormats( $formats ) {
-		$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
-		$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
+		$version = (float) $this->getBookSettings()['cc_version'];
+		if ( 1.3 === $version ) {
+			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
+		} else {
+			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
+		}
 		return $formats;
 	}
 
@@ -316,6 +319,7 @@ EOJS;
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
 				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
 				'hide_navigation' => (int) $_POST['hide_navigation'],
+				'cc_version' => (float) $_POST['cc_version'],
 			];
 			$result = update_site_option( self::OPTION, $update );
 			return $result;
@@ -345,6 +349,9 @@ EOJS;
 		if ( ! isset( $options['hide_navigation'] ) ) {
 			$options['hide_navigation'] = 0;
 		}
+		if ( ! isset( $options['cc_version'] ) ) {
+			$options['cc_version'] = 1.2;
+		}
 
 		return $options;
 	}
@@ -364,18 +371,6 @@ EOJS;
 			'pb_lti_settings',
 			[ $this, 'printBookSettingsMenu' ]
 		);
-	}
-
-	/**
-	 * Hooked into `pb_theme_options_tabs`
-	 *
-	 * @param array $tabs
-	 *
-	 * @return array
-	 */
-	public function addOptionsTab( $tabs ) {
-		$tabs['thincc'] = '\Pressbooks\Lti\Provider\Modules\ThemeOptions\ThinCCOptions';
-		return $tabs;
 	}
 
 	/**
@@ -405,6 +400,7 @@ EOJS;
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
 				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
 				'hide_navigation' => (int) $_POST['hide_navigation'],
+				'cc_version' => (float) $_POST['cc_version'],
 			];
 			$result = update_option( self::OPTION, $update );
 			return $result;
@@ -431,6 +427,9 @@ EOJS;
 		}
 		if ( ! isset( $options['hide_navigation'] ) ) {
 			$options['hide_navigation'] = $defaults['hide_navigation'];
+		}
+		if ( ! isset( $options['cc_version'] ) ) {
+			$options['cc_version'] = $defaults['cc_version'];
 		}
 
 		return $options;

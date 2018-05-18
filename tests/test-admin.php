@@ -19,7 +19,6 @@ class AdminTest extends \WP_UnitTestCase {
 	public function test_exportFormats() {
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc12'] ) );
-		$this->assertTrue( isset( $formats['exotic']['thincc13'] ) );
 	}
 
 	public function test_activeExportModules() {
@@ -109,6 +108,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertEquals( $options['staff_default'], 'subscriber' );
 		$this->assertEquals( $options['learner_default'], 'subscriber' );
 		$this->assertEquals( $options['hide_navigation'], 0 );
+		$this->assertEquals( $options['cc_version'], 1.2 );
 
 		$_REQUEST['_wpnonce'] = wp_create_nonce( 'pb-lti-provider' );
 		$_POST = [
@@ -117,6 +117,7 @@ class AdminTest extends \WP_UnitTestCase {
 			'staff_default' => 'editor',
 			'learner_default' => 'contributor',
 			'hide_navigation' => 1,
+			'cc_version' => 1.3
 		];
 		$this->admin->saveSettings();
 		$options = $this->admin->getSettings();
@@ -126,6 +127,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertEquals( $options['staff_default'], 'editor' );
 		$this->assertEquals( $options['learner_default'], 'contributor' );
 		$this->assertEquals( $options['hide_navigation'], 1 );
+		$this->assertEquals( $options['cc_version'], 1.3 );
 	}
 
 	//
@@ -133,11 +135,6 @@ class AdminTest extends \WP_UnitTestCase {
 	public function test_addBookSettingsMenu() {
 		$this->admin->addBookSettingsMenu();
 		$this->assertTrue( true ); // Did not crash
-	}
-
-	public function test_addOptionsTab() {
-		$tabs = $this->admin->addOptionsTab( [] );
-		$this->assertArrayHasKey( 'thincc', $tabs );
 	}
 
 	public function test_printBookSettingsMenu() {
@@ -156,6 +153,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertEquals( $options['staff_default'], 'subscriber' );
 		$this->assertEquals( $options['learner_default'], 'subscriber' );
 		$this->assertEquals( $options['hide_navigation'], 0 );
+		$this->assertEquals( $options['cc_version'], 1.2 );
 
 		$_REQUEST['_wpnonce'] = wp_create_nonce( 'pb-lti-provider-book' );
 		$_POST = [
@@ -164,6 +162,7 @@ class AdminTest extends \WP_UnitTestCase {
 			'staff_default' => 'editor',
 			'learner_default' => 'contributor',
 			'hide_navigation' => 1,
+			'cc_version' => 1.3
 		];
 		$this->admin->saveBookSettings();
 		$options = $this->admin->getBookSettings();
@@ -173,6 +172,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertEquals( $options['staff_default'], 'editor' );
 		$this->assertEquals( $options['learner_default'], 'contributor' );
 		$this->assertEquals( $options['hide_navigation'], 1 );
+		$this->assertEquals( $options['cc_version'], 1.3 );
 	}
 
 }
