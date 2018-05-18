@@ -172,6 +172,11 @@ class CommonCartridge12 extends Export {
 		// Parts & Chapters
 		foreach ( $struct['part'] as $key => $value ) {
 			$ch_xml = '';
+			if ( $value['export'] && $value['has_post_content'] ) {
+				$ch_xml .= '<item identifier="' . $this->identifier( $value['ID'], 'I_' ) . '" identifierref="' . $this->identifier( $value['ID'] ) . '">';
+				$ch_xml .= '<title>' . $value['post_title'] . '</title>';
+				$ch_xml .= '</item>';
+			}
 			foreach ( $value['chapters'] as $k => $v ) {
 				if ( $v['export'] ) {
 					$ch_xml .= '<item identifier="' . $this->identifier( $v['ID'], 'I_' ) . '" identifierref="' . $this->identifier( $v['ID'] ) . '">';
@@ -180,11 +185,7 @@ class CommonCartridge12 extends Export {
 				}
 			}
 			if ( ! empty( $ch_xml ) ) {
-				$xml .= '<item identifier="' . $this->identifier( $value['ID'], 'IM_' ) . '" ';
-				if ( $value['export'] && $value['has_post_content'] ) {
-					$xml .= 'identifierref="' . $this->identifier( $value['ID'] ) . '"';
-				}
-				$xml .= '>';
+				$xml .= '<item identifier="' . $this->identifier( $value['ID'], 'IM_' ) . '">';
 				$xml .= '<title>' . $value['post_title'] . '</title>';
 				$xml .= $ch_xml;
 				$xml .= '</item>';
@@ -279,7 +280,7 @@ class CommonCartridge12 extends Export {
 		}
 		foreach ( $struct['part'] as $key => $value ) {
 			if ( $value['export'] && $value['has_post_content'] ) {
-				$links[ $key['ID'] ] = $value['post_title'];
+				$links[ $value['ID'] ] = $value['post_title'];
 			}
 			foreach ( $value['chapters'] as $k => $v ) {
 				if ( $v['export'] ) {
