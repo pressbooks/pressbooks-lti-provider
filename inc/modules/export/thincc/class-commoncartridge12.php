@@ -366,10 +366,6 @@ class CommonCartridge12 extends Export {
 	 * @return bool
 	 */
 	public function isDiscussion( $post_id, $title ) {
-		$meta = get_post_meta( $post_id, 'pressbooks_lti_provider_resource_type', true );
-		if ( $meta === 'topic' ) {
-			return true;
-		}
 		if ( 0 === strpos( $title, 'Discussion:' ) ) {
 			return true;
 		}

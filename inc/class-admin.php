@@ -49,7 +49,6 @@ class Admin {
 			add_filter( 'pb_export_formats', [ $obj, 'exportFormats' ] );
 			add_filter( 'pb_active_export_modules', [ $obj, 'activeExportModules' ] );
 			add_filter( 'pb_get_export_file_class', [ $obj, 'getExportFileClass' ] );
-			add_action( 'custom_metadata_manager_init_metadata', [ $obj, 'addMetaBoxes' ] );
 		}
 	}
 
@@ -99,36 +98,6 @@ class Admin {
 			return 'xhtml'; // TODO
 		}
 		return $file_extension;
-	}
-
-	/**
-	 *
-	 */
-	public function addMetaBoxes() {
-		$types = [ 'front-matter', 'part', 'chapter', 'back-matter' ];
-
-		x_add_metadata_group(
-			'pressbooks_lti_provider', $types, [
-				'label' => __( 'LTI', 'pressbooks-lti-provider' ),
-				'context' => 'side',
-				'priority' => 'low',
-			]
-		);
-
-		$values['lti_link'] = __( 'LTI Link', 'pressbooks-lti-provider' );
-		$values['topic'] = __( 'Discussion Topic', 'pressbooks-lti-provider' );
-		$values['assignment'] = __( 'Assignment', 'pressbooks-lti-provider' );
-
-		x_add_metadata_field(
-			'pressbooks_lti_provider_resource_type', $types, [
-				'group' => 'pressbooks_lti_provider',
-				'field_type' => 'select',
-				'values' => $values,
-				'label' => __( 'Common Cartridge', 'pressbooks-lti-provider' ),
-				'description' => __( 'Type of Thin CC Resource', 'pressbooks' ),
-				'default_value' => 'lti_link',
-			]
-		);
 	}
 
 	/**

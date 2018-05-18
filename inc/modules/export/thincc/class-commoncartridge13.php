@@ -70,10 +70,6 @@ class CommonCartridge13 extends CommonCartridge12 {
 	 * @return bool
 	 */
 	public function isAssignment( $post_id, $title ) {
-		$meta = get_post_meta( $post_id, 'pressbooks_lti_provider_resource_type', true );
-		if ( $meta === 'assignment' ) {
-			return true;
-		}
 		if ( 0 === strpos( $title, 'Assignment:' ) ) {
 			return true;
 		}
