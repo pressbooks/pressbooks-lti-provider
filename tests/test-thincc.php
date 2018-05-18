@@ -78,9 +78,4 @@ class ThinCC extends \WP_UnitTestCase {
 		$this->assertTrue( $this->thincc13->isAssignment( 0, 'Assignment: Hello' ) );
 	}
 
-	public function test_isDiscussion() {
-		$this->assertFalse( $this->thincc13->isDiscussion( 0, 'Hello' ) );
-		$this->assertTrue( $this->thincc13->isDiscussion( 0, 'Discussion: Hello' ) );
-	}
-
 }

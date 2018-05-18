@@ -55,8 +55,6 @@ class CommonCartridge13 extends CommonCartridge12 {
 	public function getResourceType( $post_id, $title ) {
 		if ( $this->isAssignment( $post_id, $title ) ) {
 			return 'assignment_xmlv1p0';
-		} elseif ( $this->isDiscussion( $post_id, $title ) ) {
-			return 'imsdt_xmlv1p3';
 		} else {
 			return 'imsbasiclti_xmlv1p0';
 		}

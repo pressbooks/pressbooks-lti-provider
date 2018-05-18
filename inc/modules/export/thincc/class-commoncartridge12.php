@@ -308,16 +308,9 @@ class CommonCartridge12 extends Export {
 	 */
 	public function getData( $id, $title, $view ) {
 
-		$content = null;
-		if ( $view !== 'lti_link' ) {
-			$content = apply_filters( 'the_content', get_post_field( 'post_content', $id ) );
-			$content = htmlspecialchars( $content, ENT_XML1 );
-		}
-
 		$data = [
 			'title' => $title,
 			'url' => deep_link( $id ),
-			'content' => $content,
 		];
 
 		return $data;
@@ -345,11 +338,7 @@ class CommonCartridge12 extends Export {
 	 * @return string
 	 */
 	public function getView( $post_id, $title ) {
-		if ( $this->isDiscussion( $post_id, $title ) ) {
-			return 'topic';
-		} else {
-			return 'lti_link';
-		}
+		return 'lti_link';
 	}
 
 	/**
@@ -359,25 +348,7 @@ class CommonCartridge12 extends Export {
 	 * @return string
 	 */
 	public function getResourceType( $post_id, $title ) {
-		if ( $this->isDiscussion( $post_id, $title ) ) {
-			return 'imsdt_xmlv1p2';
-		} else {
-			return 'imsbasiclti_xmlv1p0';
-		}
-	}
-
-	/**
-	 * @param int $post_id
-	 * @param string $title
-	 *
-	 * @return bool
-	 */
-	public function isDiscussion( $post_id, $title ) {
-		// Backwards compatibility with SteelWagstaff/candela-thin-exports (forked from lumenlearning/candela-thin-exports)
-		if ( 0 === strpos( $title, 'Discussion:' ) ) {
-			return true;
-		}
-		return false;
+		return 'imsbasiclti_xmlv1p0';
 	}
 
 	/**
