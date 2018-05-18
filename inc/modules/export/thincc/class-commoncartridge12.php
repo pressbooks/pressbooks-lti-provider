@@ -131,29 +131,13 @@ class CommonCartridge12 extends Export {
 			'organization_items' => $this->identifiers(),
 			'resources' => $this->resources(),
 		];
-
 		$xml = $this->render( 'manifest', $data );
-
-		$use_errors = libxml_use_internal_errors( true );
-		$dom = new \DOMDocument;
-		$dom->preserveWhiteSpace = false;
-		$dom->loadXML( $xml );
-		$dom->formatOutput = true;
+		$xml = $this->formatXML( $xml, 'imsmanifest.xml' );
 
 		\Pressbooks\Utility\put_contents(
 			$this->tmpDir . '/imsmanifest.xml',
-			$dom->saveXML()
+			$xml
 		);
-
-		$errors = libxml_get_errors();
-		if ( ! empty( $errors ) ) {
-			$this->errorLog .= "### imsmanifest.xml ### \n";
-			foreach ( $errors as $error ) {
-				$this->errorLog .= $error->message . "\n";
-			}
-		}
-		libxml_clear_errors();
-		libxml_use_internal_errors( $use_errors );
 	}
 
 	/**
@@ -243,30 +227,14 @@ class CommonCartridge12 extends Export {
 		foreach ( $links as $id => $title ) {
 			$view = $this->getView( $title );
 			$data = $this->getData( $id, $title, $view );
+			$file = $this->identifier( $id ) . '.xml';
 			$xml = $this->render( $view, $data );
-
-			$use_errors = libxml_use_internal_errors( true );
-			$dom = new \DOMDocument;
-			$dom->preserveWhiteSpace = false;
-			$dom->loadXML( $xml );
-			$dom->formatOutput = true;
-
+			$xml = $this->formatXML( $xml, $file );
 			\Pressbooks\Utility\put_contents(
-				$this->tmpDir . '/' . $this->identifier( $id ) . '.xml',
-				$dom->saveXML()
+				$this->tmpDir . "/$file",
+				$xml
 			);
-
-			$errors = libxml_get_errors();
-			if ( ! empty( $errors ) ) {
-				$this->errorLog .= '### ' . $this->identifier( $id ) . ".xml ### \n";
-				foreach ( $errors as $error ) {
-					$this->errorLog .= $error->message . "\n";
-				}
-			}
-			libxml_clear_errors();
-			libxml_use_internal_errors( $use_errors );
 		}
-
 	}
 
 	/**
@@ -398,8 +366,38 @@ class CommonCartridge12 extends Export {
 	 *
 	 * @return string
 	 */
-	function identifier( $post_id, $prefix = 'R_' ) {
+	public function identifier( $post_id, $prefix = 'R_' ) {
 		return $prefix . get_current_blog_id() . '_' . $post_id;
+	}
+
+	/**
+	 * @param string $xml
+	 * @param string $error_log_prefix (optional)
+	 *
+	 * @return string
+	 */
+	public function formatXML( $xml, $error_log_prefix = '' ) {
+		$use_errors = libxml_use_internal_errors( true );
+		$dom = new \DOMDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->loadXML( $xml );
+		$dom->formatOutput = true;
+
+		$xml = $dom->saveXML();
+
+		$errors = libxml_get_errors();
+		if ( ! empty( $errors ) ) {
+			if ( ! empty( $error_log_prefix ) ) {
+				$this->errorLog .= "### {$error_log_prefix} ### \n";
+			}
+			foreach ( $errors as $error ) {
+				$this->errorLog .= $error->message . "\n";
+			}
+		}
+		libxml_clear_errors();
+		libxml_use_internal_errors( $use_errors );
+
+		return ( $xml !== false ? $xml : '' );
 	}
 
 }
