@@ -8,6 +8,7 @@ class NamespaceTest extends \WP_UnitTestCase {
 	 * Test PB style class initializations
 	 */
 	public function test_classInitConventions() {
+		global $wp_filter;
 		$classes = [
 			'\Pressbooks\Lti\Provider\Admin',
 			'\Pressbooks\Lti\Provider\Updates',
@@ -15,6 +16,8 @@ class NamespaceTest extends \WP_UnitTestCase {
 		foreach ( $classes as $class ) {
 			$result = $class::init();
 			$this->assertInstanceOf( $class, $result );
+			$class::hooks( $result );
+			$this->assertNotEmpty( $wp_filter );
 		}
 	}
 
