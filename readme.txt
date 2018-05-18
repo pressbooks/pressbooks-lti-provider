@@ -4,7 +4,7 @@ Donate link: https://opencollective.com/pressbooks/
 Tags: pressbooks, lti, lms
 Requires at least: 4.9.5
 Tested up to: 4.9.5
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,10 @@ Configure using the "Paste XML Configuration Type", making sure to replace the U
 
 [More Info](https://github.com/instructure/canvas-lms/blob/master/doc/api/content_item.md)
 
+== Common Cartridge ==
+
+Allows users to export books as a Thin Common Cartridge zip files. Supports CC 1.2 and 1.3. Produces zip files with LTI links.
+
 == Screenshots ==
 
 ![Pressbooks LTI Consumers.](screenshot-1.png)
@@ -92,6 +96,9 @@ Configure using the "Paste XML Configuration Type", making sure to replace the U
 ![ContentItemSelectionRequest in Moodle.](screenshot-3.png)
 
 == Changelog ==
+
+= 0.4.0 =
+* Export Thin Common Cartridge
 
 = 0.3.0 =
 * Prettier forms.

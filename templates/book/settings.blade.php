@@ -38,6 +38,22 @@
                 </td>
             </tr>
         </table>
+        <h2>{{ __( 'Common Cartridge', 'pressbooks-lti-provider') }}</h2>
+        <p>
+            <em>{{ __("Export books as a Thin Common Cartridge zip files with LTI links.", 'pressbooks-lti-provider') }}</em>
+        </p>
+        <table class="form-table">
+            <tr>
+                <th>{{ __('Version', 'pressbooks-lti-provider') }}</th>
+                <td>
+                    <label><input name="cc_version" id="cc_version" type="radio"
+                                  value="1.2" {!! checked( 1.2, $options['cc_version'] ) !!} />{{ __('1.2', 'pressbooks-lti-provider') }}
+                    </label><br/>
+                    <label><input name="cc_version" id="cc_version" type="radio"
+                                  value="1.3" {!! checked( 1.3, $options['cc_version'] ) !!} />{{ __('1.3', 'pressbooks-lti-provider') }}</label>
+                </td>
+            </tr>
+        </table>
         {!! get_submit_button() !!}
     </form>
 </div>

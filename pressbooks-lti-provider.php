@@ -3,7 +3,7 @@
 Plugin Name: Pressbooks LTI Provider
 Plugin URI: https://pressbooks.org
 Description: A plugin which turns Pressbooks into an LTI provider.
-Version: 0.3.0
+Version: 0.4.0
 Author: Pressbooks (Book Oven Inc.)
 Author URI: https://pressbooks.org
 Requires PHP: 7.0
@@ -18,18 +18,22 @@ Network: True
 // -------------------------------------------------------------------------------------------------------------------
 
 if ( ! function_exists( 'pb_meets_minimum_requirements' ) && ! @include_once( WP_PLUGIN_DIR . '/pressbooks/compatibility.php' ) ) { // @codingStandardsIgnoreLine
-	add_action('admin_notices', function () {
-		echo '<div id="message" class="error fade"><p>' . __( 'Cannot find Pressbooks install.', 'pressbooks-lti-provider' ) . '</p></div>';
-	});
+	add_action(
+		'admin_notices', function () {
+			echo '<div id="message" class="error fade"><p>' . __( 'Cannot find Pressbooks install.', 'pressbooks-lti-provider' ) . '</p></div>';
+		}
+	);
 	return;
 } elseif ( ! pb_meets_minimum_requirements() ) {
 	return;
 }
 
 if ( ! class_exists( '\PDO' ) || ! in_array( 'mysql', \PDO::getAvailableDrivers(), true ) ) {
-	add_action('admin_notices', function () {
-		echo '<div id="message" class="error fade"><p>' . __( 'Cannot find PDO for MySQL.', 'pressbooks-lti-provider' ) . '</p></div>';
-	});
+	add_action(
+		'admin_notices', function () {
+			echo '<div id="message" class="error fade"><p>' . __( 'Cannot find PDO for MySQL.', 'pressbooks-lti-provider' ) . '</p></div>';
+		}
+	);
 	return;
 }
 
