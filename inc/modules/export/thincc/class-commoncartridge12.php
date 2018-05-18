@@ -65,7 +65,6 @@ class CommonCartridge12 extends Export {
 	 * @return bool
 	 */
 	public function convert() {
-
 		if ( empty( $this->tmpDir ) || ! is_dir( $this->tmpDir ) ) {
 			$this->logError( '$this->tmpDir must be set before calling convert().' );
 			return false;
@@ -373,6 +372,7 @@ class CommonCartridge12 extends Export {
 	 * @return bool
 	 */
 	public function isDiscussion( $post_id, $title ) {
+		// Backwards compatibility with SteelWagstaff/candela-thin-exports (forked from lumenlearning/candela-thin-exports)
 		if ( 0 === strpos( $title, 'Discussion:' ) ) {
 			return true;
 		}

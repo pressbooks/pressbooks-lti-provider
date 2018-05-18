@@ -18,7 +18,6 @@ class CommonCartridge13 extends CommonCartridge12 {
 	 */
 	protected $suffix = '_1_3.zip';
 
-
 	/**
 	 * @param int $id
 	 * @param string $title
@@ -70,6 +69,7 @@ class CommonCartridge13 extends CommonCartridge12 {
 	 * @return bool
 	 */
 	public function isAssignment( $post_id, $title ) {
+		// Backwards compatibility with SteelWagstaff/candela-thin-exports` (forked from `lumenlearning/candela-thin-exports)
 		if ( 0 === strpos( $title, 'Assignment:' ) ) {
 			return true;
 		}
