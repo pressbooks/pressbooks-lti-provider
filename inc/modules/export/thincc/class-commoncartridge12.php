@@ -53,6 +53,13 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getTmpDir() {
+		return $this->tmpDir;
+	}
+
+	/**
 	 * Mandatory convert method, create $this->outputPath
 	 *
 	 * @return bool
@@ -242,7 +249,7 @@ class CommonCartridge12 extends Export {
 	 *
 	 * @return bool
 	 */
-	protected function zip( $filename ) {
+	public function zip( $filename ) {
 		$zip = new \PclZip( $filename );
 		$files = [];
 		foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $this->tmpDir ) ) as $file ) {
