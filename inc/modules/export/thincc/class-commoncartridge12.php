@@ -65,7 +65,7 @@ class CommonCartridge12 extends Export {
 		}
 
 		try {
-			$this->createDeepLinks();
+			$this->createResources();
 			$this->createManifest();
 		} catch ( \Exception $e ) {
 			$this->logError( $e->getMessage() );
@@ -222,7 +222,7 @@ class CommonCartridge12 extends Export {
 	/**
 	 *
 	 */
-	public function createDeepLinks() {
+	public function createResources() {
 		$links = $this->getExports();
 		foreach ( $links as $id => $title ) {
 			$view = $this->getView( $title );
@@ -291,6 +291,8 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * Get array for Blade template view
+	 *
 	 * @param int $id
 	 * @param string $title
 	 * @param string $view
@@ -315,6 +317,8 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * Render a Blade template
+	 *
 	 * @param string $view
 	 * @param array $data
 	 *
@@ -326,6 +330,8 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * Get name of Blade template view
+	 *
 	 * @param string $title
 	 *
 	 * @return string

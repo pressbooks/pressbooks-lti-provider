@@ -31,42 +31,70 @@ class Admin {
 	 * @param Admin $obj
 	 */
 	static public function hooks( Admin $obj ) {
+
 		add_action( 'network_admin_menu', [ $obj, 'addConsumersMenu' ], 1000 );
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
 		add_action( 'admin_head', [ $obj, 'addConsumersHeader' ] );
+
+		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
+		// @see filter_iframe_security_headers() for a better approach?
+		remove_action( 'login_init', 'send_frame_options_header' );
+		remove_action( 'admin_init', 'send_frame_options_header' );
+
 		if ( Book::isBook() ) {
 			if ( $obj->getBookSettings()['hide_navigation'] ) {
 				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
 			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
 			add_filter( 'pb_theme_options_tabs', [ $obj, 'addOptionsTab' ] );
-
-			// WIP
-			add_filter( 'pb_export_formats', function ( $formats ) {
-				$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
-				$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
-				return $formats;
-			} );
-			add_filter( 'pb_active_export_modules', function ( $modules ) {
-				if ( isset( $_POST['export_formats']['thincc12'] ) ) { // @codingStandardsIgnoreLine
-					$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12';
-				}
-				if ( isset( $_POST['export_formats']['thincc13'] ) ) { // @codingStandardsIgnoreLine
-					$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13';
-				}
-				return $modules;
-			} );
+			add_filter( 'pb_export_formats', [ $obj, 'exportFormats' ] );
+			add_filter( 'pb_active_export_modules', [ $obj, 'activeExportModules' ] );
+			add_filter( 'pb_get_export_file_class', [ $obj, 'getExportFileClass' ] );
 		}
-		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
-		// @see filter_iframe_security_headers() for a better approach?
-		remove_action( 'login_init', 'send_frame_options_header' );
-		remove_action( 'admin_init', 'send_frame_options_header' );
 	}
 
 	/**
 	 *
 	 */
 	public function __construct() {
+	}
+
+	/**
+	 * @param array $formats
+	 *
+	 * @return mixed
+	 */
+	public function exportFormats( $formats ) {
+		$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
+		$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
+		return $formats;
+	}
+
+	/**
+	 * @param array $modules
+	 *
+	 * @return array
+	 */
+	public function activeExportModules( $modules ) {
+		if ( isset( $_POST['export_formats']['thincc12'] ) ) { // @codingStandardsIgnoreLine
+			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12';
+		}
+		if ( isset( $_POST['export_formats']['thincc13'] ) ) { // @codingStandardsIgnoreLine
+			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13';
+		}
+		return $modules;
+	}
+
+	/**
+	 * @param string $file_extension
+	 *
+	 * @return string
+	 */
+	public function getExportFileClass( $file_extension ) {
+		if ( 'zip' === $file_extension ) {
+			// TODO
+		}
+		return $file_extension;
 	}
 
 	/**
