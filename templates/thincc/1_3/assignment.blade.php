@@ -4,7 +4,7 @@
             xsi:schemaLocation="http://www.imsglobal.org/xsd/imscc_extensions/assignment http://www.imsglobal.org/profile/cc/cc_extensions/cc_extresource_assignmentv1p0_v1p0.xsd http://www.imsglobal.org/xsd/imscc_extensions/assignment "
             identifier="{{ $identifier }}">
     <title>{{ $title }}</title>
-    <text texttype="text/html">{{ $url }}</text>
+    <text texttype="text/html"></text>
     <gradable points_possible="{{ $points_possible }}">true</gradable>
     <submission_formats>
         <format type="external_tool"/>
