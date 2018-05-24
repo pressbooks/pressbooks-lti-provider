@@ -67,8 +67,10 @@ class Admin {
 		$version = (float) $this->getBookSettings()['cc_version'];
 		if ( 1.3 === $version ) {
 			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
-		} else {
+		} elseif ( 1.2 === $version ) {
 			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
+		} else {
+			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1', 'pressbooks-lti-pressbooks' );
 		}
 		return $formats;
 	}
@@ -79,6 +81,9 @@ class Admin {
 	 * @return array
 	 */
 	public function activeExportModules( $modules ) {
+		if ( isset( $_POST['export_formats']['thincc11'] ) ) { // @codingStandardsIgnoreLine
+			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge11';
+		}
 		if ( isset( $_POST['export_formats']['thincc12'] ) ) { // @codingStandardsIgnoreLine
 			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12';
 		}
