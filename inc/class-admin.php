@@ -94,7 +94,7 @@ class Admin {
 	 * @return string
 	 */
 	public function getExportFileClass( $file_extension ) {
-		if ( 'zip' === $file_extension ) {
+		if ( 'imscc' === $file_extension ) {
 			return 'xhtml'; // TODO
 		}
 		return $file_extension;
