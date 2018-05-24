@@ -5,6 +5,12 @@ class ThinCC extends \WP_UnitTestCase {
 	/**
 	 * @var \Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12
 	 */
+	protected $thincc11;
+
+
+	/**
+	 * @var \Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12
+	 */
 	protected $thincc12;
 
 	/**
@@ -19,12 +25,16 @@ class ThinCC extends \WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
+		$this->thincc11 = new Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12( [] );
 		$this->thincc12 = new Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12( [] );
 		$this->thincc13 = new Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13( [] );
 	}
 
 	public function test_sanityCheckExports() {
 		$this->_book();
+
+		$this->assertTrue( $this->thincc11->convert(), "Could not convert with CommonCartridge12" );
+		$this->assertTrue( $this->thincc11->validate(), "Could not validate with CommonCartridge12" );
 
 		$this->assertTrue( $this->thincc12->convert(), "Could not convert with CommonCartridge12" );
 		$this->assertTrue( $this->thincc12->validate(), "Could not validate with CommonCartridge12" );
