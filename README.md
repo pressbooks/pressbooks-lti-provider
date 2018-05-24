@@ -93,7 +93,9 @@ Configure using the "Paste XML Configuration Type", making sure to replace the U
 
 ## Common Cartridge 
 
-Allows users to export books as a Thin Common Cartridge zip files. Supports CC 1.2 and 1.3. Produces zip files with LTI links.
+Allows users to export books as a "Thin" Common Cartridge zip files. Supports CC 1.1, 1.2 and 1.3. Produces .imscc (zip) files with LTI links.
+
+Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export/blob/dev/inc/export/cc/class-imscc11.php) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
 
 
 ## Screenshots 
