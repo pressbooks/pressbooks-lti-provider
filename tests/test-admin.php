@@ -19,21 +19,34 @@ class AdminTest extends \WP_UnitTestCase {
 	public function test_exportFormats() {
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc13'] ) ); // The default
+
+		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => 1.2 ] );
+		$formats = $this->admin->exportFormats( [] );
+		$this->assertTrue( isset( $formats['exotic']['thincc12'] ) );
+
+		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => 1.1 ] );
+		$formats = $this->admin->exportFormats( [] );
+		$this->assertTrue( isset( $formats['exotic']['thincc11'] ) );
+
+		delete_option( \Pressbooks\Lti\Provider\Admin::OPTION );
 	}
 
 	public function test_activeExportModules() {
 		$modules = $this->admin->activeExportModules( [] );
 		$this->assertEmpty( $modules );
 
+		$_POST['export_formats']['thincc11'] = true;
 		$_POST['export_formats']['thincc12'] = true;
 		$_POST['export_formats']['thincc13'] = true;
 		$modules = $this->admin->activeExportModules( $modules );
+		$this->assertTrue( array_search( '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge11', $modules, true ) !== false );
 		$this->assertTrue( array_search( '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12', $modules, true ) !== false );
 		$this->assertTrue( array_search( '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13', $modules, true ) !== false );
 	}
 
 	public function test_getExportFileClass() {
 		$this->assertEquals( 'unknown', $this->admin->getExportFileClass( 'unknown' ) );
+		$this->assertEquals( 'xhtml', $this->admin->getExportFileClass( 'imscc' ) ); // TODO
 	}
 
 	public function test_hideNavigation() {

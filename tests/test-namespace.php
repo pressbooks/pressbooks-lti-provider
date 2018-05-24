@@ -8,6 +8,7 @@ class NamespaceTest extends \WP_UnitTestCase {
 	 * Test PB style class initializations
 	 */
 	public function test_classInitConventions() {
+		$this->_book();
 		global $wp_filter;
 		$classes = [
 			'\Pressbooks\Lti\Provider\Admin',

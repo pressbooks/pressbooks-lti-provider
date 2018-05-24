@@ -21,7 +21,7 @@ class CommonCartridge12 extends Export {
 	/**
 	 * @var string
 	 */
-	protected $suffix = '_1_2.zip';
+	protected $suffix = '_1_2.imscc';
 
 	/**
 	 * Temporary directory used to build Common Cartridge, no trailing slash!

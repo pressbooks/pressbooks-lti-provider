@@ -16,7 +16,7 @@ class CommonCartridge13 extends CommonCartridge12 {
 	/**
 	 * @var string
 	 */
-	protected $suffix = '_1_3.zip';
+	protected $suffix = '_1_3.imscc';
 
 	/**
 	 * @param int $id
@@ -56,7 +56,7 @@ class CommonCartridge13 extends CommonCartridge12 {
 		if ( $this->isAssignment( $post_id, $title ) ) {
 			return 'assignment_xmlv1p0';
 		} else {
-			return 'imsbasiclti_xmlv1p0';
+			return 'imsbasiclti_xmlv1p3';
 		}
 	}
 
