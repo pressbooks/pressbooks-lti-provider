@@ -57,19 +57,6 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertContains( '</script>', $buffer );
 	}
 
-	public function test_addConsumersHeader() {
-		ob_start();
-		$this->admin->addConsumersHeader();
-		$buffer = ob_get_clean();
-		$this->assertEmpty( $buffer );
-
-		$_GET['page'] = 'pb_lti_consumers';
-		ob_start();
-		$this->admin->addConsumersHeader();
-		$buffer = ob_get_clean();
-		$this->assertContains( '</style>', $buffer );
-	}
-
 	public function test_addConsumersMenu() {
 		$this->admin->addConsumersMenu();
 		$this->assertTrue( true ); // Did not crash
