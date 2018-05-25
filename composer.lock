@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "891bef7d1b810bc91c05cbdedefdc8ce",
+    "content-hash": "29301e84b86208cf6e7348485667cb8b",
     "packages": [
         {
             "name": "composer/installers",
@@ -168,6 +168,41 @@
                 "LTI"
             ],
             "time": "2018-05-10T09:53:04+00:00"
+        },
+        {
+            "name": "pressbooks/mix",
+            "version": "2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pressbooks/mix.git",
+                "reference": "4cb5d44244468480c24f30ea08070b37711ba864"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pressbooks/mix/zipball/4cb5d44244468480c24f30ea08070b37711ba864",
+                "reference": "4cb5d44244468480c24f30ea08070b37711ba864",
+                "shasum": ""
+            },
+            "require-dev": {
+                "humanmade/coding-standards": "^0.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PressbooksMix\\": "inc/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pressbooks (Book Oven Inc.)",
+                    "email": "code@pressbooks.com"
+                }
+            ],
+            "time": "2017-09-06T21:35:04+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

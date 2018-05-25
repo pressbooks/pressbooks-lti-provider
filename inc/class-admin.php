@@ -4,6 +4,7 @@ namespace Pressbooks\Lti\Provider;
 
 use IMSGlobal\LTI\ToolProvider;
 use Pressbooks\Book;
+use PressbooksMix\Assets;
 
 class Admin {
 
@@ -34,7 +35,7 @@ class Admin {
 
 		add_action( 'network_admin_menu', [ $obj, 'addConsumersMenu' ], 1000 );
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
-		add_action( 'admin_head', [ $obj, 'addConsumersHeader' ] );
+		add_action( 'admin_enqueue_scripts', [ $obj, 'enqueueScriptsAndStyles' ] );
 
 		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
 		// @see filter_iframe_security_headers() for a better approach?
@@ -100,7 +101,7 @@ class Admin {
 	 */
 	public function getExportFileClass( $file_extension ) {
 		if ( 'imscc' === $file_extension ) {
-			return 'xhtml'; // TODO
+			return 'imscc';
 		}
 		return $file_extension;
 	}
@@ -115,29 +116,23 @@ if ( window.top !== window.self ) {
 	document.addEventListener( 'DOMContentLoaded', function () {
         document.body.classList.add( 'no-navigation' );
 	} );
-}			
+}
 </script>
 EOJS;
 		echo $js;
 	}
 
 	/**
-	 * Add styles for WP_List_Table
+	 * Add styles for WP_List_Table and Exports page.
 	 */
-	public function addConsumersHeader() {
-		$page = ( isset( $_GET['page'] ) ) ? esc_attr( $_GET['page'] ) : false;
-		if ( 'pb_lti_consumers' !== $page ) {
-			return;
+	public function enqueueScriptsAndStyles( $hook ) {
+		$assets = new Assets( 'pressbooks-lti-provider', 'plugin' );
+		if ( $hook === 'integrations_page_pb_lti_consumers' ) {
+			wp_enqueue_style( 'pressbooks-lti-consumers', $assets->getPath( 'styles/pressbooks-lti-consumers.css' ), false, null );
 		}
-		echo '<style type="text/css">';
-		echo '.wp-list-table .column-name { width: 20%; }';
-		echo '.wp-list-table .column-base_url { width: 20%; }';
-		echo '.wp-list-table .column-key { width: 20%; }';
-		echo '.wp-list-table .column-version { width: 20%; }';
-		echo '.wp-list-table .column-last_access { width: 10%; }';
-		echo '.wp-list-table .column-available { width: 5%; text-align: center; }';
-		echo '.wp-list-table .column-protected { width: 5%; text-align: center; }';
-		echo '</style>';
+		if ( $hook === 'toplevel_page_pb_export' ) {
+			wp_enqueue_style( 'pressbooks-cc-exports', $assets->getPath( 'styles/pressbooks-cc-exports.css' ), false, null );
+		}
 	}
 
 	/**

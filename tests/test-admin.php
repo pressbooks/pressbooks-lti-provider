@@ -46,7 +46,7 @@ class AdminTest extends \WP_UnitTestCase {
 
 	public function test_getExportFileClass() {
 		$this->assertEquals( 'unknown', $this->admin->getExportFileClass( 'unknown' ) );
-		$this->assertEquals( 'xhtml', $this->admin->getExportFileClass( 'imscc' ) ); // TODO
+		$this->assertEquals( 'imscc', $this->admin->getExportFileClass( 'imscc' ) ); // TODO
 	}
 
 	public function test_hideNavigation() {
@@ -55,19 +55,6 @@ class AdminTest extends \WP_UnitTestCase {
 		$buffer = ob_get_clean();
 		$this->assertContains( 'no-navigation', $buffer );
 		$this->assertContains( '</script>', $buffer );
-	}
-
-	public function test_addConsumersHeader() {
-		ob_start();
-		$this->admin->addConsumersHeader();
-		$buffer = ob_get_clean();
-		$this->assertEmpty( $buffer );
-
-		$_GET['page'] = 'pb_lti_consumers';
-		ob_start();
-		$this->admin->addConsumersHeader();
-		$buffer = ob_get_clean();
-		$this->assertContains( '</style>', $buffer );
 	}
 
 	public function test_addConsumersMenu() {
