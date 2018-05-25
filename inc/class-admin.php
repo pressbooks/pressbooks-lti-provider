@@ -328,7 +328,7 @@ EOJS;
 	}
 
 	/**
-	 * @return array
+	 * @return array{whitelist: string, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: float}
 	 */
 	public function getSettings() {
 
@@ -409,7 +409,7 @@ EOJS;
 	}
 
 	/**
-	 * @return array
+	 * @return array{admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: float}
 	 */
 	public function getBookSettings() {
 

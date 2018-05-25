@@ -87,7 +87,9 @@ Configure using the "Paste XML Configuration Type", making sure to replace the U
 
 == Common Cartridge ==
 
-Allows users to export books as a "Thin" Common Cartridge zip files. Supports CC 1.1, 1.2 and 1.3. Produces .imscc (zip) files with LTI links.
+Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1.1, 1.2 and 1.3. Produces .imscc (zip) files with LTI links.
+
+Some notes: Test files passed the IMS Common Cartridge Validator. Moodle was able to import CC 1.1 ([because there's no code to import 1.2 or 1.3 ?!](https://github.com/moodle/moodle/tree/master/backup/converter)) Canvas was able to import CC 1.1, 1.2, and 1.3.
 
 Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
 
