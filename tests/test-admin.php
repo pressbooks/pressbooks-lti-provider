@@ -46,7 +46,7 @@ class AdminTest extends \WP_UnitTestCase {
 
 	public function test_getExportFileClass() {
 		$this->assertEquals( 'unknown', $this->admin->getExportFileClass( 'unknown' ) );
-		$this->assertEquals( 'xhtml', $this->admin->getExportFileClass( 'imscc' ) ); // TODO
+		$this->assertEquals( 'imscc', $this->admin->getExportFileClass( 'imscc' ) ); // TODO
 	}
 
 	public function test_hideNavigation() {
