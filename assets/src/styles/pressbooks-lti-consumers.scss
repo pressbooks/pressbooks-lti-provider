@@ -1,0 +1,16 @@
+.wp-list-table {
+  .column-name,
+  .column-base_url,
+  .column-key,
+  .column-version {
+    width: 20%;
+  }
+  .column-last_access {
+    width: 10%;
+  }
+  .column-available,
+  .column-protected {
+    text-align: center;
+    width: 5%;
+  }
+}
