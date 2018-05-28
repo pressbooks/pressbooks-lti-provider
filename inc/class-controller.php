@@ -94,7 +94,8 @@ class Controller {
 			$tool->ok = false;
 			$tool->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
 		}
-		$_SERVER['SERVER_NAME'] = wp_parse_url( home_url(), PHP_URL_HOST ); // @see \IMSGlobal\LTI\OAuth\OAuthRequest::from_request
+		// Fix invalid signature bug on subdomain install @see \IMSGlobal\LTI\OAuth\OAuthRequest::from_request
+		$_SERVER['SERVER_NAME'] = wp_parse_url( home_url(), PHP_URL_HOST );
 		$tool->handleRequest();
 	}
 
