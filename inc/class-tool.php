@@ -5,6 +5,7 @@ namespace Pressbooks\Lti\Provider;
 use IMSGlobal\LTI\Profile;
 use IMSGlobal\LTI\ToolProvider;
 use Pressbooks\Book;
+use function \Pressbooks\Utility\str_remove_prefix;
 
 class Tool extends ToolProvider\ToolProvider {
 
@@ -59,10 +60,9 @@ class Tool extends ToolProvider\ToolProvider {
 			$plugin_info['Version']
 		);
 
-		// Resource handlers for Tool Provider
-
+		// Resource handlers for Tool Provider. One $resourceHandlers[] per book. URLs must be relative.
 		$launch_url = 'format/lti';
-		$icon_url = plugins_url( 'pressbooks-lti-provider/assets/dist/images/pb.png' );
+		$icon_url = str_remove_prefix( plugins_url( 'pressbooks-lti-provider/assets/dist/images/pb.png' ), $this->baseUrl );
 		$ask_for = [
 			'User.id',
 			'User.username',
