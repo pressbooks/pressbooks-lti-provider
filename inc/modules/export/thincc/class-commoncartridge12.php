@@ -311,6 +311,7 @@ class CommonCartridge12 extends Export {
 		$data = [
 			'title' => $title,
 			'url' => deep_link( $id ),
+			'icon' => plugins_url( 'pressbooks-lti-provider/assets/dist/images/pb.png' ),
 		];
 
 		return $data;

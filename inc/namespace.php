@@ -14,17 +14,19 @@ function do_exit() {
 /**
  * Generate a globally unique identifier (GUID)
  *
+ * @param $site_option bool (optional)
+ *
  * @return string
  */
-function globally_unique_identifier() {
-	$guid = get_site_option( Admin::OPTION_GUID );
+function globally_unique_identifier( $site_option = false ) {
+	$guid = $site_option ? get_site_option( Admin::OPTION_GUID ) : get_option( Admin::OPTION_GUID );
 	if ( ! $guid ) {
 		if ( function_exists( 'com_create_guid' ) === true ) {
 			$guid = trim( com_create_guid(), '{}' );
 		} else {
 			$guid = sprintf( '%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 16384, 20479 ), mt_rand( 32768, 49151 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ) );
 		}
-		update_site_option( Admin::OPTION_GUID, $guid );
+		$site_option ? update_site_option( Admin::OPTION_GUID, $guid ) : update_option( Admin::OPTION_GUID, $guid );
 	}
 	return $guid;
 }

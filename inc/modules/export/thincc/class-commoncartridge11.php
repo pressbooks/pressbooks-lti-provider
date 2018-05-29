@@ -7,7 +7,7 @@
 namespace Pressbooks\Lti\Provider\Modules\Export\ThinCC;
 
 /**
- * More or less the same thing as 1.2 except for a few minor XML template tweaks to validate
+ * More or less the same thing as 1.2 except for a few minor XML template tweaks
  */
 class CommonCartridge11 extends CommonCartridge12 {
 

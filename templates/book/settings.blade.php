@@ -40,7 +40,7 @@
         </table>
         <h2>{{ __( 'Common Cartridge', 'pressbooks-lti-provider') }}</h2>
         <p>
-            <em>{{ __("Export books as a Thin Common Cartridge zip files with LTI links.", 'pressbooks-lti-provider') }}</em>
+            <em>{{ __("Export books as Common Cartridge files with LTI links.", 'pressbooks-lti-provider') }}</em>
         </p>
         <table class="form-table">
             <tr>

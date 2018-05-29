@@ -52,7 +52,7 @@ class Tool extends ToolProvider\ToolProvider {
 		// Product details
 		$plugin_info = get_plugin_data( __DIR__ . '/../pressbooks-lti-provider.php', false, false );
 		$this->product = new Profile\Item(
-			globally_unique_identifier(),
+			globally_unique_identifier( true ),
 			$plugin_info['Name'],
 			$plugin_info['Description'],
 			$plugin_info['AuthorURI'],
@@ -62,13 +62,17 @@ class Tool extends ToolProvider\ToolProvider {
 		// Resource handlers for Tool Provider
 
 		$launch_url = 'format/lti';
-		$icon_url = null;
+		$icon_url = plugins_url( 'pressbooks-lti-provider/assets/dist/images/pb.png' );
 		$ask_for = [
 			'User.id',
 			'User.username',
 			'Person.email.primary',
 			'Membership.role',
 		];
+
+		$metadata = Book::getBookInformation();
+		$course_name = $metadata['pb_title'] ?? $plugin_info['Name'];
+		$course_description = $metadata['pb_about_50'] ?? $metadata['pb_about_140'] ?? null;
 
 		$required_messages = [
 			new Profile\Message( 'basic-lti-launch-request', $launch_url, $ask_for ),
@@ -77,7 +81,7 @@ class Tool extends ToolProvider\ToolProvider {
 			new Profile\Message( 'ContentItemSelectionRequest', $launch_url, $ask_for ),
 		];
 		$this->resourceHandlers[] = new Profile\ResourceHandler(
-			new Profile\Item( globally_unique_identifier(), $plugin_info['Name'], $plugin_info['Description'] ),
+			new Profile\Item( globally_unique_identifier(), $course_name, $course_description ),
 			$icon_url,
 			$required_messages,
 			$optional_messages
