@@ -62,7 +62,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// Resource handlers for Tool Provider. One $resourceHandlers[] per book. URLs must be relative.
 		$launch_url = 'format/lti';
-		$icon_url = str_remove_prefix( plugins_url( 'pressbooks-lti-provider/assets/dist/images/pb.png' ), $this->baseUrl );
+		$icon_url = str_remove_prefix( plugins_url( 'pressbooks-lti-provider/assets/dist/images/book.png' ), $this->baseUrl );
 		$ask_for = [
 			'User.id',
 			'User.username',
