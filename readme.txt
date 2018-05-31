@@ -73,6 +73,7 @@ Configure using the "Paste XML Configuration Type", making sure to replace the U
   <blti:description>This is a Pressbooks Book</blti:description>
   <blti:launch_url>https://site/book/format/lti</blti:launch_url>
   <blti:extensions platform="canvas.instructure.com">
+    <lticm:property name="privacy_level">email_only</lticm:property>
     <lticm:options name="link_selection">
       <lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
       <lticm:property name="url">https://site/book/format/lti</lticm:property>
