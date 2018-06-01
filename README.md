@@ -62,19 +62,23 @@ TODO?
 
 ## ContentItemSelectionRequest 
 
-Pressbooks supports incoming content-item requests for media type values of `application/vnd.ims.lti.v1.ltilink`. This feature allows course designers to select which chapter they want to display from inside their LMS. Setup instructions follow:
+Pressbooks supports incoming content-item requests for media type values of `application/vnd.ims.lti.v1.ltilink`.
+
+This feature allows course designers to select which chapter they want to display from inside their LMS.
+
+When configuring, the Launch URL will be something like `https://site/book/format/lti` where `https://site/book` is the URL to your book. Setup instructions follow:
 
 ### Moodle
 
 First, whitelist the Tool Consumer domain in Pressbooks "LTI2 Registration Whitelist".
 
-In Moodle go to: Site Administration -> Plugins -> Manage Tools -> Add tool. Paste in the Connect URL. The URL will be something like `https://site/book/format/lti.` where `https://site/book` is the URL to your book. Follow the steps.
+In Moodle go to: Site Administration -> Plugins -> Manage Tools -> Add tool. Paste in the Launch URL. Follow the configuration steps.
 
 Once configured, you can pick a chapter when adding an external tool by clicking "Select Content".
 
 ### Canvas
 
-Settings -> Apps -> View App Configuration -> +App. Configure using the "Paste XML Configuration Type", making sure to replace the `https://site/book` URLs with your own:
+Settings -> Apps -> View App Configuration -> +App. Configure using the "Paste XML Configuration Type" with the following XML snippet, making sure to replace `https://site/book/format/lti` with your Launch URL:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -94,13 +98,13 @@ Settings -> Apps -> View App Configuration -> +App. Configure using the "Paste X
 </cartridge_basiclti_link>
 ```
 
-[More Info](https://github.com/instructure/canvas-lms/blob/master/doc/api/content_item.md)
+[More info.](https://github.com/instructure/canvas-lms/blob/master/doc/api/content_item.md)
 
 ### Sakai
 
-Click on the Site Info tool in the left navigation area. Click on the External Tools tab. Click on Install LTI 1.1 link. Enter the information.
+Click on the Site Info tool in the left navigation area. Click on the External Tools tab. Click on Install LTI 1.1 link.
 
-Make sure to select: Allow the tool to be launched as a link, Allow external tool to configure itself, and Allow the tool to be used from the rich content editor to select content.
+When entering the information, make sure to select: Allow the tool to be launched as a link, Allow external tool to configure itself, and Allow the tool to be used from the rich content editor to select content.
 
 Once configured, use "Launch External Tool Configuration" when adding an External Tool.
 
