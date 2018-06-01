@@ -57,7 +57,7 @@ TODO?
 
 == ContentItemSelectionRequest ==
 
-Pressbooks supports ContentItemSelectionRequest. This LTI feature allows course designers to select which chapter they want to display from inside their LMS. Setup instructions follow:
+Pressbooks supports incoming content-item requests for media type values of `application/vnd.ims.lti.v1.ltilink`. This feature allows course designers to select which chapter they want to display from inside their LMS. Setup instructions follow:
 
 ### Moodle
 Do nothing. It just works.
