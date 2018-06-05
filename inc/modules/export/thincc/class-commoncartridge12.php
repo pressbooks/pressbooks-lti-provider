@@ -147,9 +147,11 @@ class CommonCartridge12 extends Export {
 	}
 
 	/**
+	 * @param bool $flat
+	 *
 	 * @return string
 	 */
-	public function identifiers() {
+	public function identifiers( $flat = true ) {
 		$xml = '';
 		$struct = Book::getBookStructure();
 
@@ -163,10 +165,14 @@ class CommonCartridge12 extends Export {
 			}
 		}
 		if ( ! empty( $fm_xml ) ) {
-			$xml .= '<item identifier="frontmatter">';
-			$xml .= '<title>Front Matter</title>';
-			$xml .= $fm_xml;
-			$xml .= '</item>';
+			if ( $flat ) {
+				$xml .= $fm_xml;
+			} else {
+				$xml .= '<item identifier="frontmatter">';
+				$xml .= '<title>Front Matter</title>';
+				$xml .= $fm_xml;
+				$xml .= '</item>';
+			}
 		}
 
 		// Parts & Chapters
@@ -185,10 +191,14 @@ class CommonCartridge12 extends Export {
 				}
 			}
 			if ( ! empty( $ch_xml ) ) {
-				$xml .= '<item identifier="' . $this->identifier( $value['ID'], 'IM_' ) . '">';
-				$xml .= '<title>' . $value['post_title'] . '</title>';
-				$xml .= $ch_xml;
-				$xml .= '</item>';
+				if ( $flat ) {
+					$xml .= $ch_xml;
+				} else {
+					$xml .= '<item identifier="' . $this->identifier( $value['ID'], 'IM_' ) . '">';
+					$xml .= '<title>' . $value['post_title'] . '</title>';
+					$xml .= $ch_xml;
+					$xml .= '</item>';
+				}
 			}
 		}
 
@@ -202,10 +212,14 @@ class CommonCartridge12 extends Export {
 			}
 		}
 		if ( ! empty( $bm_xml ) ) {
-			$xml .= '<item identifier="backmatter">';
-			$xml .= '<title>Back Matter</title>';
-			$xml .= $bm_xml;
-			$xml .= '</item>';
+			if ( $flat ) {
+				$xml .= $bm_xml;
+			} else {
+				$xml .= '<item identifier="backmatter">';
+				$xml .= '<title>Back Matter</title>';
+				$xml .= $bm_xml;
+				$xml .= '</item>';
+			}
 		}
 
 		return $xml;

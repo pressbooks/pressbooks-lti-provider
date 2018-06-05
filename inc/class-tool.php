@@ -350,8 +350,12 @@ class Tool extends ToolProvider\ToolProvider {
 
 		if ( $wp_user ) {
 			// If the user does not have rights to the book, and role != Anonymous Guest, then add them to the book with appropriate role
-			if ( ! is_user_member_of_blog( $wp_user->ID ) && $role !== 'anonymous' ) {
-				add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
+			if ( $role !== 'anonymous' ) {
+				if ( is_user_member_of_blog( $wp_user->ID ) ) {
+					$wp_user->set_role( $role );
+				} else {
+					add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
+				}
 			}
 			// Login the user
 			\Pressbooks\Redirect\programmatic_login( $wp_user->user_login );
