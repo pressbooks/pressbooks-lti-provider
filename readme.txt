@@ -50,11 +50,6 @@ Post_id
 Post_type + Post_name
 > https://site/book/format/lti/launch/front-matter/introduction
 
-TODO?
-> https://site/book/format/lti/launch/Hello%20World
-
-> Candela style root URLs?
-
 == ContentItemSelectionRequest ==
 
 Pressbooks supports incoming content-item requests for media type values of `application/vnd.ims.lti.v1.ltilink`.
@@ -105,9 +100,12 @@ Once configured, use "Launch External Tool Configuration" when adding an Externa
 
 == Common Cartridge ==
 
-Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1.1, 1.2 and 1.3. Produces .imscc (zip) files with LTI links.
+Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1.1, 1.2 and 1.3. Produces .imscc (zip) files with LTI links. Some notes:
 
-Some notes: Test files passed the IMS Common Cartridge Validator. Moodle was able to import CC 1.1 ([because there's no code to import 1.2 or 1.3 ?!](https://github.com/moodle/moodle/tree/master/backup/converter)) Canvas was able to import CC 1.1, 1.2, and 1.3.
+ + Files passed the IMS Common Cartridge Validator.
+ + Moodle was able to import CC 1.1 ([because there's no code to import 1.2 or 1.3 ?!](https://github.com/moodle/moodle/tree/master/backup/converter))
+ + Canvas was able to import CC 1.1, 1.2, and 1.3.
+ + Sakai imports but doesn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appear under Lessons. The rest of the content appears as unusable xml files under Resources. [See this bug report.](https://jira.sakaiproject.org/browse/SAK-40082)
 
 Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
 
@@ -118,6 +116,10 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 ![ContentItemSelectionRequest in Moodle.](screenshot-3.png)
 
 == Changelog ==
+
+= 0.4.2 =
+ * Update izumi-kun/lti to version 1.1.0
+ * Fix relative url for Tool icon.
 
 = 0.4.1 =
  * Fix Invalid OAuth Signature On Subdomain Installs.
