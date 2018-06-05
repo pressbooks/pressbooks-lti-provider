@@ -4,7 +4,7 @@ Donate link: https://opencollective.com/pressbooks/
 Tags: pressbooks, lti, lms
 Requires at least: 4.9.5
 Tested up to: 4.9.5
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
