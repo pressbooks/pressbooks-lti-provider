@@ -62,8 +62,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// Resource handlers for Tool Provider. One $resourceHandlers[] per book. URLs must be relative.
 		$launch_url = 'format/lti';
-		$icon_url = wp_parse_url( plugins_url( 'pressbooks-lti-provider/assets/dist/images/book.png' ), PHP_URL_PATH );
-		$icon_url = $icon_url !== false ? ltrim( $icon_url, '/' ) : null;
+		$icon_url = $this->relativeBookIconUrl();
 		$ask_for = [
 			'User.id',
 			'User.username',
@@ -90,6 +89,24 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// Services required by Tool Provider
 		$this->requiredServices[] = new Profile\ServiceDefinition( [ 'application/vnd.ims.lti.v2.toolproxy+json' ], [ 'POST' ] );
+	}
+
+	/**
+	 * @return null|string
+	 */
+	protected function relativeBookIconUrl() {
+		$icon_url = wp_parse_url( plugins_url( 'pressbooks-lti-provider/assets/dist/images/book.png' ), PHP_URL_PATH );
+		if ( $icon_url ) {
+			$icon_url = ltrim( $icon_url, '/' );
+			$home_url = wp_parse_url( $this->baseUrl, PHP_URL_PATH );
+			if ( $home_url ) {
+				$home_url = rtrim( $home_url, '/' );
+				$icon_url = str_repeat( '../', substr_count( $home_url, '/' ) ) . $icon_url;
+			}
+			return $icon_url;
+		} else {
+			return null;
+		}
 	}
 
 	/**
