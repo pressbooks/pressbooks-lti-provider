@@ -120,6 +120,8 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 = 0.4.2 =
  * Update izumi-kun/lti to version 1.1.0
  * Fix relative url for Tool icon.
+ * Update WP role when authenticating over LTI.
+ * Fix build.
 
 = 0.4.1 =
  * Fix Invalid OAuth Signature On Subdomain Installs.
