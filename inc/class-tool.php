@@ -5,7 +5,6 @@ namespace Pressbooks\Lti\Provider;
 use IMSGlobal\LTI\Profile;
 use IMSGlobal\LTI\ToolProvider;
 use Pressbooks\Book;
-use function \Pressbooks\Utility\str_remove_prefix;
 
 class Tool extends ToolProvider\ToolProvider {
 
