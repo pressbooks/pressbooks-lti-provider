@@ -18,11 +18,11 @@
 		"test": "npm -s run lint"
 	},
 	"engines": {
-		"node": ">= 6.9.4"
+		"node": ">= 8"
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"pressbooks-build-tools": "^0.11.0"
+		"pressbooks-build-tools": "^0.12.0"
 	},
 	"repository": {
 		"type": "git",
