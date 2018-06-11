@@ -91,24 +91,6 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
-	 * @return null|string
-	 */
-	protected function relativeBookIconUrl() {
-		$icon_url = wp_parse_url( plugins_url( 'pressbooks-lti-provider/assets/dist/images/book.png' ), PHP_URL_PATH );
-		if ( $icon_url ) {
-			$icon_url = ltrim( $icon_url, '/' );
-			$home_url = wp_parse_url( $this->baseUrl, PHP_URL_PATH );
-			if ( $home_url ) {
-				$home_url = rtrim( $home_url, '/' );
-				$icon_url = str_repeat( '../', substr_count( $home_url, '/' ) ) . $icon_url;
-			}
-			return $icon_url;
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * Process a valid launch request
 	 *
 	 * Insert code here to handle incoming launches - use the user, context
@@ -263,6 +245,20 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function setParams( $params ) {
 		$this->params = $params;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function relativeBookIconUrl() {
+		$icon_url = wp_parse_url( plugins_url( 'pressbooks-lti-provider/assets/dist/images/book.png' ), PHP_URL_PATH );
+		$icon_url = ltrim( $icon_url, '/' );
+		$home_url = wp_parse_url( $this->baseUrl, PHP_URL_PATH );
+		if ( $home_url ) {
+			$home_url = rtrim( $home_url, '/' );
+			$icon_url = str_repeat( '../', substr_count( $home_url, '/' ) ) . $icon_url;
+		}
+		return $icon_url;
 	}
 
 	/**

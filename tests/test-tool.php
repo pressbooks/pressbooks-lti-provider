@@ -60,6 +60,11 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( [ 'b' ], $this->tool->getParams() );
 	}
 
+	public function test_relativeBookIconUrl() {
+		$url = $this->tool->relativeBookIconUrl();
+		$this->assertStringEndsWith( 'book.png', $url );
+	}
+
 	public function test_initSessionVars() {
 		$this->tool->initSessionVars();
 		$this->assertTrue( array_key_exists( 'pb_lti_return_url', $_SESSION ) );

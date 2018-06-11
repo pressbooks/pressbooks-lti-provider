@@ -24,7 +24,7 @@ class Database {
 	}
 
 	/**
-	 * Static class, no nstantiating allowed
+	 * Static class, no instantiating allowed
 	 */
 	final private function __clone() {
 	}
