@@ -97,9 +97,15 @@ class Tool extends ToolProvider\ToolProvider {
 	 * and resourceLink properties to access the current user, context and resource link.
 	 */
 	protected function onLaunch() {
+		if ( $this->getAction() === 'launch' ) {
 			$this->initSessionVars();
 			$this->setupUser( $this->user );
 			$this->setupDeepLink();
+		} else {
+			$this->ok = false;
+			$this->message = __( 'Invalid launch URL', 'pressbooks-lti-provider' );
+			$this->onError();
+		}
 	}
 
 	/**
@@ -447,7 +453,8 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 
 		if ( empty( $this->redirectUrl ) ) {
-			$this->reason = __( 'Deep link was not found.', 'pressbooks-lti-provider' );
+			$this->ok = false;
+			$this->message = __( 'Deep link was not found.', 'pressbooks-lti-provider' );
 			$this->onError();
 		}
 	}
