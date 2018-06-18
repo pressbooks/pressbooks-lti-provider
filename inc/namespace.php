@@ -50,6 +50,7 @@ function do_format( $format ) {
 			$controller->handleRequest( $action, $params );
 			do_exit();
 		} elseif ( ctype_digit( strval( $action ) ) && get_blog_details( $action ) !== false ) {
+			$blog_id = $action;
 			// Root site
 			if ( isset( $params[0] ) && $params[0] === 'launch' ) {
 				// PB format
@@ -61,7 +62,7 @@ function do_format( $format ) {
 			} else {
 				return; // Error: Unknown export format
 			}
-			switch_to_blog( $action );
+			switch_to_blog( $blog_id );
 			$admin = Admin::init();
 			$controller = new Controller( $admin );
 			$controller->handleRequest( $action, $params );
