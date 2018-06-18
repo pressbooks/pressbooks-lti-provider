@@ -54,6 +54,13 @@ Post_id
 Post_type + Post_name
 > https://site/book/format/lti/launch/front-matter/introduction
 
+Backwards compatibility:
+> https://site/format/lti/BOOK_ID?page_id=123
+
+> https://site/format/lti/BOOK_ID/launch/123
+
+> https://site/format/lti/BOOK_ID/launch/front-matter/introduction
+
 
 ## ContentItemSelectionRequest 
 
@@ -124,6 +131,11 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 
 
 ## Changelog 
+
+
+### 1.0.0 
+ * Semantic versioning starts here.
+ * Allow deep links with LTI launch URLs like `root/format/lti/BOOK_ID?page_id=123` (or `root/format/lti/BOOK_ID/launch/123`, or `root/format/lti/BOOK_ID/launch/front-matter/introduction`).
 
 
 ### 0.4.2 
