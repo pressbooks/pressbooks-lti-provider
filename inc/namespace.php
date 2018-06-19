@@ -42,11 +42,33 @@ function do_format( $format ) {
 	$params = explode( '/', $format );
 	$controller = array_shift( $params );
 	$action = array_shift( $params );
-	if ( 'lti' === $controller && \Pressbooks\Book::isBook() ) {
-		$admin = Admin::init();
-		$controller = new Controller( $admin );
-		$controller->handleRequest( $action, $params );
-		do_exit();
+	if ( 'lti' === $controller ) {
+		if ( \Pressbooks\Book::isBook() ) {
+			// Book
+			$admin = Admin::init();
+			$controller = new Controller( $admin );
+			$controller->handleRequest( $action, $params );
+			do_exit();
+		} elseif ( ctype_digit( strval( $action ) ) && get_blog_details( $action ) !== false ) {
+			$blog_id = $action;
+			// Root site
+			if ( isset( $params[0] ) && $params[0] === 'launch' ) {
+				// PB format
+				$action = array_shift( $params );
+			} elseif ( isset( $_REQUEST['page_id'] ) ) {
+				// Candela format
+				$action = 'launch';
+				$params = [ $_REQUEST['page_id'] ];
+			} else {
+				return; // Error: Unknown export format
+			}
+			switch_to_blog( $blog_id );
+			$admin = Admin::init();
+			$controller = new Controller( $admin );
+			$controller->handleRequest( $action, $params );
+			restore_current_blog();
+			do_exit();
+		}
 	}
 }
 

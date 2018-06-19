@@ -30,9 +30,24 @@ class NamespaceTest extends \WP_UnitTestCase {
 	}
 
 	public function test_do_format() {
+		// Book
 		$this->_book();
 		ob_start();
 		\Pressbooks\Lti\Provider\do_format( 'lti' );
+		$buffer = ob_get_clean();
+		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
+
+		// Root site
+		$book_id = get_current_blog_id();
+		switch_to_blog( get_network()->site_id );
+		ob_start();
+		\Pressbooks\Lti\Provider\do_format( "lti/{$book_id}" );
+		$buffer = ob_get_clean();
+		$this->assertEmpty( $buffer );
+
+		$_REQUEST['page_id'] = 123;
+		ob_start();
+		\Pressbooks\Lti\Provider\do_format( "lti/{$book_id}" );
 		$buffer = ob_get_clean();
 		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
 	}

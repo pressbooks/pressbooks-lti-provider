@@ -128,16 +128,16 @@
         },
         {
             "name": "izumi-kun/lti",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP.git",
-                "reference": "65b05e29eed453e03d094f633a3ce9aad42053f6"
+                "reference": "12c4c032945d861592e2300b589f2ac4f77d90aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/65b05e29eed453e03d094f633a3ce9aad42053f6",
-                "reference": "65b05e29eed453e03d094f633a3ce9aad42053f6",
+                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/12c4c032945d861592e2300b589f2ac4f77d90aa",
+                "reference": "12c4c032945d861592e2300b589f2ac4f77d90aa",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
             "keywords": [
                 "LTI"
             ],
-            "time": "2018-06-02T07:54:13+00:00"
+            "time": "2018-06-11T08:18:50+00:00"
         },
         {
             "name": "pressbooks/mix",
