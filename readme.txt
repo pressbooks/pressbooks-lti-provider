@@ -127,6 +127,7 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 = 1.0.0 =
  * Semantic versioning starts here.
  * Allow deep links with LTI launch URLs like `root/format/lti/BOOK_ID?page_id=123` (or `root/format/lti/BOOK_ID/launch/123`, or `root/format/lti/BOOK_ID/launch/front-matter/introduction`).
+ * Update izumi-kun/lti to version 1.1.1
 
 = 0.4.2 =
  * Update izumi-kun/lti to version 1.1.0
