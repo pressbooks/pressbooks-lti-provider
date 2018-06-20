@@ -52,7 +52,7 @@ Post_id
 Post_type + Post_name
 > https://site/book/format/lti/launch/front-matter/introduction
 
-Backwards compatibility:
+Root site compatibility:
 > https://site/format/lti/BOOK_ID?page_id=123
 
 > https://site/format/lti/BOOK_ID/launch/123
@@ -127,7 +127,8 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 == Changelog ==
 
 = 0.4.3 =
- * Allow deep links with LTI launch URLs like `root/format/lti/BOOK_ID?page_id=123` (or `root/format/lti/BOOK_ID/launch/123`, or `root/format/lti/BOOK_ID/launch/front-matter/introduction`).
+ * Update izumi-kun/lti to version 1.1.2
+ * Allow deep links with Candela style LTI launch URLs like `root/format/lti/BOOK_ID?page_id=123`
 
 = 0.4.2 =
  * Update izumi-kun/lti to version 1.1.0
