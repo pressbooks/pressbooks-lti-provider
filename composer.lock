@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7db5b26ca2af73d50f22d4f2463bc16",
+    "content-hash": "d6eec66bfaad195e4a746865a4f0df9d",
     "packages": [
         {
             "name": "composer/installers",
@@ -128,16 +128,16 @@
         },
         {
             "name": "izumi-kun/lti",
-            "version": "1.1.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP.git",
-                "reference": "12c4c032945d861592e2300b589f2ac4f77d90aa"
+                "reference": "65b05e29eed453e03d094f633a3ce9aad42053f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/12c4c032945d861592e2300b589f2ac4f77d90aa",
-                "reference": "12c4c032945d861592e2300b589f2ac4f77d90aa",
+                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/65b05e29eed453e03d094f633a3ce9aad42053f6",
+                "reference": "65b05e29eed453e03d094f633a3ce9aad42053f6",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
             "keywords": [
                 "LTI"
             ],
-            "time": "2018-06-11T08:18:50+00:00"
+            "time": "2018-06-02T07:54:13+00:00"
         },
         {
             "name": "pressbooks/mix",
