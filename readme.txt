@@ -29,6 +29,8 @@ Or, download the latest version from the releases page and unzip it into your Wo
 
 Then, activate and configure the plugin at the Network level.
 
+Read the developer documentation for more info: https://docs.pressbooks.org/integrations/pressbooks-lti-provider-plugin/
+
 == Troubleshooting ==
 
 + If the user's web browser does not allow 3rd Party Cookies, then logins will not work when Pressbooks is in an iframe.
