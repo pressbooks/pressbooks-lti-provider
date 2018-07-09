@@ -11,6 +11,5 @@
     <blti:vendor>
         <lticp:code>pressbooks.education</lticp:code>
         <lticp:name>Pressbooks</lticp:name>
-        <lticp:url>https://pressbooks.education/</lticp:url>
     </blti:vendor>
 </cartridge_basiclti_link>

@@ -12,9 +12,9 @@ namespace Pressbooks\Lti\Provider\Modules\Export\ThinCC;
 class CommonCartridge11 extends CommonCartridge12 {
 
 	/**
-	 * @var float
+	 * @var string
 	 */
-	protected $version = 1.1;
+	protected $version = '1.1';
 
 	/**
 	 * @var string

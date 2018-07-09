@@ -65,10 +65,14 @@ class Admin {
 	 * @return mixed
 	 */
 	public function exportFormats( $formats ) {
-		$version = (float) $this->getBookSettings()['cc_version'];
-		if ( 1.3 === $version ) {
+		$version = (string) $this->getBookSettings()['cc_version'];
+		if ( 'all' === $version ) {
 			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
-		} elseif ( 1.2 === $version ) {
+			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1', 'pressbooks-lti-pressbooks' );
+		} elseif ( '1.3' === $version ) {
+			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
+		} elseif ( '1.2' === $version ) {
 			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
 		} else {
 			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1', 'pressbooks-lti-pressbooks' );
@@ -319,7 +323,7 @@ EOJS;
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
 				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
 				'hide_navigation' => (int) $_POST['hide_navigation'],
-				'cc_version' => (float) $_POST['cc_version'],
+				'cc_version' => (string) $_POST['cc_version'],
 			];
 			$result = update_site_option( self::OPTION, $update );
 			return $result;
@@ -350,7 +354,7 @@ EOJS;
 			$options['hide_navigation'] = 0;
 		}
 		if ( ! isset( $options['cc_version'] ) ) {
-			$options['cc_version'] = 1.3;
+			$options['cc_version'] = '1.3';
 		}
 
 		return $options;
@@ -400,7 +404,7 @@ EOJS;
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
 				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
 				'hide_navigation' => (int) $_POST['hide_navigation'],
-				'cc_version' => (float) $_POST['cc_version'],
+				'cc_version' => (string) $_POST['cc_version'],
 			];
 			$result = update_option( self::OPTION, $update );
 			return $result;

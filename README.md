@@ -4,7 +4,7 @@
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 4.9.5  
 **Tested up to:** 4.9.5  
-**Stable tag:** 0.4.3  
+**Stable tag:** 1.0.0  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -114,6 +114,10 @@ When entering the information, make sure to select: Allow the tool to be launche
 
 Once configured, use "Launch External Tool Configuration" when adding an External Tool.
 
+### Blackboard
+
+TK.
+
 
 ## Common Cartridge 
 
@@ -123,6 +127,7 @@ Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1
  + Moodle was able to import CC 1.1 ([because there's no code to import 1.2 or 1.3 ?!](https://github.com/moodle/moodle/tree/master/backup/converter))
  + Canvas was able to import CC 1.1, 1.2, and 1.3.
  + Sakai imports but doesn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appear under Lessons. The rest of the content appears as unusable xml files under Resources. [See this bug report.](https://jira.sakaiproject.org/browse/SAK-40082)
+ + Blackboard was able to import CC 1.2.
 
 Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
 
@@ -135,6 +140,12 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 
 
 ## Changelog 
+
+
+### 1.0.0 
+* Update izumi-kun/lti to version 1.1.3
+* Add option to show all export versions.
+* Tweak CC files for Blackboard compatibility.
 
 
 ### 0.4.3 
