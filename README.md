@@ -4,7 +4,7 @@
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 4.9.5  
 **Tested up to:** 4.9.5  
-**Stable tag:** 0.4.3  
+**Stable tag:** 1.0.0  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -135,6 +135,12 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 
 
 ## Changelog 
+
+
+### 1.0.0 
+* Update izumi-kun/lti to version 1.1.3
+* Add option to show all export versions.
+* Tweak CC files for Blackboard compatibility.
 
 
 ### 0.4.3 
