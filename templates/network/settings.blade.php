@@ -59,13 +59,17 @@
                 <th>{{ __('Version', 'pressbooks-lti-provider') }}</th>
                 <td>
                     <label><input name="cc_version" id="cc_version" type="radio"
-                                  value="1.1" {!! checked( 1.1, $options['cc_version'] ) !!} />{{ __('1.1', 'pressbooks-lti-provider') }}
+                                  value="1.1" {!! checked( '1.1', $options['cc_version'] ) !!} />{{ __('1.1', 'pressbooks-lti-provider') }}
                     </label><br/>
                     <label><input name="cc_version" id="cc_version" type="radio"
-                                  value="1.2" {!! checked( 1.2, $options['cc_version'] ) !!} />{{ __('1.2', 'pressbooks-lti-provider') }}
+                                  value="1.2" {!! checked( '1.2', $options['cc_version'] ) !!} />{{ __('1.2', 'pressbooks-lti-provider') }}
                     </label><br/>
                     <label><input name="cc_version" id="cc_version" type="radio"
-                                  value="1.3" {!! checked( 1.3, $options['cc_version'] ) !!} />{{ __('1.3', 'pressbooks-lti-provider') }}</label>
+                                  value="1.3" {!! checked( '1.3', $options['cc_version'] ) !!} />{{ __('1.3', 'pressbooks-lti-provider') }}
+                    </label><br/>
+                    <label><input name="cc_version" id="cc_version" type="radio"
+                                  value="all" {!! checked( 'all', $options['cc_version'] ) !!} />{{ __('Show all export versions', 'pressbooks-lti-provider') }}</label>
+
                 </td>
             </tr>
         </table>

@@ -14,9 +14,9 @@ use function \Pressbooks\Lti\Provider\deep_link;
 class CommonCartridge12 extends Export {
 
 	/**
-	 * @var float
+	 * @var string
 	 */
-	protected $version = 1.2;
+	protected $version = '1.2';
 
 	/**
 	 * @var string
