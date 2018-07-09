@@ -31,7 +31,7 @@
 	},
 	"require-dev": {
 		"humanmade/coding-standards": "^0.3.0",
-		"phpunit/phpunit": "^5.7",
+		"phpunit/phpunit": "6.5.8",
 		"wpreadme2markdown/wp2md": "^3.0"
 	},
 	"archive": {
