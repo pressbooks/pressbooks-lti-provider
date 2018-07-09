@@ -83,10 +83,6 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertContains( '</form>', $buffer );
 	}
 
-//	public function test_ConsumerOptions() {
-//		// TODO
-//	}
-
 	public function test_addSettingsMenu() {
 		$this->admin->addSettingsMenu();
 		$this->assertTrue( true ); // Did not crash
