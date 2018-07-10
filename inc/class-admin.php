@@ -143,9 +143,7 @@ EOJS;
 	 * Add LTI Consumers menu
 	 */
 	public function addConsumersMenu() {
-
 		$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
-
 		add_submenu_page(
 			$parent_slug,
 			__( 'LTI Consumers', 'pressbooks-lti-provider' ),
@@ -282,9 +280,7 @@ EOJS;
 	 * Add LTI Settings menu
 	 */
 	public function addSettingsMenu() {
-
 		$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
-
 		add_submenu_page(
 			$parent_slug,
 			__( 'LTI Settings', 'pressbooks-lti-provider' ),
@@ -319,6 +315,7 @@ EOJS;
 			$valid_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber', 'anonymous' ];
 			$update = [
 				'whitelist' => trim( $_POST['whitelist'] ),
+				'book_override' => (int) $_POST['book_override'],
 				'admin_default' => in_array( $_POST['admin_default'], $valid_roles, true ) ? $_POST['admin_default'] : 'subscriber',
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
 				'learner_default' => in_array( $_POST['learner_default'], $valid_roles, true ) ? $_POST['learner_default'] : 'subscriber',
@@ -332,7 +329,7 @@ EOJS;
 	}
 
 	/**
-	 * @return array{whitelist: string, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: float}
+	 * @return array{whitelist: string, book_override: int, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
 	 */
 	public function getSettings() {
 
@@ -340,6 +337,9 @@ EOJS;
 
 		if ( empty( $options['whitelist'] ) ) {
 			$options['whitelist'] = '';
+		}
+		if ( ! isset( $options['book_override'] ) ) {
+			$options['book_override'] = 1;
 		}
 		if ( empty( $options['admin_default'] ) ) {
 			$options['admin_default'] = 'subscriber';
@@ -364,17 +364,17 @@ EOJS;
 	 * Add LTI Settings menu (Book)
 	 */
 	public function addBookSettingsMenu() {
-
-		$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
-
-		add_submenu_page(
-			$parent_slug,
-			__( 'LTI Settings', 'pressbooks-lti-provider' ),
-			__( 'LTI Settings', 'pressbooks-lti-provider' ),
-			'manage_network',
-			'pb_lti_settings',
-			[ $this, 'printBookSettingsMenu' ]
-		);
+		if ( $this->getSettings()['book_override'] ) {
+			$parent_slug = \Pressbooks\Admin\Dashboard\init_network_integrations_menu();
+			add_submenu_page(
+				$parent_slug,
+				__( 'LTI Settings', 'pressbooks-lti-provider' ),
+				__( 'LTI Settings', 'pressbooks-lti-provider' ),
+				'manage_network',
+				'pb_lti_settings',
+				[ $this, 'printBookSettingsMenu' ]
+			);
+		}
 	}
 
 	/**
@@ -413,11 +413,14 @@ EOJS;
 	}
 
 	/**
-	 * @return array{admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: float}
+	 * @return array{admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
 	 */
 	public function getBookSettings() {
-
-		$options = get_option( self::OPTION, [] );
+		if ( $this->getSettings()['book_override'] ) {
+			$options = get_option( self::OPTION, [] );
+		} else {
+			$options = [];
+		}
 		$defaults = $this->getSettings();
 
 		if ( empty( $options['admin_default'] ) ) {

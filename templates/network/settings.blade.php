@@ -19,6 +19,18 @@
             <em>{{ __("Pressbooks will try to match the LTI User with their email. If, however, a matching Pressbooks user is not found then:", 'pressbooks-lti-provider') }}</em>
         </p>
         <table class="form-table">
+            <tr>
+                <th>{{ __('Allow books to override role-mapping and Common Cartridge defaults', 'pressbooks-lti-provider') }}</th>
+                <td>
+                    <label><input name="book_override" id="book_override" type="radio"
+                                  value="0" {!! checked( 0, $options['book_override'] ) !!} />{{ __('No', 'pressbooks-lti-provider') }}
+                    </label><br/>
+                    <label><input name="book_override" id="book_override" type="radio"
+                                  value="1" {!! checked( 1, $options['book_override'] ) !!} />{{ __('Yes', 'pressbooks-lti-provider') }}</label>
+                </td>
+            </tr>
+        </table>
+        <table class="form-table">
             @foreach ([
                 'admin_default' => __('Map Administrator to the following Pressbooks role', 'pressbooks-lti-provider'),
                 'staff_default' => __('Map Staff to the following Pressbooks role', 'pressbooks-lti-provider'),
