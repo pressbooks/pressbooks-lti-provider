@@ -20,7 +20,7 @@
         </p>
         <table class="form-table">
             <tr>
-                <th>{{ __('Allow books to override these defaults', 'pressbooks-lti-provider') }}</th>
+                <th>{{ __('Allow books to override role-mapping and Common Cartridge defaults', 'pressbooks-lti-provider') }}</th>
                 <td>
                     <label><input name="book_override" id="book_override" type="radio"
                                   value="0" {!! checked( 0, $options['book_override'] ) !!} />{{ __('No', 'pressbooks-lti-provider') }}
