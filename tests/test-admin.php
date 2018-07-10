@@ -100,6 +100,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$options = $this->admin->getSettings();
 
 		$this->assertEquals( $options['whitelist'], '' );
+		$this->assertEquals( $options['book_override'], 1 );
 		$this->assertEquals( $options['admin_default'], 'subscriber' );
 		$this->assertEquals( $options['staff_default'], 'subscriber' );
 		$this->assertEquals( $options['learner_default'], 'subscriber' );
@@ -109,16 +110,18 @@ class AdminTest extends \WP_UnitTestCase {
 		$_REQUEST['_wpnonce'] = wp_create_nonce( 'pb-lti-provider' );
 		$_POST = [
 			'whitelist' => "pressbooks.com\npressbooks.education",
+			'book_override' => 0,
 			'admin_default' => 'administrator',
 			'staff_default' => 'editor',
 			'learner_default' => 'contributor',
 			'hide_navigation' => 1,
-			'cc_version' => '1.2'
+			'cc_version' => '1.2',
 		];
 		$this->admin->saveSettings();
 		$options = $this->admin->getSettings();
 
 		$this->assertEquals( $options['whitelist'], "pressbooks.com\npressbooks.education" );
+		$this->assertEquals( $options['book_override'], 0 );
 		$this->assertEquals( $options['admin_default'], 'administrator' );
 		$this->assertEquals( $options['staff_default'], 'editor' );
 		$this->assertEquals( $options['learner_default'], 'contributor' );
@@ -129,8 +132,10 @@ class AdminTest extends \WP_UnitTestCase {
 	//
 
 	public function test_addBookSettingsMenu() {
+		update_site_option( \Pressbooks\Lti\Provider\Admin::OPTION, [ 'book_override' => 1 ] );
 		$this->admin->addBookSettingsMenu();
 		$this->assertTrue( true ); // Did not crash
+		delete_site_option( \Pressbooks\Lti\Provider\Admin::OPTION );
 	}
 
 	public function test_printBookSettingsMenu() {
@@ -145,6 +150,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$options = $this->admin->getBookSettings();
 
 		$this->assertTrue( ! isset( $options['whitelist'] ) );
+		$this->assertTrue( ! isset( $options['book_override'] ) );
 		$this->assertEquals( $options['admin_default'], 'subscriber' );
 		$this->assertEquals( $options['staff_default'], 'subscriber' );
 		$this->assertEquals( $options['learner_default'], 'subscriber' );
@@ -154,21 +160,36 @@ class AdminTest extends \WP_UnitTestCase {
 		$_REQUEST['_wpnonce'] = wp_create_nonce( 'pb-lti-provider-book' );
 		$_POST = [
 			'whitelist' => "pressbooks.com\npressbooks.education",
+			'book_override' => 1,
 			'admin_default' => 'administrator',
 			'staff_default' => 'editor',
 			'learner_default' => 'contributor',
 			'hide_navigation' => 1,
-			'cc_version' => '1.2'
+			'cc_version' => '1.2',
 		];
 		$this->admin->saveBookSettings();
 		$options = $this->admin->getBookSettings();
 
 		$this->assertTrue( ! isset( $options['whitelist'] ) );
+		$this->assertTrue( ! isset( $options['book_override'] ) );
 		$this->assertEquals( $options['admin_default'], 'administrator' );
 		$this->assertEquals( $options['staff_default'], 'editor' );
 		$this->assertEquals( $options['learner_default'], 'contributor' );
 		$this->assertEquals( $options['hide_navigation'], 1 );
 		$this->assertEquals( $options['cc_version'], '1.2' );
+
+		// Disallow book override after the fact
+		$site_options = get_site_option( \Pressbooks\Lti\Provider\Admin::OPTION );
+		$site_options['book_override'] = 0;
+		update_site_option( \Pressbooks\Lti\Provider\Admin::OPTION, $site_options );
+		$options = $this->admin->getBookSettings();
+		$this->assertTrue( ! isset( $options['whitelist'] ) );
+		$this->assertTrue( ! isset( $options['book_override'] ) );
+		$this->assertEquals( $options['admin_default'], 'subscriber' );
+		$this->assertEquals( $options['staff_default'], 'subscriber' );
+		$this->assertEquals( $options['learner_default'], 'subscriber' );
+		$this->assertEquals( $options['hide_navigation'], 0 );
+		$this->assertEquals( $options['cc_version'], '1.3' );
 	}
 
 }
