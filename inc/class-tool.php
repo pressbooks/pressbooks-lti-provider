@@ -8,6 +8,8 @@ use Pressbooks\Book;
 
 class Tool extends ToolProvider\ToolProvider {
 
+	const META_KEY = 'pressbooks_lti_identity';
+
 	/**
 	 * @var Admin
 	 */
@@ -99,7 +101,7 @@ class Tool extends ToolProvider\ToolProvider {
 	protected function onLaunch() {
 		if ( $this->getAction() === 'launch' ) {
 			$this->initSessionVars();
-			$this->setupUser( $this->user );
+			$this->setupUser( $this->user, $this->consumer->consumerGuid );
 			$this->setupDeepLink();
 		} else {
 			$this->ok = false;
@@ -305,10 +307,11 @@ class Tool extends ToolProvider\ToolProvider {
 
 	/**
 	 * @param \IMSGlobal\LTI\ToolProvider\User $user
+	 * @param string $guid
 	 *
 	 * @throws \LogicException
 	 */
-	public function setupUser( $user ) {
+	public function setupUser( $user, $guid ) {
 
 		if ( ! is_object( $this->admin ) ) {
 			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
@@ -336,13 +339,24 @@ class Tool extends ToolProvider\ToolProvider {
 			$email = $user->getId() . '@127.0.0.1';
 		}
 
-		// Try to match the LTI User with their email
-		$wp_user = get_user_by( 'email', $email );
+		// Username
+		$username = strstr( $email, '@', true );
+
+		// LTI ID
+		$lti_id = "{$guid}|" . $user->getId();
+
+		// Try to find a matching WordPress user with LTI ID
+		$wp_user = $this->matchUser( $lti_id );
+		if ( ! $wp_user ) {
+			// Try to match the LTI User with their email
+			$wp_user = get_user_by( 'email', $email );
+		}
 
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
 			try {
-				list( $user_id, $username ) = $this->createUser( $user->getId(), $email );
+				list( $user_id, $username ) = $this->createUser( $username, $email );
+				$this->linkAccount( $user_id, $lti_id );
 				$wp_user = get_userdata( $user_id );
 			} catch ( \Exception $e ) {
 				return; // TODO: What should we do on fail?!
@@ -361,6 +375,33 @@ class Tool extends ToolProvider\ToolProvider {
 			// Login the user
 			\Pressbooks\Redirect\programmatic_login( $wp_user->user_login );
 		}
+	}
+
+	/**
+	 * Attempt to match a WordPress user to their LTI identity.
+	 *
+	 * @param string $lti_id Generally, [tool_consumer_instance_guid + user_id] should be used to identify and authenticate the current user in the LTI tool
+	 *
+	 * @return false|\WP_User
+	 */
+	public function matchUser( $lti_id ) {
+		global $wpdb;
+		$condition = "{$lti_id}|%";
+		$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", self::META_KEY, $condition ) );
+		// attempt to get a WordPress user with the matched id:
+		$user = get_user_by( 'id', $query_result );
+		return $user;
+	}
+
+	/**
+	 * Link a user to their LTI identity
+	 *
+	 * @param int $user_id
+	 * @param string $lti_id Generally, [ tool_consumer_instance_guid + user_id ] should be used to identify and authenticate the current user in the LTI tool
+	 */
+	public function linkAccount( $user_id, $lti_id ) {
+		$condition = "{$lti_id}|" . time();
+		add_user_meta( $user_id, self::META_KEY, $condition );
 	}
 
 	/**

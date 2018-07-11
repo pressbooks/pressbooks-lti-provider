@@ -76,15 +76,24 @@ class ToolTest extends \WP_UnitTestCase {
 		$prefix = uniqid( 'test' );
 		$email = "{$prefix}@pressbooks.test";
 
+		$guid = rand();
 		$user = new \IMSGlobal\LTI\ToolProvider\User();
 		$user->ltiUserId = 1;
 		$user->setEmail( $email );
 		$user->roles = [ 'urn:lti:role:ims/lis/Administrator' ];
+		$lti_id = "{$guid}|" . $user->getId();
 
-		$this->tool->setupUser( $user );
+		// User doesn't exist yet
+		$this->assertFalse( $this->tool->matchUser( $lti_id ) );
+
+		$this->tool->setupUser( $user, $guid );
 		$user = get_user_by( 'email', $email );
 		$this->assertInstanceOf( '\WP_User', $user );
+		$this->assertEquals( $prefix, $user->user_login );
 		$this->assertTrue( is_user_member_of_blog( $user->ID ) );
+
+		// User was created and linked
+		$this->assertInstanceOf( '\WP_User', $this->tool->matchUser( $lti_id ) );
 	}
 
 	public function test_setupDeepLink() {
