@@ -347,16 +347,18 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// Try to find a matching WordPress user with LTI ID
 		$wp_user = $this->matchUser( $lti_id );
-		if ( ! $wp_user ) {
+		if ( $wp_user ) {
+			$lti_id_was_matched = true;
+		} else {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $email );
+			$lti_id_was_matched = false;
 		}
 
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
 			try {
 				list( $user_id, $username ) = $this->createUser( $username, $email );
-				$this->linkAccount( $user_id, $lti_id );
 				$wp_user = get_userdata( $user_id );
 			} catch ( \Exception $e ) {
 				return; // TODO: What should we do on fail?!
@@ -371,6 +373,9 @@ class Tool extends ToolProvider\ToolProvider {
 				} else {
 					add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
 				}
+			}
+			if ( ! $lti_id_was_matched ) {
+				$this->linkAccount( $wp_user->ID, $lti_id );
 			}
 			// Login the user
 			\Pressbooks\Redirect\programmatic_login( $wp_user->user_login );
