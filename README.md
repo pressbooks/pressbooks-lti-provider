@@ -147,6 +147,7 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 * Add network option to (dis)allow books overrides.
 * Add option to show all export versions.
 * Tweak CC files for Blackboard compatibility.
+* Use email prefix as login name, store LTI ID in user meta.
 
 
 ### 0.4.3 
