@@ -3,7 +3,7 @@ Contributors: conner_bw, greatislander
 Donate link: https://opencollective.com/pressbooks/
 Tags: pressbooks, lti, lms
 Requires at least: 4.9.5
-Tested up to: 4.9.5
+Tested up to: 4.9
 Stable tag: 1.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -132,13 +132,13 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 ![ContentItemSelectionRequest in Moodle.](screenshot-3.png)
 
 == Changelog ==
-
 = 1.0.0 =
 * Update izumi-kun/lti to version 1.1.3
 * Add network option to (dis)allow books overrides.
 * Add option to show all export versions.
 * Tweak CC files for Blackboard compatibility.
 * Use email prefix as login name, store LTI ID in user meta.
+* Fix GitHub Updater
 
 = 0.4.3 =
  * Update izumi-kun/lti to version 1.1.2
@@ -170,5 +170,6 @@ Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-expo
 * Initial scaffold.
 
 == Upgrade Notice ==
+= 1.0.0 =
 
 Pressbooks LTI Provider requires Pressbooks >= 5.3.0 and WordPress >= 4.9.5.
