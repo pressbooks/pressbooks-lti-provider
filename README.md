@@ -129,7 +129,7 @@ Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1
  + Sakai imports but doesn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appear under Lessons. The rest of the content appears as unusable xml files under Resources. [See this bug report.](https://jira.sakaiproject.org/browse/SAK-40082)
  + Blackboard was able to import CC 1.2.
 
-Thanks to [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
+Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
 
 
 ## Screenshots 
