@@ -11,8 +11,8 @@ branches:
   - dev
   - "/\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
 php:
-- 7.0.8
 - 7.1
+- 7.2
 - nightly
 env:
 - WP_VERSION=latest WP_MULTISITE=1 TRAVIS_NODE_VERSION="8"
