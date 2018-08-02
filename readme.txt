@@ -111,7 +111,13 @@ Once configured, use "Launch External Tool Configuration" when adding an Externa
 
 ### Blackboard
 
-TK.
+System Admin -> LTI Tool Providers -> Register Provider Domain. Configure accordingly.
+
+Next, from the options menu (little arrow next to the configured domain) select: Manage Placements, then Create Placement.
+
+When entering the information make sure to select: Course content tool and Supports deep linking.
+
+The placement will be available in your Course the under Build Content menu.
 
 == Common Cartridge ==
 
