@@ -1,9 +1,14 @@
 <?xml version="1.0"?>
 <ruleset>
     <!-- Use Pressbooks Coding Standards -->
-    <rule ref="vendor/pressbooks/coding-standards" />
+    <rule ref="vendor/pressbooks/coding-standards">
+        <!-- Disable rules Pressbooks LTI Provider disagrees with -->
+        <exclude name="WordPress.DB.RestrictedClasses"/>
+        <exclude name="Pressbooks.CSRF.NonceVerification.NoNonceVerification"/>
+    </rule>
     <rule ref="PSR1.Methods.CamelCapsMethodName">
         <!-- Exclude classes that override WP Core -->
+        <exclude-pattern>/inc/class-table.php</exclude-pattern>
     </rule>
     <!-- Disable Side Effects and MissingNamespace rules for bootstrapping files: -->
     <rule ref="PSR1.Files.SideEffects">
