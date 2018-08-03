@@ -2,9 +2,9 @@
 Contributors: conner_bw, greatislander
 Donate link: https://opencollective.com/pressbooks/
 Tags: pressbooks, lti, lms
-Requires at least: 4.9.5
-Tested up to: 4.9
-Stable tag: 1.0.0
+Requires at least: 4.9.7
+Tested up to: 4.9.7
+Stable tag: 1.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -138,6 +138,11 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 ![ContentItemSelectionRequest in Moodle.](screenshot-3.png)
 
 == Changelog ==
+= 1.1.0 =
+* Bump minimum PHP to 7.1
+* Switch to Pressbooks Coding Standards
+* Switch to wp dist-archive for release build
+
 = 1.0.0 =
 * Update izumi-kun/lti to version 1.1.3
 * Add network option to (dis)allow books overrides.
@@ -176,6 +181,6 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 * Initial scaffold.
 
 == Upgrade Notice ==
-= 1.0.0 =
+= 1.1.0 =
 
-Pressbooks LTI Provider requires Pressbooks >= 5.3.0 and WordPress >= 4.9.5.
+Pressbooks LTI Provider requires Pressbooks >= 5.5.0 and WordPress >= 4.9.7.
