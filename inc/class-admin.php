@@ -3,8 +3,8 @@
 namespace Pressbooks\Lti\Provider;
 
 use IMSGlobal\LTI\ToolProvider;
-use Pressbooks\Book;
 use PressbooksMix\Assets;
+use Pressbooks\Book;
 
 class Admin {
 

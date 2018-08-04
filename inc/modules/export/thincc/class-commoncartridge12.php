@@ -6,10 +6,10 @@
 
 namespace Pressbooks\Lti\Provider\Modules\Export\ThinCC;
 
-use Pressbooks\Book;
-use Pressbooks\Modules\Export\Export;
 use function \Pressbooks\Lti\Provider\blade;
 use function \Pressbooks\Lti\Provider\deep_link;
+use Pressbooks\Book;
+use Pressbooks\Modules\Export\Export;
 
 class CommonCartridge12 extends Export {
 
