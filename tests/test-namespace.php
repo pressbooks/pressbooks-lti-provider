@@ -54,8 +54,9 @@ class NamespaceTest extends \WP_UnitTestCase {
 
 	public function test_session_configuration() {
 		$_SERVER['REQUEST_URI'] = '/contains/format/lti/something';
-		\Pressbooks\Lti\Provider\session_configuration();
-		$this->assertTrue( true ); // TODO: Headers already sent. You cannot change the session module's ini settings at this time
+		$options = \Pressbooks\Lti\Provider\session_configuration( [ 'read_and_close' => true, 'some_other_setting' => true ] );
+		$this->assertArrayNotHasKey( 'read_and_close', $options );
+		$this->assertArrayHasKey( 'some_other_setting', $options );
 	}
 
 	public function test_blade() {

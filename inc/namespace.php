@@ -74,15 +74,23 @@ function do_format( $format ) {
 
 /**
  * Deal with blocked 3rd Party Cookies in iframes
+ *
+ * @param array $options
+ *
+ * @return array
  */
-function session_configuration() {
+function session_configuration( $options = [] ) {
 	if ( strpos( $_SERVER['REQUEST_URI'], '/format/lti' ) !== false ) {
 		// @codingStandardsIgnoreStart
 		@ini_set( 'session.use_only_cookies', false );
 		@ini_set( 'session.use_trans_sid', true );
 		@ini_set( 'session.use_cookies', true );
 		// @codingStandardsIgnoreEnd
+		if ( isset( $options['read_and_close'] ) ) {
+			unset( $options['read_and_close'] );
+		}
 	}
+	return $options;
 }
 
 /**
