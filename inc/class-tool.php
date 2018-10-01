@@ -338,6 +338,13 @@ class Tool extends ToolProvider\ToolProvider {
 			// The LMS did not give us an email address. Make one up based on the user ID.
 			$email = $user->getId() . '@127.0.0.1';
 		}
+		/**
+		 * @since 1.1.1
+		 *
+		 * @param string $email
+		 * @param string $plugin_name
+		 */
+		$email = apply_filters( 'pb_integrations_multidomain_email', $email, 'pressbooks-lti-provider' );
 
 		// Username
 		$username = strstr( $email, '@', true );
