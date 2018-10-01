@@ -342,6 +342,15 @@ class Tool extends ToolProvider\ToolProvider {
 		// Username
 		$username = strstr( $email, '@', true );
 
+		/**
+		 * @since 1.1.1
+		 *
+		 * @param string $email
+		 * @param string $username
+		 * @param string $plugin_name
+		 */
+		$email = apply_filters( 'pb_integrations_multidomain_email', $email, $username, 'pressbooks-lti-provider' );
+
 		// LTI ID
 		$lti_id = "{$guid}|" . $user->getId();
 
