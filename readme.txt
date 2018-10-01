@@ -187,4 +187,4 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 == Upgrade Notice ==
 = 1.1.1 =
-Pressbooks LTI Provider requires Pressbooks >= 5.5.1 and WordPress >= 4.9.8.
+Pressbooks LTI Provider requires Pressbooks >= 5.5.2 and WordPress >= 4.9.8.
