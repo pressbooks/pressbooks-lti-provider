@@ -139,6 +139,7 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 == Changelog ==
 = 1.1.1 =
+ * Update izumi-kun/lti to version 1.1.5 (fix broken signature verification)
  * New `pb_integrations_multidomain_email` filter
 
 = 1.1.0 =

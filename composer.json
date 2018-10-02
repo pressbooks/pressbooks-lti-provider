@@ -27,7 +27,7 @@
 		"composer/installers": "~1.4",
 		"yahnis-elsts/plugin-update-checker": "^4.4",
 		"pressbooks/mix": "^2.1",
-		"izumi-kun/lti": "1.1.4"
+		"izumi-kun/lti": "1.1.5"
 	},
 	"require-dev": {
 		"pressbooks/coding-standards": "dev-master",
