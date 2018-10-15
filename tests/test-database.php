@@ -12,8 +12,10 @@ class DatabaseTest extends \WP_UnitTestCase {
 	}
 
 	public function test_getConnector() {
-		$data_connector = Database::getConnector();
-		$this->assertInstanceOf( '\IMSGlobal\LTI\ToolProvider\DataConnector\DataConnector', $data_connector );
+		$data_connector1 = Database::getConnector();
+		$this->assertInstanceOf( '\IMSGlobal\LTI\ToolProvider\DataConnector\DataConnector', $data_connector1 );
+		$data_connector2 = Database::getConnector();
+		$this->assertTrue( $data_connector1 === $data_connector2 ); // reuse connections, objects are identical if and only if they refer to the same instance of the same class
 	}
 
 	public function test_tablePrefix() {

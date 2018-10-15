@@ -39,10 +39,13 @@ class Database {
 			$user = DB_USER;
 			$pass = DB_PASSWORD;
 			$charset = self::CHARSET;
-
 			$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-			$pdo = new \PDO( $dsn, $user, $pass );
-			self::$connector = DataConnector\DataConnector::getDataConnector( self::tablePrefix(), $pdo );
+			try {
+				$pdo = new \PDO( $dsn, $user, $pass, [ \PDO::ATTR_PERSISTENT => false ] );
+				self::$connector = DataConnector\DataConnector::getDataConnector( self::tablePrefix(), $pdo );
+			} catch ( \Exception $e ) {
+				wp_die( $e->getMessage(), 503 ); // 503 temporarily unavailable
+			}
 		}
 		return self::$connector;
 	}
