@@ -31,7 +31,7 @@
 	},
 	"require-dev": {
 		"pressbooks/coding-standards": "dev-master",
-		"phpunit/phpunit": "6.5.8",
+		"phpunit/phpunit": "6.5.13",
 		"wpreadme2markdown/wp2md": "^3.0"
 	},
 	"archive": {
