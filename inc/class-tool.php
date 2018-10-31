@@ -332,27 +332,30 @@ class Tool extends ToolProvider\ToolProvider {
 			$role = 'anonymous';
 		}
 
+		// ID
+		$net_id = $user->getId();
+
 		// Email
 		$email = trim( $user->email );
 		if ( empty( $email ) ) {
-			// The LMS did not give us an email address. Make one up based on the user ID.
-			$email = $user->getId() . '@127.0.0.1';
+			// The LMS did not give us an email address. Make one up based on the ID.
+			$email = "{$net_id}@127.0.0.1";
 		}
 
-		// Username
+		// An easier to read username, if possible
 		$username = strstr( $email, '@', true );
 
 		/**
 		 * @since 1.1.1
 		 *
 		 * @param string $email
-		 * @param string $username
+		 * @param string $net_id
 		 * @param string $plugin_name
 		 */
-		$email = apply_filters( 'pb_integrations_multidomain_email', $email, $username, 'pressbooks-lti-provider' );
+		$email = apply_filters( 'pb_integrations_multidomain_email', $email, $net_id, 'pressbooks-lti-provider' );
 
 		// LTI ID
-		$lti_id = "{$guid}|" . $user->getId();
+		$lti_id = "{$guid}|{$net_id}";
 
 		// Try to find a matching WordPress user with LTI ID
 		$wp_user = $this->matchUser( $lti_id );
