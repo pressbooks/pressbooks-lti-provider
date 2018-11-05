@@ -4,7 +4,7 @@
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 4.9.8  
 **Tested up to:** 4.9.8  
-**Stable tag:** 1.1.1  
+**Stable tag:** 1.1.2  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -146,6 +146,10 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 
 ## Changelog 
+
+### 1.1.2 
+* Adjust `pb_integrations_multidomain_email` filter logic: [0fd5280](https://github.com/pressbooks/pressbooks-lti-provider/commit/0fd5280952560821492459e2c1d857db6fa67046)
+
 
 ### 1.1.1 
  * Update izumi-kun/lti to version 1.1.5 (fix broken signature verification)
