@@ -30,8 +30,8 @@
 		"izumi-kun/lti": "1.1.5"
 	},
 	"require-dev": {
-		"pressbooks/coding-standards": "dev-master",
 		"phpunit/phpunit": "6.5.13",
+		"pressbooks/coding-standards": "^1.0",
 		"wpreadme2markdown/wp2md": "^3.0"
 	},
 	"archive": {
