@@ -48,6 +48,7 @@ class Admin {
 			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
 			add_filter( 'pb_export_formats', [ $obj, 'exportFormats' ] );
+			add_filter( 'pb_latest_export_filetypes', [ $obj, 'exportFileFormats' ] );
 			add_filter( 'pb_active_export_modules', [ $obj, 'activeExportModules' ] );
 			add_filter( 'pb_get_export_file_class', [ $obj, 'getExportFileClass' ] );
 		}
@@ -62,7 +63,7 @@ class Admin {
 	/**
 	 * @param array $formats
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function exportFormats( $formats ) {
 		$version = (string) $this->getBookSettings()['cc_version'];
@@ -76,6 +77,27 @@ class Admin {
 			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
 		} else {
 			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1', 'pressbooks-lti-pressbooks' );
+		}
+		return $formats;
+	}
+
+	/**
+	 * @param array $formats
+	 *
+	 * @return array
+	 */
+	public function exportFileFormats( $formats ) {
+		$version = (string) $this->getBookSettings()['cc_version'];
+		if ( 'all' === $version ) {
+			$formats['thincc13'] = '._1_3.imscc';
+			$formats['thincc12'] = '._1_2.imscc';
+			$formats['thincc11'] = '._1_1.imscc';
+		} elseif ( '1.3' === $version ) {
+			$formats['thincc13'] = '._1_3.imscc';
+		} elseif ( '1.2' === $version ) {
+			$formats['thincc12'] = '._1_2.imscc';
+		} else {
+			$formats['thincc11'] = '._1_1.imscc';
 		}
 		return $formats;
 	}

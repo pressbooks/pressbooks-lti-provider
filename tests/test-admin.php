@@ -31,6 +31,21 @@ class AdminTest extends \WP_UnitTestCase {
 		delete_option( \Pressbooks\Lti\Provider\Admin::OPTION );
 	}
 
+	public function test_exportFileFormats() {
+		$formats = $this->admin->exportFileFormats( [] );
+		$this->assertTrue( isset( $formats['thincc13'] ) ); // The default
+
+		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
+		$formats = $this->admin->exportFileFormats( [] );
+		$this->assertTrue( isset( $formats['thincc12'] ) );
+
+		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
+		$formats = $this->admin->exportFileFormats( [] );
+		$this->assertTrue( isset( $formats['thincc11'] ) );
+
+		delete_option( \Pressbooks\Lti\Provider\Admin::OPTION );
+	}
+
 	public function test_activeExportModules() {
 		$modules = $this->admin->activeExportModules( [] );
 		$this->assertEmpty( $modules );
