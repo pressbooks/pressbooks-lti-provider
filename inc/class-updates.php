@@ -25,7 +25,7 @@ class Updates {
 	 */
 	static public function hooks( Updates $obj ) {
 		if ( \Pressbooks\Book::isBook() === false ) {
-			$obj->gitHubUpdater();
+			add_action( 'plugins_loaded', [ $obj, 'gitHubUpdater' ] );
 		}
 	}
 
