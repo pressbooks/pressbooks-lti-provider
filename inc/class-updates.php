@@ -42,14 +42,17 @@ class Updates {
 	 * @see https://github.com/YahnisElsts/plugin-update-checker
 	 */
 	public function gitHubUpdater() {
-		$updater = \Puc_v4_Factory::buildUpdateChecker(
-			'https://github.com/pressbooks/pressbooks-lti-provider/',
-			\Pressbooks\Utility\absolute_path( __DIR__ . '/../pressbooks-lti-provider.php' ), // Fully qualified path to the main plugin file
-			'pressbooks-lti-provider',
-			24
-		);
-		$updater->setBranch( 'master' );
-		$updater->getVcsApi()->enableReleaseAssets();
+		static $updater = null;
+		if ( $updater === null ) {
+			$updater = \Puc_v4_Factory::buildUpdateChecker(
+				'https://github.com/pressbooks/pressbooks-lti-provider/',
+				\Pressbooks\Utility\absolute_path( __DIR__ . '/../pressbooks-lti-provider.php' ), // Fully qualified path to the main plugin file
+				'pressbooks-lti-provider',
+				24
+			);
+			$updater->setBranch( 'master' );
+			$updater->getVcsApi()->enableReleaseAssets();
+		}
 	}
 
 }
