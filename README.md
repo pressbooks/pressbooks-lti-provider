@@ -1,10 +1,9 @@
 # Pressbooks LTI Provider 
 **Contributors:** conner_bw, greatislander  
-**Donate link:** https://opencollective.com/pressbooks/  
 **Tags:** pressbooks, lti, lms  
-**Requires at least:** 4.9.8  
-**Tested up to:** 4.9.8  
-**Stable tag:** 1.1.2  
+**Requires at least:** 5.0.3  
+**Tested up to:** 5.0.3  
+**Stable tag:** 1.1.3  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -17,7 +16,7 @@ This plugin turns Pressbooks into an LTI provider.
 
 A plugin that turn Pressbooks into an [LTI Provider](https://en.wikipedia.org/wiki/Learning_Tools_Interoperability).
 
-This plugin is built on top of an IMS Global Learning Consortium provided [LTI-Tool-Provider-Library-PHP](https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP) abstraction
+This plugin is built on top of a (forked and maintained) IMS Global Learning Consortium provided [LTI-Tool-Provider-Library-PHP](https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP) abstraction
 layer. It includes support for LTI 1.1 and the unofficial extensions to LTI 1.0, as well as the registration process and services of LTI 2.0.
 
 
@@ -31,7 +30,7 @@ Or, download the latest version from the releases page and unzip it into your Wo
 
 Then, activate and configure the plugin at the Network level.
 
-Read the developer documentation for more info: https://docs.pressbooks.org/integrations/pressbooks-lti-provider/
+Read the integrations documentation for more info: https://docs.pressbooks.org/integrations/lti/
 
 
 ## Troubleshooting 
@@ -73,6 +72,8 @@ Pressbooks supports incoming content-item requests for media type values of `app
 This feature allows course designers to select which chapter they want to display from inside their LMS.
 
 When configuring, the Launch URL will be something like `https://site/book/format/lti` where `https://site/book` is the URL to your book. Setup instructions follow:
+
+Note: Automatic configuration is a feature of the LTI 2.0 specification. Support, usefulness, varies between Learning Management Systems.
 
 ### Moodle
 
@@ -132,10 +133,10 @@ Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1
  + Files passed the IMS Common Cartridge Validator.
  + Moodle was able to import CC 1.1 ([because there's no code to import 1.2 or 1.3 ?!](https://github.com/moodle/moodle/tree/master/backup/converter))
  + Canvas was able to import CC 1.1, 1.2, and 1.3.
- + Sakai imports but doesn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appear under Lessons. The rest of the content appears as unusable xml files under Resources. [See this bug report.](https://jira.sakaiproject.org/browse/SAK-40082)
+ + Sakai imports but doesn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appear under Lessons. The rest of the content appears as unusable xml files under Resources. Fixed in 12.4 [See this bug report.](https://jira.sakaiproject.org/browse/SAK-40082)
  + Blackboard was able to import CC 1.2.
 
-Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports) and everyone in the Pressbooks #opensource Slack channel who helped us get this working.
+Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports) and everyone in https://pressbooks.community/ who helped us get this working.
 
 
 ## Screenshots 
@@ -147,6 +148,11 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Changelog 
 
+### 1.1.3 
+ * Update izumi-kun/lti to version 1.1.6 (fix properties of class ContentItemPlacement)
+ * Update README
+
+
 ### 1.1.2 
 * Adjust `pb_integrations_multidomain_email` filter logic: [0fd5280](https://github.com/pressbooks/pressbooks-lti-provider/commit/0fd5280952560821492459e2c1d857db6fa67046)
 
@@ -157,20 +163,20 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 
 ### 1.1.0 
-* Update izumi-kun/lti to version 1.1.4
-* Fix `read_and_close` session option for LTI endpoints
-* Bump minimum PHP to 7.1
-* Switch to Pressbooks Coding Standards
-* Switch to wp dist-archive for release build
+ * Update izumi-kun/lti to version 1.1.4
+ * Fix `read_and_close` session option for LTI endpoints
+ * Bump minimum PHP to 7.1
+ * Switch to Pressbooks Coding Standards
+ * Switch to wp dist-archive for release build
 
 
 ### 1.0.0 
-* Update izumi-kun/lti to version 1.1.3
-* Add network option to (dis)allow books overrides.
-* Add option to show all export versions.
-* Tweak CC files for Blackboard compatibility.
-* Use email prefix as login name, store LTI ID in user meta.
-* Fix GitHub Updater
+ * Update izumi-kun/lti to version 1.1.3
+ * Add network option to (dis)allow books overrides.
+ * Add option to show all export versions.
+ * Tweak CC files for Blackboard compatibility.
+ * Use email prefix as login name, store LTI ID in user meta.
+ * Fix GitHub Updater
 
 
 ### 0.4.3 
@@ -193,23 +199,23 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 
 ### 0.4.0 
-* Export "Thin" Common Cartridge files.
+ * Export "Thin" Common Cartridge files.
 
 
 ### 0.3.0 
-* Prettier forms.
-* Bug fixes for Canvas.
+ * Prettier forms.
+ * Bug fixes for Canvas.
 
 
 ### 0.2.0 
-* Demo for Open source Slack channel.
+ * Demo for Open source Slack channel.
 
 
 ### 0.1.0 
-* Initial scaffold.
+ * Initial scaffold.
 
 
 ## Upgrade Notice 
 
-### 1.1.1 
-Pressbooks LTI Provider requires Pressbooks >= 5.5.2 and WordPress >= 4.9.8.
+### 1.1.3 
+Pressbooks LTI Provider requires requires Pressbooks >= 5.6.5 and WordPress >= 5.0.3
