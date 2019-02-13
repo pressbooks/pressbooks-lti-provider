@@ -42,7 +42,7 @@ if ( ! class_exists( '\PDO' ) || ! in_array( 'mysql', \PDO::getAvailableDrivers(
 // Class autoloader
 // -------------------------------------------------------------------------------------------------------------------
 
-\HM\Autoloader\register_class_path( 'Pressbooks\Lti\Provider', __DIR__ . '/inc' );
+\HM\Autoloader\register_class_path( 'PressbooksLtiProvider', __DIR__ . '/inc' );
 
 // -------------------------------------------------------------------------------------------------------------------
 // Composer autoloader
@@ -69,8 +69,8 @@ require( __DIR__ . '/inc/namespace.php' );
 // Hooks
 // -------------------------------------------------------------------------------------------------------------------
 
-register_activation_hook( __FILE__, [ '\Pressbooks\Lti\Provider\Database', 'installTables' ] );
-add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Updates', 'init' ] );
-add_action( 'plugins_loaded', [ '\Pressbooks\Lti\Provider\Admin', 'init' ] );
-add_action( 'pb_do_format', '\Pressbooks\Lti\Provider\do_format' );
-add_filter( 'pb_session_configuration', '\Pressbooks\Lti\Provider\session_configuration' );
+register_activation_hook( __FILE__, [ '\PressbooksLtiProvider\Database', 'installTables' ] );
+add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Updates', 'init' ] );
+add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Admin', 'init' ] );
+add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
+add_filter( 'pb_session_configuration', '\PressbooksLtiProvider\session_configuration' );

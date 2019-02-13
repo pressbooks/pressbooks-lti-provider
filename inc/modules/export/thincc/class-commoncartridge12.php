@@ -4,10 +4,10 @@
  * @license GPLv3 (or any later version)
  */
 
-namespace Pressbooks\Lti\Provider\Modules\Export\ThinCC;
+namespace PressbooksLtiProvider\Modules\Export\ThinCC;
 
-use function \Pressbooks\Lti\Provider\blade;
-use function \Pressbooks\Lti\Provider\deep_link;
+use function \PressbooksLtiProvider\blade;
+use function \PressbooksLtiProvider\deep_link;
 use Pressbooks\Book;
 use Pressbooks\Modules\Export\Export;
 

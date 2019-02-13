@@ -3,7 +3,7 @@
 class AdminTest extends \WP_UnitTestCase {
 
 	/**
-	 * @var \Pressbooks\Lti\Provider\Admin
+	 * @var \PressbooksLtiProvider\Admin
 	 */
 	protected $admin;
 
@@ -13,37 +13,37 @@ class AdminTest extends \WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$GLOBALS['hook_suffix'] = 'mock';
-		$this->admin = new \Pressbooks\Lti\Provider\Admin();
+		$this->admin = new \PressbooksLtiProvider\Admin();
 	}
 
 	public function test_exportFormats() {
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc13'] ) ); // The default
 
-		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc12'] ) );
 
-		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc11'] ) );
 
-		delete_option( \Pressbooks\Lti\Provider\Admin::OPTION );
+		delete_option( \PressbooksLtiProvider\Admin::OPTION );
 	}
 
 	public function test_exportFileFormats() {
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc13'] ) ); // The default
 
-		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc12'] ) );
 
-		update_option( \Pressbooks\Lti\Provider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc11'] ) );
 
-		delete_option( \Pressbooks\Lti\Provider\Admin::OPTION );
+		delete_option( \PressbooksLtiProvider\Admin::OPTION );
 	}
 
 	public function test_activeExportModules() {
@@ -54,9 +54,9 @@ class AdminTest extends \WP_UnitTestCase {
 		$_POST['export_formats']['thincc12'] = true;
 		$_POST['export_formats']['thincc13'] = true;
 		$modules = $this->admin->activeExportModules( $modules );
-		$this->assertTrue( array_search( '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge11', $modules, true ) !== false );
-		$this->assertTrue( array_search( '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12', $modules, true ) !== false );
-		$this->assertTrue( array_search( '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13', $modules, true ) !== false );
+		$this->assertTrue( array_search( '\PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge11', $modules, true ) !== false );
+		$this->assertTrue( array_search( '\PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12', $modules, true ) !== false );
+		$this->assertTrue( array_search( '\PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge13', $modules, true ) !== false );
 	}
 
 	public function test_getExportFileClass() {
@@ -147,10 +147,10 @@ class AdminTest extends \WP_UnitTestCase {
 	//
 
 	public function test_addBookSettingsMenu() {
-		update_site_option( \Pressbooks\Lti\Provider\Admin::OPTION, [ 'book_override' => 1 ] );
+		update_site_option( \PressbooksLtiProvider\Admin::OPTION, [ 'book_override' => 1 ] );
 		$this->admin->addBookSettingsMenu();
 		$this->assertTrue( true ); // Did not crash
-		delete_site_option( \Pressbooks\Lti\Provider\Admin::OPTION );
+		delete_site_option( \PressbooksLtiProvider\Admin::OPTION );
 	}
 
 	public function test_printBookSettingsMenu() {
@@ -194,9 +194,9 @@ class AdminTest extends \WP_UnitTestCase {
 		$this->assertEquals( $options['cc_version'], '1.2' );
 
 		// Disallow book override after the fact
-		$site_options = get_site_option( \Pressbooks\Lti\Provider\Admin::OPTION );
+		$site_options = get_site_option( \PressbooksLtiProvider\Admin::OPTION );
 		$site_options['book_override'] = 0;
-		update_site_option( \Pressbooks\Lti\Provider\Admin::OPTION, $site_options );
+		update_site_option( \PressbooksLtiProvider\Admin::OPTION, $site_options );
 		$options = $this->admin->getBookSettings();
 		$this->assertTrue( ! isset( $options['whitelist'] ) );
 		$this->assertTrue( ! isset( $options['book_override'] ) );

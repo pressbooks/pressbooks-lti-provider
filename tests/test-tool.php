@@ -5,17 +5,17 @@ class ToolTest extends \WP_UnitTestCase {
 	use utilsTrait;
 
 	/**
-	 * @var \Pressbooks\Lti\Provider\Tool
+	 * @var \PressbooksLtiProvider\Tool
 	 */
 	protected $tool;
 
 	/**
-	 * @return \Pressbooks\Lti\Provider\Admin
+	 * @return \PressbooksLtiProvider\Admin
 	 */
 	protected function getMockAdmin() {
 
 		$stub1 = $this
-			->getMockBuilder( '\Pressbooks\Lti\Provider\Admin' )
+			->getMockBuilder( '\PressbooksLtiProvider\Admin' )
 			->getMock();
 		$stub1
 			->method( 'getSettings' )
@@ -48,8 +48,8 @@ class ToolTest extends \WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$connector = Pressbooks\Lti\Provider\Database::getConnector();
-		$tool = new Pressbooks\Lti\Provider\Tool( $connector );
+		$connector = PressbooksLtiProvider\Database::getConnector();
+		$tool = new PressbooksLtiProvider\Tool( $connector );
 		$tool->setAdmin( $this->getMockAdmin() );
 		$this->tool = $tool;
 	}
