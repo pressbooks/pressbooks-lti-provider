@@ -1,6 +1,6 @@
 <?php
 
-namespace Pressbooks\Lti\Provider;
+namespace PressbooksLtiProvider;
 
 use IMSGlobal\LTI\Profile;
 use IMSGlobal\LTI\ToolProvider;
@@ -32,7 +32,7 @@ class Tool extends ToolProvider\ToolProvider {
 	/**
 	 * Tool constructor.
 	 * Launched by do_format()
-	 * @see \Pressbooks\Lti\Provider\do_format
+	 * @see \PressbooksLtiProvider\do_format
 	 *
 	 * @param \IMSGlobal\LTI\ToolProvider\DataConnector\DataConnector $data_connector
 	 */

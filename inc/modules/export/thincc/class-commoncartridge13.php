@@ -4,7 +4,7 @@
  * @license GPLv3 (or any later version)
  */
 
-namespace Pressbooks\Lti\Provider\Modules\Export\ThinCC;
+namespace PressbooksLtiProvider\Modules\Export\ThinCC;
 
 class CommonCartridge13 extends CommonCartridge12 {
 

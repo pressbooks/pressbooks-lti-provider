@@ -1,6 +1,6 @@
 <?php
 
-use Pressbooks\Lti\Provider\Database;
+use PressbooksLtiProvider\Database;
 
 class DatabaseTest extends \WP_UnitTestCase {
 
@@ -29,7 +29,7 @@ class DatabaseTest extends \WP_UnitTestCase {
 		// @see \WP_UnitTestCase::_create_temporary_tables
 		add_filter( 'query', [ $this, '_alter_temporary_tables' ] );
 
-		$option = \Pressbooks\Lti\Provider\Database::OPTION;
+		$option = \PressbooksLtiProvider\Database::OPTION;
 		$this->assertTrue( get_site_option( $option ) === false );
 		Database::installTables();
 		$this->assertTrue( get_site_option( $option ) > 0 );

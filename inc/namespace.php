@@ -1,6 +1,6 @@
 <?php
 
-namespace Pressbooks\Lti\Provider;
+namespace PressbooksLtiProvider;
 
 /**
  * If not in unit tests, then exit!

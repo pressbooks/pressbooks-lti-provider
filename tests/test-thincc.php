@@ -3,18 +3,18 @@
 class ThinCC extends \WP_UnitTestCase {
 
 	/**
-	 * @var \Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12
+	 * @var \PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12
 	 */
 	protected $thincc11;
 
 
 	/**
-	 * @var \Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12
+	 * @var \PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12
 	 */
 	protected $thincc12;
 
 	/**
-	 * @var \Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13
+	 * @var \PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge13
 	 */
 	protected $thincc13;
 
@@ -25,9 +25,9 @@ class ThinCC extends \WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->thincc11 = new Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12( [] );
-		$this->thincc12 = new Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12( [] );
-		$this->thincc13 = new Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13( [] );
+		$this->thincc11 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12( [] );
+		$this->thincc12 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12( [] );
+		$this->thincc13 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge13( [] );
 	}
 
 	public function test_sanityCheckExports() {

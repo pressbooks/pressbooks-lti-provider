@@ -1,6 +1,6 @@
 <?php
 
-namespace Pressbooks\Lti\Provider;
+namespace PressbooksLtiProvider;
 
 use IMSGlobal\LTI\ToolProvider;
 

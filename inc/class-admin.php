@@ -1,6 +1,6 @@
 <?php
 
-namespace Pressbooks\Lti\Provider;
+namespace PressbooksLtiProvider;
 
 use IMSGlobal\LTI\ToolProvider;
 use PressbooksMix\Assets;
@@ -109,13 +109,13 @@ class Admin {
 	 */
 	public function activeExportModules( $modules ) {
 		if ( isset( $_POST['export_formats']['thincc11'] ) ) { // @codingStandardsIgnoreLine
-			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge11';
+			$modules[] = '\PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge11';
 		}
 		if ( isset( $_POST['export_formats']['thincc12'] ) ) { // @codingStandardsIgnoreLine
-			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge12';
+			$modules[] = '\PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12';
 		}
 		if ( isset( $_POST['export_formats']['thincc13'] ) ) { // @codingStandardsIgnoreLine
-			$modules[] = '\Pressbooks\Lti\Provider\Modules\Export\ThinCC\CommonCartridge13';
+			$modules[] = '\PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge13';
 		}
 		return $modules;
 	}

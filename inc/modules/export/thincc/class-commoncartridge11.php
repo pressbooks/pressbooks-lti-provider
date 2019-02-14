@@ -4,7 +4,7 @@
  * @license GPLv3 (or any later version)
  */
 
-namespace Pressbooks\Lti\Provider\Modules\Export\ThinCC;
+namespace PressbooksLtiProvider\Modules\Export\ThinCC;
 
 /**
  * More or less the same thing as 1.2 except for a few minor XML template tweaks
