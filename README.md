@@ -1,8 +1,8 @@
 # Pressbooks LTI Provider 
 **Contributors:** conner_bw, greatislander  
 **Tags:** pressbooks, lti, lms  
-**Requires at least:** 5.0.3  
-**Tested up to:** 5.0.3  
+**Requires at least:** 5.1.0  
+**Tested up to:** 5.1.0  
 **Stable tag:** 1.1.3  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
@@ -218,4 +218,4 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 ## Upgrade Notice 
 
 ### 1.1.3 
-Pressbooks LTI Provider requires requires Pressbooks >= 5.6.5 and WordPress >= 5.0.3
+Pressbooks LTI Provider requires requires Pressbooks >= 5.7.0 and WordPress >= 5.1.0
