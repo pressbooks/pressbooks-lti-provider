@@ -148,6 +148,13 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Changelog 
 
+### 1.2.0 
+ * Refactor code to respect Pressbooks coding standards 1.0.0
+ * Fix an issue with GitHub updater not always working
+ * Update Common Cartridge to work with Pressbooks 5.7 Exports page: #31
+ * Update dependencies to latest versions
+
+
 ### 1.1.3 
  * Update izumi-kun/lti to version 1.1.6 (fix properties of class ContentItemPlacement)
  * Update README
@@ -217,5 +224,5 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Upgrade Notice 
 
-### 1.1.3 
+### 1.2.0 
 Pressbooks LTI Provider requires Pressbooks >= 5.7.0 and WordPress >= 5.1.0
