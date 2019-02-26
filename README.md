@@ -218,4 +218,4 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 ## Upgrade Notice 
 
 ### 1.1.3 
-Pressbooks LTI Provider requires requires Pressbooks >= 5.7.0 and WordPress >= 5.1.0
+Pressbooks LTI Provider requires Pressbooks >= 5.7.0 and WordPress >= 5.1.0
