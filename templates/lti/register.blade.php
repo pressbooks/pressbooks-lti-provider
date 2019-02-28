@@ -33,8 +33,8 @@
     </style>
 </head>
 <body>
-<h1>{{ sprintf(__('Registration request for %s', 'pressbooks-lti-provider'), $title) }}</h1>
+<h1>{{ sprintf(__('Registration request for %s', 'pressbooks-lti-provider'), $title) ?></h1>
 
-<p><a href='{!! $cancel_url !!}'>{{ __('Go back', 'pressbooks-lti-provider') }}</a> <a href='{!! $success_url !!}'>{{ __('Proceed with registration &rarr;', 'pressbooks-lti-provider') }}</a></p>
+<p><a href='{!! $cancel_url !!}'><?php _e('Go back', 'pressbooks-lti-provider') ?></a> <a href='{!! $success_url !!}'><?php _e('Proceed with registration &rarr;', 'pressbooks-lti-provider') ?></a></p>
 </body>
 </html>
