@@ -30,8 +30,7 @@ before_install:
 - source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION && nvm use $TRAVIS_NODE_VERSION
 install:
 - node -v
-- npm install -g yarn
-- yarn
+- npm install
 - composer install
 before_script:
 - if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.1" ]] && php -v | grep -q 'Xdebug'; then phpenv config-rm xdebug.ini; fi
@@ -40,8 +39,8 @@ before_script:
 - cd ../pressbooks && composer install --no-dev
 - cd ../pressbooks-lti-provider
 script:
-- yarn run test
-- yarn run build:production
+- npm run lint
+- npm run build:production
 - vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml
 - vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/
 after_success:
