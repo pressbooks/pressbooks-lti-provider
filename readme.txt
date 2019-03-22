@@ -141,6 +141,7 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 == Changelog ==
 = 1.2.0 =
  * Refactor code to respect Pressbooks coding standards 1.0.0
+ * Add localization support
  * Fix an issue with GitHub updater not always working
  * Update Common Cartridge to work with Pressbooks 5.7 Exports page: #31
  * Update dependencies to latest versions
