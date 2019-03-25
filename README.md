@@ -1,8 +1,8 @@
 # Pressbooks LTI Provider 
 **Contributors:** conner_bw, greatislander  
 **Tags:** pressbooks, lti, lms  
-**Requires at least:** 5.1.0  
-**Tested up to:** 5.1.0  
+**Requires at least:** 5.1.1  
+**Tested up to:** 5.1.1  
 **Stable tag:** 1.2.0  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
