@@ -6,7 +6,7 @@
     </p>
     <form method="POST" action="{{ $form_url }}" method="post">
         {!! wp_nonce_field( 'pb-lti-provider-book' ) !!}
-        <table class="form-table">
+        <table class="form-table" role="none">
             @foreach ([
                 'admin_default' => __('Map Administrator to the following Pressbooks role', 'pressbooks-lti-provider'),
                 'staff_default' => __('Map Staff to the following Pressbooks role', 'pressbooks-lti-provider'),
@@ -26,7 +26,7 @@
                 </tr>
             @endforeach
         </table>
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th>{{ __('Appearance', 'pressbooks-lti-provider') }}</th>
                 <td>
@@ -42,7 +42,7 @@
         <p>
             <em>{{ __("Export books as Common Cartridge files with LTI links.", 'pressbooks-lti-provider') }}</em>
         </p>
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th>{{ __('Version', 'pressbooks-lti-provider') }}</th>
                 <td>

@@ -3,7 +3,7 @@
     <hr class="wp-header-end">
     <form method="POST" action="{{ $form_url }}" method="post">
         {!! wp_nonce_field( 'pb-lti-provider' ) !!}
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th><label for="whitelist">{{ __('LTI2 Registration Whitelist', 'pressbooks-lti-provider') }}</label></th>
                 <td>
@@ -18,7 +18,7 @@
         <p>
             <em>{{ __("Pressbooks will try to match the LTI User with their email. If, however, a matching Pressbooks user is not found then:", 'pressbooks-lti-provider') }}</em>
         </p>
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th>{{ __('Allow books to override role-mapping and Common Cartridge defaults', 'pressbooks-lti-provider') }}</th>
                 <td>
@@ -30,7 +30,7 @@
                 </td>
             </tr>
         </table>
-        <table class="form-table">
+        <table class="form-table" role="none">
             @foreach ([
                 'admin_default' => __('Map Administrator to the following Pressbooks role', 'pressbooks-lti-provider'),
                 'staff_default' => __('Map Staff to the following Pressbooks role', 'pressbooks-lti-provider'),
@@ -50,7 +50,7 @@
                 </tr>
             @endforeach
         </table>
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th>{{ __('Appearance', 'pressbooks-lti-provider') }}</th>
                 <td>
@@ -66,7 +66,7 @@
         <p>
             <em>{{ __("Export books as Common Cartridge files with LTI links.", 'pressbooks-lti-provider') }}</em>
         </p>
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th>{{ __('Version', 'pressbooks-lti-provider') }}</th>
                 <td>

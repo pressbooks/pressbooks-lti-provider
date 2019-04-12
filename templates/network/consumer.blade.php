@@ -5,7 +5,7 @@
     <form method="POST" action="{{ $form_url }}" method="post">
         {!! wp_nonce_field( 'pb-lti-provider' ) !!}
         <input type="hidden" name="ID" value="{{ $options['ID'] }}"/>
-        <table class="form-table">
+        <table class="form-table" role="none">
             <tr>
                 <th><label for="name">{{ __('Name', 'pressbooks-lti-provider') }}</label></th>
                 <td><input name="name" id="name" type="text" value="{{ $options['name'] }}" class="regular-text" required/></td>
