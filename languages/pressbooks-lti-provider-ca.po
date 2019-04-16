@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Pressbooks LTI Provider plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.2.0\n"
-"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
-"POT-Creation-Date: 2019-03-22T14:54:46+00:00\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.2.1\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/<plugin>/\n"
+"POT-Creation-Date: 2019-04-16T10:57:18+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Language-Team: Catalan (https://www.transifex.com/pressbooks/teams/9194/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -32,21 +32,21 @@ msgstr ""
 msgid "Pressbooks (Book Oven Inc.)"
 msgstr ""
 
-#: inc/class-admin.php:171 inc/class-admin.php:172 inc/class-admin.php:201
+#: inc/class-admin.php:172 inc/class-admin.php:173 inc/class-admin.php:202
 msgid "LTI Consumers"
 msgstr ""
 
-#: inc/class-admin.php:204
+#: inc/class-admin.php:205
 msgid "Add new"
 msgstr ""
 
 #. translators: 1: Number of consumers deleted
-#: inc/class-admin.php:209
+#: inc/class-admin.php:210
 msgid "Consumers deleted: %d"
 msgstr ""
 
-#: inc/class-admin.php:308 inc/class-admin.php:309 inc/class-admin.php:393
-#: inc/class-admin.php:394 templates/book/settings.blade.php:2
+#: inc/class-admin.php:309 inc/class-admin.php:310 inc/class-admin.php:394
+#: inc/class-admin.php:395 templates/book/settings.blade.php:2
 #: templates/network/settings.blade.php:2
 msgid "LTI Settings"
 msgstr ""

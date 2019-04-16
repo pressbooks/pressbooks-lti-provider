@@ -1,16 +1,16 @@
 # Copyright (C) 2019 Pressbooks (Book Oven Inc.)
 # This file is distributed under the same license as the Pressbooks LTI Provider plugin.
 # Translators:
-# Hubert GB <hgblouin@tciinc.ca>, 2019
 # Amelie Roberge <aroberge@tciinc.ca>, 2019
+# Hubert GB <hgblouin@tciinc.ca>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.2.0\n"
-"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
-"POT-Creation-Date: 2019-03-22T14:54:46+00:00\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.2.1\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/<plugin>/\n"
+"POT-Creation-Date: 2019-04-16T10:57:18+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
-"Last-Translator: Amelie Roberge <aroberge@tciinc.ca>, 2019\n"
+"Last-Translator: Hubert GB <hgblouin@tciinc.ca>, 2019\n"
 "Language-Team: French (https://www.transifex.com/pressbooks/teams/9194/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,21 +38,21 @@ msgstr ""
 msgid "Pressbooks (Book Oven Inc.)"
 msgstr "Pressbooks (Book Oven Inc.)"
 
-#: inc/class-admin.php:171 inc/class-admin.php:172 inc/class-admin.php:201
+#: inc/class-admin.php:172 inc/class-admin.php:173 inc/class-admin.php:202
 msgid "LTI Consumers"
 msgstr "Clients LTI"
 
-#: inc/class-admin.php:204
+#: inc/class-admin.php:205
 msgid "Add new"
 msgstr "Ajouter un nouveau"
 
 #. translators: 1: Number of consumers deleted
-#: inc/class-admin.php:209
+#: inc/class-admin.php:210
 msgid "Consumers deleted: %d"
 msgstr "Clients supprimés&nbsp;: %d"
 
-#: inc/class-admin.php:308 inc/class-admin.php:309 inc/class-admin.php:393
-#: inc/class-admin.php:394 templates/book/settings.blade.php:2
+#: inc/class-admin.php:309 inc/class-admin.php:310 inc/class-admin.php:394
+#: inc/class-admin.php:395 templates/book/settings.blade.php:2
 #: templates/network/settings.blade.php:2
 msgid "LTI Settings"
 msgstr "Paramètres LTI"
@@ -63,7 +63,7 @@ msgid ""
 "allowed domains."
 msgstr ""
 "Demande d&rsquo;enregistrement non-autorisée. Le client de l&rsquo;outil "
-"n'est pas sur la liste blanche des domaines autorisés."
+"n&rsquo;est pas sur la liste blanche des domaines autorisés."
 
 #: inc/class-table.php:125 templates/network/consumer.blade.php:11
 msgid "Name"
@@ -104,7 +104,7 @@ msgstr "Propulsé par Pressbooks"
 
 #: inc/class-tool.php:108
 msgid "Invalid launch URL"
-msgstr "URL d'activation invalide"
+msgstr "URL d&rsquo;activation invalide"
 
 #: inc/class-tool.php:130
 msgid "Return of an LTI link not offered"
@@ -140,7 +140,7 @@ msgstr "Lien profond introuvable"
 
 #: pressbooks-lti-provider.php:23
 msgid "Cannot find Pressbooks install."
-msgstr "Installateur Pressbooks introuvable."
+msgstr "Erreur lors de ld&rsquo;installation de Pressbooks."
 
 #: pressbooks-lti-provider.php:34
 msgid "Cannot find PDO for MySQL."
@@ -164,23 +164,23 @@ msgid ""
 "matching Pressbooks user is not found then:"
 msgstr ""
 "Pressbooks établira une correspondance entre l&rsquo;utilisateur LTI et son "
-"adresse courriel. Toutefois, si aucun utilisateur Pressbooks n'est "
+"adresse courriel. Toutefois, si aucun utilisateur Pressbooks n&rsquo;est "
 "trouvé&nbsp;:"
 
 #: templates/book/settings.blade.php:12
 #: templates/network/settings.blade.php:37
 msgid "Map Administrator to the following Pressbooks role"
-msgstr ""
+msgstr "Jumeler l&rsquo;administrateur au rôle suivant dans Pressbooks."
 
 #: templates/book/settings.blade.php:13
 #: templates/network/settings.blade.php:38
 msgid "Map Staff to the following Pressbooks role"
-msgstr ""
+msgstr "Jumeler le personnel au rôle suivant dans Pressbooks."
 
 #: templates/book/settings.blade.php:14
 #: templates/network/settings.blade.php:39
 msgid "Map Learner to the following Pressbooks role"
-msgstr ""
+msgstr "Jumeler l&rsquo;apprenant au rôle suivant dans Pressbooks."
 
 #: templates/book/settings.blade.php:19
 #: templates/network/settings.blade.php:44
@@ -262,7 +262,7 @@ msgstr "Afficher toutes les versions exportées"
 
 #: templates/lti/register.blade.php:36
 msgid "Registration request for %s"
-msgstr ""
+msgstr "Demande d&rsquo;inscription pour %s"
 
 #: templates/lti/register.blade.php:38
 msgid "Go back"
@@ -274,7 +274,7 @@ msgstr "Procéder à l&rsquo;inscription &rarr;"
 
 #: templates/lti/selection.blade.php:26
 msgid "Content item selection request for %s"
-msgstr ""
+msgstr "Demande de sélection d&rsquo;un élément du contenu pour %s"
 
 #: templates/lti/selection.blade.php:30
 msgid "Cover Page"
@@ -326,7 +326,7 @@ msgstr "Autorisation jusqu&rsquo;à"
 
 #: templates/network/settings.blade.php:9
 msgid "LTI2 Registration Whitelist"
-msgstr "Liste blanche d'inscriptions LTI2"
+msgstr "Liste blanche d&rsquo;inscriptions LTI2"
 
 #: templates/network/settings.blade.php:13
 msgid ""
