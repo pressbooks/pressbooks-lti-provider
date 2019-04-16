@@ -3,7 +3,7 @@
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 5.1.1  
 **Tested up to:** 5.1.1  
-**Stable tag:** 1.3.0-dev  
+**Stable tag:** 1.2.1  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -148,6 +148,11 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Changelog 
 
+### 1.2.1 
+ * Fix translations not loading
+ * Add ARIA role="none" to presentation tables
+
+
 ### 1.2.0 
  * Refactor code to respect Pressbooks coding standards 1.0.0
  * Add localization support
@@ -225,5 +230,5 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Upgrade Notice 
 
-### 1.2.0 
-Pressbooks LTI Provider requires Pressbooks >= 5.7.0
+### 1.2.1 
+Pressbooks LTI Provider requires Pressbooks >= 5.7.1
