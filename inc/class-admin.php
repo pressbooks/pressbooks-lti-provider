@@ -32,6 +32,7 @@ class Admin {
 	 * @param Admin $obj
 	 */
 	static public function hooks( Admin $obj ) {
+		load_plugin_textdomain( 'pressbooks-lti-provider', false, 'pressbooks-lti-provider/languages/' );
 
 		add_action( 'network_admin_menu', [ $obj, 'addConsumersMenu' ], 1000 );
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
