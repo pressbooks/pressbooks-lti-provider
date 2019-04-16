@@ -3,7 +3,7 @@
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 5.1.1  
 **Tested up to:** 5.1.1  
-**Stable tag:** 1.2.1  
+**Stable tag:** 1.3.0-dev   
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
