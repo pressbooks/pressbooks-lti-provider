@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e38977f7a72b348de377d2937bee6b15",
+    "content-hash": "52c88bdbc3f5746b7663ac8821692927",
     "packages": [
         {
             "name": "composer/installers",
@@ -128,16 +128,16 @@
         },
         {
             "name": "izumi-kun/lti",
-            "version": "1.1.6",
+            "version": "1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Izumi-kun/LTI-Tool-Provider-Library-PHP.git",
-                "reference": "df420fea8f7b3ec651a0d382ad36696f70346153"
+                "reference": "a5ea491dfd761c8e8839cd2bf74a08f55b82d3ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/df420fea8f7b3ec651a0d382ad36696f70346153",
-                "reference": "df420fea8f7b3ec651a0d382ad36696f70346153",
+                "url": "https://api.github.com/repos/Izumi-kun/LTI-Tool-Provider-Library-PHP/zipball/a5ea491dfd761c8e8839cd2bf74a08f55b82d3ea",
+                "reference": "a5ea491dfd761c8e8839cd2bf74a08f55b82d3ea",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
             "keywords": [
                 "LTI"
             ],
-            "time": "2018-11-20T18:30:01+00:00"
+            "time": "2019-02-14T10:55:22+00:00"
         },
         {
             "name": "pressbooks/mix",
