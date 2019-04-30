@@ -208,7 +208,7 @@ EOJS;
 		if ( 'delete' === $table->current_action() ) {
 			/* translators: 1: Number of consumers deleted */
 			$message = sprintf( __( 'Consumers deleted: %d', 'pressbooks-lti-provider' ), is_array( $_REQUEST['ID'] ) ? count( $_REQUEST['ID'] ) : 1 );
-			$message = '<div id="message" class="updated notice is-dismissible"><p>' . $message . '</p></div>';
+			$message = '<div id="message" role="status" class="updated notice is-dismissible"><p>' . $message . '</p></div>';
 		}
 		$table->prepare_items();
 		echo $message;
@@ -224,7 +224,7 @@ EOJS;
 	 */
 	public function printConsumerForm() {
 		if ( $this->saveConsumer() ) {
-			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Consumer saved.' ) . '</p></div>';
+			echo '<div id="message" role="status" class="updated notice is-dismissible"><p>' . __( 'Consumer saved.' ) . '</p></div>';
 		}
 
 		$id = (int) ( $_REQUEST['ID'] ?? $_REQUEST['id'] ?? 0 );
@@ -319,7 +319,7 @@ EOJS;
 	 */
 	public function printSettingsMenu() {
 		if ( $this->saveSettings() ) {
-			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
+			echo '<div id="message" role="status" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
 		}
 		$html = blade()->render(
 			'network.settings', [
@@ -405,7 +405,7 @@ EOJS;
 	 */
 	public function printBookSettingsMenu() {
 		if ( $this->saveBookSettings() ) {
-			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
+			echo '<div id="message" role="status" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
 		}
 		$html = blade()->render(
 			'book.settings', [
