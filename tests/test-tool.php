@@ -22,6 +22,7 @@ class ToolTest extends \WP_UnitTestCase {
 			->willReturn(
 				[
 					'whitelist' => "pressbooks.test\r\nnpressbooks.education\r\n",
+					'prompt_for_authentication' => 0,
 					'book_override' => 1,
 					'admin_default' => 'subscriber',
 					'staff_default' => 'subscriber',

@@ -74,3 +74,4 @@ add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Updates', 'init' ] );
 add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Admin', 'init' ] );
 add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
 add_filter( 'pb_session_configuration', '\PressbooksLtiProvider\session_configuration' );
+add_filter( 'wp_login_errors', '\PressbooksLtiProvider\login_errors', 10, 2 );

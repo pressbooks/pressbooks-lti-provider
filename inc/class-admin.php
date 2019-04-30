@@ -338,6 +338,7 @@ EOJS;
 			$valid_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber', 'anonymous' ];
 			$update = [
 				'whitelist' => trim( $_POST['whitelist'] ),
+				'prompt_for_authentication' => (int) $_POST['prompt_for_authentication'],
 				'book_override' => (int) $_POST['book_override'],
 				'admin_default' => in_array( $_POST['admin_default'], $valid_roles, true ) ? $_POST['admin_default'] : 'subscriber',
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
@@ -352,7 +353,7 @@ EOJS;
 	}
 
 	/**
-	 * @return array{whitelist: string, book_override: int, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
+	 * @return array{whitelist: string, prompt_for_authentication: int, book_override: int, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
 	 */
 	public function getSettings() {
 
@@ -360,6 +361,9 @@ EOJS;
 
 		if ( empty( $options['whitelist'] ) ) {
 			$options['whitelist'] = '';
+		}
+		if ( ! isset( $options['prompt_for_authentication'] ) ) {
+			$options['prompt_for_authentication'] = 0;
 		}
 		if ( ! isset( $options['book_override'] ) ) {
 			$options['book_override'] = 1;

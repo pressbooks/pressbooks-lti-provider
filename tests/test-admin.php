@@ -115,6 +115,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$options = $this->admin->getSettings();
 
 		$this->assertEquals( $options['whitelist'], '' );
+		$this->assertEquals( $options['prompt_for_authentication'], 0 );
 		$this->assertEquals( $options['book_override'], 1 );
 		$this->assertEquals( $options['admin_default'], 'subscriber' );
 		$this->assertEquals( $options['staff_default'], 'subscriber' );
@@ -125,6 +126,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$_REQUEST['_wpnonce'] = wp_create_nonce( 'pb-lti-provider' );
 		$_POST = [
 			'whitelist' => "pressbooks.com\npressbooks.education",
+			'prompt_for_authentication' => 1,
 			'book_override' => 0,
 			'admin_default' => 'administrator',
 			'staff_default' => 'editor',
@@ -136,6 +138,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$options = $this->admin->getSettings();
 
 		$this->assertEquals( $options['whitelist'], "pressbooks.com\npressbooks.education" );
+		$this->assertEquals( $options['prompt_for_authentication'], 1 );
 		$this->assertEquals( $options['book_override'], 0 );
 		$this->assertEquals( $options['admin_default'], 'administrator' );
 		$this->assertEquals( $options['staff_default'], 'editor' );
@@ -165,6 +168,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$options = $this->admin->getBookSettings();
 
 		$this->assertTrue( ! isset( $options['whitelist'] ) );
+		$this->assertTrue( ! isset( $options['prompt_for_authentication'] ) );
 		$this->assertTrue( ! isset( $options['book_override'] ) );
 		$this->assertEquals( $options['admin_default'], 'subscriber' );
 		$this->assertEquals( $options['staff_default'], 'subscriber' );
@@ -175,6 +179,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$_REQUEST['_wpnonce'] = wp_create_nonce( 'pb-lti-provider-book' );
 		$_POST = [
 			'whitelist' => "pressbooks.com\npressbooks.education",
+			'prompt_for_authentication' => 1,
 			'book_override' => 1,
 			'admin_default' => 'administrator',
 			'staff_default' => 'editor',
@@ -186,6 +191,7 @@ class AdminTest extends \WP_UnitTestCase {
 		$options = $this->admin->getBookSettings();
 
 		$this->assertTrue( ! isset( $options['whitelist'] ) );
+		$this->assertTrue( ! isset( $options['prompt_for_authentication'] ) );
 		$this->assertTrue( ! isset( $options['book_override'] ) );
 		$this->assertEquals( $options['admin_default'], 'administrator' );
 		$this->assertEquals( $options['staff_default'], 'editor' );

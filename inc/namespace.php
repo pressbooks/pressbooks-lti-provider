@@ -94,6 +94,20 @@ function session_configuration( $options = [] ) {
 }
 
 /**
+ * @param \WP_Error $errors
+ * @param string $redirect_to Redirect destination URL.
+ *
+ * @return \WP_Error
+ */
+function login_errors( $errors, $redirect_to ) {
+	if ( isset( $_SESSION['pb_lti_prompt_for_authentication'] ) ) {
+		$message = 'It looks like you already have an account on [NAME OF PRESSBOOKS NETWORK]. Please log in to connect your Pressbooks account to your [Canvas/Moodle/Sakai/D2L] ID.';
+		$errors->add( 'lti', $message );
+	}
+	return $errors;
+}
+
+/**
  * @return \Jenssegers\Blade\Blade
  */
 function blade() {
