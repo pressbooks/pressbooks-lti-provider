@@ -43,6 +43,15 @@ class Admin {
 		remove_action( 'login_init', 'send_frame_options_header' );
 		remove_action( 'admin_init', 'send_frame_options_header' );
 
+		// Keep $_SESSION alive, LTI puts info in it
+		add_action(
+			'wp_loaded',
+			function () {
+				remove_action( 'wp_login', '\Pressbooks\session_kill' );
+				remove_action( 'wp_logout', '\Pressbooks\session_kill' );
+			}
+		);
+
 		if ( Book::isBook() ) {
 			if ( $obj->getBookSettings()['hide_navigation'] ) {
 				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
