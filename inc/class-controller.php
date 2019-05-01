@@ -12,6 +12,11 @@ class Controller {
 	protected $admin;
 
 	/**
+	 * @var Entities\Storage
+	 */
+	protected $storage;
+
+	/**
 	 * Controller constructor.
 	 *
 	 * @param Admin $admin
@@ -32,6 +37,14 @@ class Controller {
 			$_POST = stripslashes_deep( $_POST );
 			$_COOKIE = stripslashes_deep( $_COOKIE );
 			$_SERVER = stripslashes_deep( $_SERVER );
+		}
+
+		// Check if we stored info while jerking the user around for security purposes
+		if ( isset( $_SESSION['pb_lti_prompt_for_authentication'] ) ) {
+			if ( $_SESSION['pb_lti_prompt_for_authentication'] instanceof Entities\Storage ) {
+				$this->storage = $_SESSION['pb_lti_prompt_for_authentication'];
+			}
+			unset( $_SESSION['pb_lti_prompt_for_authentication'] ); // Unset, don't reuse
 		}
 
 		switch ( $action ) {
@@ -83,18 +96,30 @@ class Controller {
 	public function default( $action, $params ) {
 		$connector = Database::getConnector();
 		$tool = new Tool( $connector );
-		$tool->setAction( $action );
-		$tool->setParams( $params );
 		$tool->setAdmin( $this->admin );
-		$tool->setParameterConstraint( 'oauth_consumer_key', true, 50, [ 'basic-lti-launch-request', 'ContentItemSelectionRequest' ] );
-		$tool->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
-		$tool->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
-		$tool->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
-		if ( ! $tool->validateRegistrationRequest() ) {
-			$tool->ok = false;
-			$tool->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
+		$tool->setAction( $action );
+		if (
+			$action === 'launch' && is_user_logged_in() && $this->storage &&
+			(int) $this->storage->user->ID === (int) wp_get_current_user()->ID
+		) {
+			// User has confirmed matching with existing user
+			$tool->setParams( $this->storage->params );
+			$tool->loginUser( $this->storage->user, $this->storage->ltiId, $this->storage->ltiIdWasMatched, $this->storage->role );
+			$tool->setupDeepLink();
+			\Pressbooks\Redirect\location( $tool->getRedirectUrl() );
+		} else {
+			// Process incoming request, check authenticity of the LTI launch request, execute requested action...
+			$tool->setParams( $params );
+			$tool->setParameterConstraint( 'oauth_consumer_key', true, 50, [ 'basic-lti-launch-request', 'ContentItemSelectionRequest' ] );
+			$tool->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
+			$tool->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
+			$tool->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
+			if ( ! $tool->validateRegistrationRequest() ) {
+				$tool->ok = false;
+				$tool->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
+			}
+			$tool->handleRequest();
 		}
-		$tool->handleRequest();
 	}
 
 }

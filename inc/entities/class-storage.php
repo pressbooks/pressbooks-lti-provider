@@ -6,7 +6,10 @@
 
 namespace PressbooksLtiProvider\Entities;
 
-class User {
+/**
+ * An object we store in $_SESSION['pb_lti_prompt_for_authentication']
+ */
+class Storage {
 	/**
 	 * @var \WP_User
 	 */

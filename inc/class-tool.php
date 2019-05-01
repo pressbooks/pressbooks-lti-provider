@@ -394,14 +394,14 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @param bool $lti_id_was_matched
 	 * @param string $role
 	 */
-	protected function authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
-		$storage = new Entities\User();
+	public function authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
+		$storage = new Entities\Storage();
 		$storage->ltiIdWasMatched = $lti_id_was_matched;
 		$storage->params = $this->getParams();
 		$storage->user = $wp_user;
 		$storage->ltiId = $lti_id;
 		$storage->role = $role;
-		$storage->lmsName = $this->consumer->consumerName ?? $this->consumer->name ?? 'LMS';
+		$storage->lmsName = $this->consumer->name ?? $this->consumer->consumerName ?? 'LTI';
 		$_SESSION['pb_lti_prompt_for_authentication'] = $storage;
 		auth_redirect();
 	}
@@ -414,7 +414,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @param bool $lti_id_was_matched
 	 * @param string $role
 	 */
-	protected function loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
+	public function loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
 		if ( $role !== 'anonymous' ) {
 			if ( is_user_member_of_blog( $wp_user->ID ) ) {
 				$wp_user->set_role( $role );

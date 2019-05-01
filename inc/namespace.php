@@ -101,7 +101,7 @@ function session_configuration( $options = [] ) {
  */
 function login_errors( $errors, $redirect_to ) {
 	if ( isset( $_SESSION['pb_lti_prompt_for_authentication'] ) ) {
-		/** @var \PressbooksLtiProvider\Entities\User $storage */
+		/** @var \PressbooksLtiProvider\Entities\Storage $storage */
 		$storage = $_SESSION['pb_lti_prompt_for_authentication'];
 		$blogname = get_blog_option( 1, 'blogname' );
 		/* translators: 1: Network Name, 2: LMS Name */
