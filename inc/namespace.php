@@ -101,7 +101,11 @@ function session_configuration( $options = [] ) {
  */
 function login_errors( $errors, $redirect_to ) {
 	if ( isset( $_SESSION['pb_lti_prompt_for_authentication'] ) ) {
-		$message = 'It looks like you already have an account on [NAME OF PRESSBOOKS NETWORK]. Please log in to connect your Pressbooks account to your [Canvas/Moodle/Sakai/D2L] ID.';
+		/** @var \PressbooksLtiProvider\Entities\User $storage */
+		$storage = $_SESSION['pb_lti_prompt_for_authentication'];
+		$blogname = get_blog_option( 1, 'blogname' );
+		/* translators: 1: Network Name, 2: LMS Name */
+		$message = sprintf( __( 'It looks like you already have an account on %1$s. Please log in to connect your Pressbooks account to your %2$s ID.' ), $blogname, $storage->lmsName );
 		$errors->add( 'lti', $message );
 	}
 	return $errors;

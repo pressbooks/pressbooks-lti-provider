@@ -31,4 +31,9 @@ class User {
 	 * @var array
 	 */
 	public $params;
+
+	/**
+	 * @var string
+	 */
+	public $lmsName;
 }

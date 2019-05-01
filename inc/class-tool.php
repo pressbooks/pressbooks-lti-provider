@@ -401,6 +401,7 @@ class Tool extends ToolProvider\ToolProvider {
 		$storage->user = $wp_user;
 		$storage->ltiId = $lti_id;
 		$storage->role = $role;
+		$storage->lmsName = $this->consumer->consumerName ?? $this->consumer->name ?? 'LMS';
 		$_SESSION['pb_lti_prompt_for_authentication'] = $storage;
 		auth_redirect();
 	}
