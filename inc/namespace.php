@@ -73,6 +73,19 @@ function do_format( $format ) {
 }
 
 /**
+ * In on the kill taker.
+ */
+function session_relax() {
+	// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
+	/* @see \WP_Customize_Manager::filter_iframe_security_headers() for a better approach? */
+	remove_action( 'login_init', 'send_frame_options_header' );
+	remove_action( 'admin_init', 'send_frame_options_header' );
+	// Keep $_SESSION alive, LTI puts info in it
+	remove_action( 'wp_login', '\Pressbooks\session_kill' );
+	remove_action( 'wp_logout', '\Pressbooks\session_kill' );
+}
+
+/**
  * Deal with blocked 3rd Party Cookies in iframes
  *
  * @param array $options

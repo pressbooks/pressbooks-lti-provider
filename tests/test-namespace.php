@@ -52,6 +52,14 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
 	}
 
+	public function test_session_relax() {
+		\PressbooksLtiProvider\session_relax();
+		$this->assertFalse( has_action( 'login_init', 'send_frame_options_header' ) );
+		$this->assertFalse( has_action( 'admin_init', 'send_frame_options_header' ) );
+		$this->assertFalse( has_action( 'wp_login', '\Pressbooks\session_kill' ) );
+		$this->assertFalse( has_action( 'wp_logout', '\Pressbooks\session_kill' ) );
+	}
+
 	public function test_session_configuration() {
 		$_SERVER['REQUEST_URI'] = '/contains/format/lti/something';
 		$options = \PressbooksLtiProvider\session_configuration( [ 'read_and_close' => true, 'some_other_setting' => true ] );

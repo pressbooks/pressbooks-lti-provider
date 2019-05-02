@@ -102,7 +102,7 @@ class Controller {
 			$action === 'launch' && is_user_logged_in() && $this->storage &&
 			(int) $this->storage->user->ID === (int) wp_get_current_user()->ID
 		) {
-			// User has confirmed matching with existing user
+			// User has confirmed matching with existing account
 			$tool->setParams( $this->storage->params );
 			$tool->loginUser( $this->storage->user, $this->storage->ltiId, $this->storage->ltiIdWasMatched, $this->storage->role );
 			$tool->setupDeepLink();

@@ -38,20 +38,6 @@ class Admin {
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
 		add_action( 'admin_enqueue_scripts', [ $obj, 'enqueueScriptsAndStyles' ] );
 
-		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
-		// @see filter_iframe_security_headers() for a better approach?
-		remove_action( 'login_init', 'send_frame_options_header' );
-		remove_action( 'admin_init', 'send_frame_options_header' );
-
-		// Keep $_SESSION alive, LTI puts info in it
-		add_action(
-			'wp_loaded',
-			function () {
-				remove_action( 'wp_login', '\Pressbooks\session_kill' );
-				remove_action( 'wp_logout', '\Pressbooks\session_kill' );
-			}
-		);
-
 		if ( Book::isBook() ) {
 			if ( $obj->getBookSettings()['hide_navigation'] ) {
 				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
