@@ -67,6 +67,18 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( 'some_other_setting', $options );
 	}
 
+	public function test_login_errors() {
+		$errors = new WP_Error();
+		$errors = \PressbooksLtiProvider\login_errors( $errors, null );
+		$this->assertEmpty( $errors->get_error_codes() );
+
+		$storage = new \PressbooksLtiProvider\Entities\Storage();
+		$_SESSION['pb_lti_prompt_for_authentication'] = $storage;
+		$errors = \PressbooksLtiProvider\login_errors( $errors, null );
+		$this->assertEquals( 'lti', $errors->get_error_codes()[0] );
+		unset( $_SESSION['pb_lti_prompt_for_authentication'] );
+	}
+
 	public function test_blade() {
 		$blade = \PressbooksLtiProvider\blade();
 		$this->assertTrue( is_object( $blade ) );
