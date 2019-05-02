@@ -73,6 +73,19 @@ function do_format( $format ) {
 }
 
 /**
+ * In on the kill taker.
+ */
+function session_relax() {
+	// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
+	/* @see \WP_Customize_Manager::filter_iframe_security_headers() for a better approach? */
+	remove_action( 'login_init', 'send_frame_options_header' );
+	remove_action( 'admin_init', 'send_frame_options_header' );
+	// Keep $_SESSION alive, LTI puts info in it
+	remove_action( 'wp_login', '\Pressbooks\session_kill' );
+	remove_action( 'wp_logout', '\Pressbooks\session_kill' );
+}
+
+/**
  * Deal with blocked 3rd Party Cookies in iframes
  *
  * @param array $options
@@ -91,6 +104,24 @@ function session_configuration( $options = [] ) {
 		}
 	}
 	return $options;
+}
+
+/**
+ * @param \WP_Error $errors
+ * @param string $redirect_to Redirect destination URL.
+ *
+ * @return \WP_Error
+ */
+function login_errors( $errors, $redirect_to ) {
+	if ( isset( $_SESSION['pb_lti_prompt_for_authentication'] ) ) {
+		/** @var \PressbooksLtiProvider\Entities\Storage $storage */
+		$storage = $_SESSION['pb_lti_prompt_for_authentication'];
+		$blogname = get_blog_option( 1, 'blogname' );
+		/* translators: 1: Network Name, 2: LMS Name */
+		$message = sprintf( __( 'It looks like you already have an account on %1$s. Please log in to connect your Pressbooks account to your %2$s ID.' ), $blogname, $storage->lmsName );
+		$errors->add( 'lti', $message, 'message' );
+	}
+	return $errors;
 }
 
 /**

@@ -378,20 +378,55 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 
 		if ( $wp_user ) {
-			// If the user does not have rights to the book, and role != Anonymous Guest, then add them to the book with appropriate role
-			if ( $role !== 'anonymous' ) {
-				if ( is_user_member_of_blog( $wp_user->ID ) ) {
-					$wp_user->set_role( $role );
-				} else {
-					add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
-				}
+			if ( $this->admin->getSettings()['prompt_for_authentication'] && ! $lti_id_was_matched ) {
+				$this->authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
+			} else {
+				$this->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
 			}
-			if ( ! $lti_id_was_matched ) {
-				$this->linkAccount( $wp_user->ID, $lti_id );
-			}
-			// Login the user
-			\Pressbooks\Redirect\programmatic_login( $wp_user->user_login );
 		}
+	}
+
+	/**
+	 * Prompt for authentication to confirm matching with existing user on initial LTI launch
+	 *
+	 * @param \WP_User $wp_user
+	 * @param string $lti_id
+	 * @param bool $lti_id_was_matched
+	 * @param string $role
+	 */
+	public function authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
+		$storage = new Entities\Storage();
+		$storage->ltiIdWasMatched = $lti_id_was_matched;
+		$storage->params = $this->getParams();
+		$storage->user = $wp_user;
+		$storage->ltiId = $lti_id;
+		$storage->role = $role;
+		$storage->lmsName = $this->consumer->name ?? $this->consumer->consumerName ?? 'LTI';
+		$_SESSION['pb_lti_prompt_for_authentication'] = $storage;
+		auth_redirect();
+	}
+
+	/**
+	 * If the user does not have rights to the book, and role != Anonymous Guest, then add them to the book with appropriate role
+	 *
+	 * @param \WP_User $wp_user
+	 * @param string $lti_id
+	 * @param bool $lti_id_was_matched
+	 * @param string $role
+	 */
+	public function loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
+		if ( $role !== 'anonymous' ) {
+			if ( is_user_member_of_blog( $wp_user->ID ) ) {
+				$wp_user->set_role( $role );
+			} else {
+				add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
+			}
+		}
+		if ( ! $lti_id_was_matched ) {
+			$this->linkAccount( $wp_user->ID, $lti_id );
+		}
+		// Login the user
+		\Pressbooks\Redirect\programmatic_login( $wp_user->user_login );
 	}
 
 	/**

@@ -73,4 +73,6 @@ register_activation_hook( __FILE__, [ '\PressbooksLtiProvider\Database', 'instal
 add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Updates', 'init' ] );
 add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Admin', 'init' ] );
 add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
+add_action( 'wp_loaded', '\PressbooksLtiProvider\session_relax' );
 add_filter( 'pb_session_configuration', '\PressbooksLtiProvider\session_configuration' );
+add_filter( 'wp_login_errors', '\PressbooksLtiProvider\login_errors', 10, 2 );

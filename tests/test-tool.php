@@ -22,6 +22,7 @@ class ToolTest extends \WP_UnitTestCase {
 			->willReturn(
 				[
 					'whitelist' => "pressbooks.test\r\nnpressbooks.education\r\n",
+					'prompt_for_authentication' => 0,
 					'book_override' => 1,
 					'admin_default' => 'subscriber',
 					'staff_default' => 'subscriber',
@@ -94,6 +95,33 @@ class ToolTest extends \WP_UnitTestCase {
 
 		// User was created and linked
 		$this->assertInstanceOf( '\WP_User', $this->tool->matchUser( $lti_id ) );
+	}
+
+	public function test_authenticateUser() {
+		$user = $this->factory()->user->create_and_get( [ 'role' => 'contributor' ] );
+		$this->tool->authenticateUser( $user, '1:2:3', false, 'subscriber' );
+		/** @var \PressbooksLtiProvider\Entities\Storage $storage */
+		$storage = $_SESSION['pb_lti_prompt_for_authentication'];
+		$this->assertEquals( $storage->user->ID, $user->ID );
+		$this->assertEquals( $storage->user->nickname, $user->nickname );
+		$this->assertEquals( $storage->ltiId, '1:2:3' );
+		$this->assertEquals( $storage->ltiIdWasMatched, false );
+		$this->assertEquals( $storage->role, 'subscriber' );
+		unset( $_SESSION['pb_lti_prompt_for_authentication'] );
+	}
+
+	public function test_loginUser() {
+		$user = $this->factory()->user->create_and_get( [ 'role' => 'contributor' ] );
+		$this->assertEmpty( wp_get_current_user()->ID );
+
+		// Login user, $lti_id_was_matched true (don't link account)
+		$this->tool->loginUser( $user, '1:2:3', true, 'subscriber' );
+		$this->assertEquals( wp_get_current_user()->ID, $user->ID );
+		$this->assertEmpty( get_user_meta( $user->ID, \PressbooksLtiProvider\Tool::META_KEY ) );
+
+		// Login user, $lti_id_was_matched false (link account)
+		$this->tool->loginUser( $user, '1:2:3', false, 'subscriber' );
+		$this->assertNotEmpty( wp_get_current_user()->ID, $user->ID );
 	}
 
 	public function test_setupDeepLink() {

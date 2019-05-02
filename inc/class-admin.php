@@ -38,11 +38,6 @@ class Admin {
 		add_action( 'network_admin_menu', [ $obj, 'addSettingsMenu' ], 1000 );
 		add_action( 'admin_enqueue_scripts', [ $obj, 'enqueueScriptsAndStyles' ] );
 
-		// By default WordPress sends an HTTP header to prevent iframe embedding on /wp_admin/ and /wp-login.php, remove them because LTI rules!
-		// @see filter_iframe_security_headers() for a better approach?
-		remove_action( 'login_init', 'send_frame_options_header' );
-		remove_action( 'admin_init', 'send_frame_options_header' );
-
 		if ( Book::isBook() ) {
 			if ( $obj->getBookSettings()['hide_navigation'] ) {
 				add_action( 'wp_head', [ $obj, 'hideNavigation' ] );
@@ -338,6 +333,7 @@ EOJS;
 			$valid_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber', 'anonymous' ];
 			$update = [
 				'whitelist' => trim( $_POST['whitelist'] ),
+				'prompt_for_authentication' => (int) $_POST['prompt_for_authentication'],
 				'book_override' => (int) $_POST['book_override'],
 				'admin_default' => in_array( $_POST['admin_default'], $valid_roles, true ) ? $_POST['admin_default'] : 'subscriber',
 				'staff_default' => in_array( $_POST['staff_default'], $valid_roles, true ) ? $_POST['staff_default'] : 'subscriber',
@@ -352,7 +348,7 @@ EOJS;
 	}
 
 	/**
-	 * @return array{whitelist: string, book_override: int, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
+	 * @return array{whitelist: string, prompt_for_authentication: int, book_override: int, admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
 	 */
 	public function getSettings() {
 
@@ -360,6 +356,9 @@ EOJS;
 
 		if ( empty( $options['whitelist'] ) ) {
 			$options['whitelist'] = '';
+		}
+		if ( ! isset( $options['prompt_for_authentication'] ) ) {
+			$options['prompt_for_authentication'] = 0;
 		}
 		if ( ! isset( $options['book_override'] ) ) {
 			$options['book_override'] = 1;
