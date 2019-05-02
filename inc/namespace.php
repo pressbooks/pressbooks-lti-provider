@@ -119,7 +119,7 @@ function login_errors( $errors, $redirect_to ) {
 		$blogname = get_blog_option( 1, 'blogname' );
 		/* translators: 1: Network Name, 2: LMS Name */
 		$message = sprintf( __( 'It looks like you already have an account on %1$s. Please log in to connect your Pressbooks account to your %2$s ID.' ), $blogname, $storage->lmsName );
-		$errors->add( 'lti', $message );
+		$errors->add( 'lti', $message, 'message' );
 	}
 	return $errors;
 }
