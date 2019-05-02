@@ -7,7 +7,7 @@ Version: 1.3.0-dev
 Author: Pressbooks (Book Oven Inc.)
 Author URI: https://pressbooks.org
 Requires PHP: 7.1
-Pressbooks tested up to: 5.7.0
+Pressbooks tested up to: 5.7.2
 Text Domain: pressbooks-lti-provider
 License: GPLv3 or later
 Network: True

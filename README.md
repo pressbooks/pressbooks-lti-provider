@@ -3,7 +3,7 @@
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 5.1.1  
 **Tested up to:** 5.1.1  
-**Stable tag:** 1.3.0-dev   
+**Stable tag:** 1.3.0-dev  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -148,87 +148,12 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Changelog 
 
-### 1.2.1 
- * Fix translations not loading
- * Add ARIA role="none" to presentation tables
-
-
-### 1.2.0 
- * Refactor code to respect Pressbooks coding standards 1.0.0
- * Add localization support
- * Fix an issue with GitHub updater not always working
- * Update Common Cartridge to work with Pressbooks 5.7 Exports page: #31
- * Update dependencies to latest versions
-
-
-### 1.1.3 
- * Update izumi-kun/lti to version 1.1.6 (fix properties of class ContentItemPlacement)
- * Update README
-
-
-### 1.1.2 
-* Adjust `pb_integrations_multidomain_email` filter logic: [0fd5280](https://github.com/pressbooks/pressbooks-lti-provider/commit/0fd5280952560821492459e2c1d857db6fa67046)
-
-
-### 1.1.1 
- * Update izumi-kun/lti to version 1.1.5 (fix broken signature verification)
- * New `pb_integrations_multidomain_email` filter
-
-
-### 1.1.0 
- * Update izumi-kun/lti to version 1.1.4
- * Fix `read_and_close` session option for LTI endpoints
- * Bump minimum PHP to 7.1
- * Switch to Pressbooks Coding Standards
- * Switch to wp dist-archive for release build
-
-
-### 1.0.0 
- * Update izumi-kun/lti to version 1.1.3
- * Add network option to (dis)allow books overrides.
- * Add option to show all export versions.
- * Tweak CC files for Blackboard compatibility.
- * Use email prefix as login name, store LTI ID in user meta.
- * Fix GitHub Updater
-
-
-### 0.4.3 
- * Update izumi-kun/lti to version 1.1.2
- * Allow deep links with Candela style LTI launch URLs like `root/format/lti/BOOK_ID?page_id=123`
-
-
-### 0.4.2 
- * Update izumi-kun/lti to version 1.1.0
- * Fix relative url for Tool icon.
- * Update WP role when authenticating over LTI.
- * Fix build.
-
-
-### 0.4.1 
- * Fix Invalid OAuth Signature On Subdomain Installs.
- * Fix GUID and book title for Resource Handlers.
- * Add icons for Common Cartridge, LTI Links, and Resource Handlers.
-
-
-
-### 0.4.0 
- * Export "Thin" Common Cartridge files.
-
-
-### 0.3.0 
- * Prettier forms.
- * Bug fixes for Canvas.
-
-
-### 0.2.0 
- * Demo for Open source Slack channel.
-
-
-### 0.1.0 
- * Initial scaffold.
+### 1.3.0 
+* See: https://github.com/pressbooks/pressbooks-lti-provider/releases/tag/1.3.0
+* Full release history available at: https://github.com/pressbooks/pressbooks-lti-provider/releases
 
 
 ## Upgrade Notice 
 
-### 1.2.1 
-Pressbooks LTI Provider requires Pressbooks >= 5.7.1
+### 1.3.0 
+Pressbooks LTI Provider requires Pressbooks >= 5.7.2
