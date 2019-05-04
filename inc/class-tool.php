@@ -357,6 +357,10 @@ class Tool extends ToolProvider\ToolProvider {
 		// LTI ID
 		$lti_id = "{$guid}|{$net_id}";
 
+		// Prompt for authentication logic
+		$lti_id_was_matched = false;
+		$is_new_user = false;
+
 		// Try to find a matching WordPress user with LTI ID
 		$wp_user = $this->matchUser( $lti_id );
 		if ( $wp_user ) {
@@ -364,7 +368,6 @@ class Tool extends ToolProvider\ToolProvider {
 		} else {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $email );
-			$lti_id_was_matched = false;
 		}
 
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
@@ -372,13 +375,14 @@ class Tool extends ToolProvider\ToolProvider {
 			try {
 				list( $user_id, $username ) = $this->createUser( $username, $email );
 				$wp_user = get_userdata( $user_id );
+				$is_new_user = true;
 			} catch ( \Exception $e ) {
 				return; // TODO: What should we do on fail?!
 			}
 		}
 
 		if ( $wp_user ) {
-			if ( $this->admin->getSettings()['prompt_for_authentication'] && ! $lti_id_was_matched ) {
+			if ( $this->admin->getSettings()['prompt_for_authentication'] && $lti_id_was_matched === false && $is_new_user === false ) {
 				$this->authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
 			} else {
 				$this->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
