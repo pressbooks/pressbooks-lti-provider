@@ -28,7 +28,18 @@ class AdminTest extends \WP_UnitTestCase {
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc11'] ) );
 
+		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => 'all' ] );
+		$formats = $this->admin->exportFormats( [] );
+		$this->assertTrue( isset( $formats['exotic']['thincc13'] ) );
+		$this->assertTrue( isset( $formats['exotic']['thincc12'] ) );
+		$this->assertTrue( isset( $formats['exotic']['thincc11'] ) );
+
 		delete_option( \PressbooksLtiProvider\Admin::OPTION );
+	}
+
+	public function test_fileTypeNames() {
+		$formats = $this->admin->fileTypeNames( [] );
+		$this->assertTrue( isset( $formats['imscc'] ) );
 	}
 
 	public function test_exportFileFormats() {

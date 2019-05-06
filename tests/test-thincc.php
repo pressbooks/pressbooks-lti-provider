@@ -1,6 +1,6 @@
 <?php
 
-class ThinCC extends \WP_UnitTestCase {
+class ThinCCTest extends \WP_UnitTestCase {
 
 	/**
 	 * @var \PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12
