@@ -31,6 +31,11 @@ class AdminTest extends \WP_UnitTestCase {
 		delete_option( \PressbooksLtiProvider\Admin::OPTION );
 	}
 
+	public function test_fileTypeNames() {
+		$formats = $this->admin->fileTypeNames( [] );
+		$this->assertTrue( isset( $formats['imscc'] ) );
+	}
+
 	public function test_exportFileFormats() {
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc13'] ) ); // The default

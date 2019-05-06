@@ -44,6 +44,7 @@ class Admin {
 			}
 			add_action( 'admin_menu', [ $obj, 'addBookSettingsMenu' ] );
 			add_filter( 'pb_export_formats', [ $obj, 'exportFormats' ] );
+			add_filter( 'pb_export_filetype_names', [ $obj, 'fileTypeNames' ] );
 			add_filter( 'pb_latest_export_filetypes', [ $obj, 'exportFileFormats' ] );
 			add_filter( 'pb_active_export_modules', [ $obj, 'activeExportModules' ] );
 			add_filter( 'pb_get_export_file_class', [ $obj, 'getExportFileClass' ] );
@@ -64,16 +65,26 @@ class Admin {
 	public function exportFormats( $formats ) {
 		$version = (string) $this->getBookSettings()['cc_version'];
 		if ( 'all' === $version ) {
-			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
-			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
-			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3 (LTI Links)', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2 (LTI Links)', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1 (LTI Links)', 'pressbooks-lti-pressbooks' );
 		} elseif ( '1.3' === $version ) {
-			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3 (LTI Links)', 'pressbooks-lti-pressbooks' );
 		} elseif ( '1.2' === $version ) {
-			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2 (LTI Links)', 'pressbooks-lti-pressbooks' );
 		} else {
-			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1 (LTI Links)', 'pressbooks-lti-pressbooks' );
 		}
+		return $formats;
+	}
+
+	/**
+	 * @param array $formats
+	 *
+	 * @return mixed
+	 */
+	public function fileTypeNames( $formats ) {
+		$formats['imscc'] = __( 'LTI Links', 'pressbooks-lti-pressbooks' );
 		return $formats;
 	}
 
