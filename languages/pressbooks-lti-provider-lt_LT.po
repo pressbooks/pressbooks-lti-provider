@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Pressbooks LTI Provider plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.2.1\n"
-"Report-Msgid-Bugs-To: https://github.com/pressbooks/<plugin>/\n"
-"POT-Creation-Date: 2019-04-16T10:57:18+00:00\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
+"POT-Creation-Date: 2019-05-13T18:27:23+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Language-Team: Lithuanian (Lithuania) (https://www.transifex.com/pressbooks/teams/9194/lt_LT/)\n"
 "MIME-Version: 1.0\n"
@@ -32,26 +32,42 @@ msgstr ""
 msgid "Pressbooks (Book Oven Inc.)"
 msgstr ""
 
-#: inc/class-admin.php:172 inc/class-admin.php:173 inc/class-admin.php:202
+#: inc/class-admin.php:68 inc/class-admin.php:72
+msgid "Common Cartridge 1.3 (LTI Links)"
+msgstr ""
+
+#: inc/class-admin.php:69 inc/class-admin.php:74
+msgid "Common Cartridge 1.2 (LTI Links)"
+msgstr ""
+
+#: inc/class-admin.php:70 inc/class-admin.php:76
+msgid "Common Cartridge 1.1 (LTI Links)"
+msgstr ""
+
+#: inc/class-admin.php:87
+msgid "LTI Links"
+msgstr ""
+
+#: inc/class-admin.php:178 inc/class-admin.php:179 inc/class-admin.php:208
 msgid "LTI Consumers"
 msgstr ""
 
-#: inc/class-admin.php:205
+#: inc/class-admin.php:211
 msgid "Add new"
 msgstr ""
 
 #. translators: 1: Number of consumers deleted
-#: inc/class-admin.php:210
+#: inc/class-admin.php:216
 msgid "Consumers deleted: %d"
 msgstr ""
 
-#: inc/class-admin.php:309 inc/class-admin.php:310 inc/class-admin.php:394
-#: inc/class-admin.php:395 templates/book/settings.blade.php:2
+#: inc/class-admin.php:315 inc/class-admin.php:316 inc/class-admin.php:404
+#: inc/class-admin.php:405 templates/book/settings.blade.php:2
 #: templates/network/settings.blade.php:2
 msgid "LTI Settings"
 msgstr ""
 
-#: inc/class-controller.php:95
+#: inc/class-controller.php:119
 msgid ""
 "Unauthorized registration request. Tool Consumer is not in whitelist of "
 "allowed domains."
@@ -70,7 +86,7 @@ msgid "Key"
 msgstr ""
 
 #: inc/class-table.php:128 templates/book/settings.blade.php:49
-#: templates/network/settings.blade.php:74
+#: templates/network/settings.blade.php:85
 msgid "Version"
 msgstr ""
 
@@ -126,7 +142,7 @@ msgstr ""
 msgid "The tool registration has been cancelled."
 msgstr ""
 
-#: inc/class-tool.php:515
+#: inc/class-tool.php:554
 msgid "Deep link was not found."
 msgstr ""
 
@@ -155,93 +171,93 @@ msgid ""
 msgstr ""
 
 #: templates/book/settings.blade.php:12
-#: templates/network/settings.blade.php:37
+#: templates/network/settings.blade.php:48
 msgid "Map Administrator to the following Pressbooks role"
 msgstr ""
 
 #: templates/book/settings.blade.php:13
-#: templates/network/settings.blade.php:38
+#: templates/network/settings.blade.php:49
 msgid "Map Staff to the following Pressbooks role"
 msgstr ""
 
 #: templates/book/settings.blade.php:14
-#: templates/network/settings.blade.php:39
+#: templates/network/settings.blade.php:50
 msgid "Map Learner to the following Pressbooks role"
 msgstr ""
 
 #: templates/book/settings.blade.php:19
-#: templates/network/settings.blade.php:44
+#: templates/network/settings.blade.php:55
 msgid "Administrator"
 msgstr ""
 
 #: templates/book/settings.blade.php:20
-#: templates/network/settings.blade.php:45
+#: templates/network/settings.blade.php:56
 msgid "Editor"
 msgstr ""
 
 #: templates/book/settings.blade.php:21
-#: templates/network/settings.blade.php:46
+#: templates/network/settings.blade.php:57
 msgid "Author"
 msgstr ""
 
 #: templates/book/settings.blade.php:22
-#: templates/network/settings.blade.php:47
+#: templates/network/settings.blade.php:58
 msgid "Contributor"
 msgstr ""
 
 #: templates/book/settings.blade.php:23
-#: templates/network/settings.blade.php:48
+#: templates/network/settings.blade.php:59
 msgid "Subscriber"
 msgstr ""
 
 #: templates/book/settings.blade.php:24
-#: templates/network/settings.blade.php:49
+#: templates/network/settings.blade.php:60
 msgid "Anonymous Guest"
 msgstr ""
 
 #: templates/book/settings.blade.php:32
-#: templates/network/settings.blade.php:57
+#: templates/network/settings.blade.php:68
 msgid "Appearance"
 msgstr ""
 
 #: templates/book/settings.blade.php:35
-#: templates/network/settings.blade.php:60
+#: templates/network/settings.blade.php:71
 msgid ""
 "Display Pressbooks navigation elements in your LMS along with book content."
 msgstr ""
 
 #: templates/book/settings.blade.php:39
-#: templates/network/settings.blade.php:64
+#: templates/network/settings.blade.php:75
 msgid "Display only book content in LMS."
 msgstr ""
 
 #: templates/book/settings.blade.php:43
-#: templates/network/settings.blade.php:68
+#: templates/network/settings.blade.php:79
 msgid "Common Cartridge"
 msgstr ""
 
 #: templates/book/settings.blade.php:45
-#: templates/network/settings.blade.php:70
+#: templates/network/settings.blade.php:81
 msgid "Export books as Common Cartridge files with LTI links."
 msgstr ""
 
 #: templates/book/settings.blade.php:52
-#: templates/network/settings.blade.php:77
+#: templates/network/settings.blade.php:88
 msgid "1.1"
 msgstr ""
 
 #: templates/book/settings.blade.php:56
-#: templates/network/settings.blade.php:81
+#: templates/network/settings.blade.php:92
 msgid "1.2"
 msgstr ""
 
 #: templates/book/settings.blade.php:60
-#: templates/network/settings.blade.php:85
+#: templates/network/settings.blade.php:96
 msgid "1.3"
 msgstr ""
 
 #: templates/book/settings.blade.php:64
-#: templates/network/settings.blade.php:89
+#: templates/network/settings.blade.php:100
 msgid "Show all export versions"
 msgstr ""
 
@@ -325,13 +341,21 @@ msgid "Sensible Defaults"
 msgstr ""
 
 #: templates/network/settings.blade.php:24
-msgid "Allow books to override role-mapping and Common Cartridge defaults"
+msgid ""
+"Prompt for authentication to confirm matching with existing user on initial "
+"LTI launch"
 msgstr ""
 
 #: templates/network/settings.blade.php:27
+#: templates/network/settings.blade.php:38
 msgid "No"
 msgstr ""
 
 #: templates/network/settings.blade.php:31
+#: templates/network/settings.blade.php:42
 msgid "Yes"
+msgstr ""
+
+#: templates/network/settings.blade.php:35
+msgid "Allow books to override role-mapping and Common Cartridge defaults"
 msgstr ""

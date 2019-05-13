@@ -65,15 +65,15 @@ class Admin {
 	public function exportFormats( $formats ) {
 		$version = (string) $this->getBookSettings()['cc_version'];
 		if ( 'all' === $version ) {
-			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3 (LTI Links)', 'pressbooks-lti-pressbooks' );
-			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2 (LTI Links)', 'pressbooks-lti-pressbooks' );
-			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1 (LTI Links)', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3 (LTI Links)', 'pressbooks-lti-provider' );
+			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2 (LTI Links)', 'pressbooks-lti-provider' );
+			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1 (LTI Links)', 'pressbooks-lti-provider' );
 		} elseif ( '1.3' === $version ) {
-			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3 (LTI Links)', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc13'] = __( 'Common Cartridge 1.3 (LTI Links)', 'pressbooks-lti-provider' );
 		} elseif ( '1.2' === $version ) {
-			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2 (LTI Links)', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc12'] = __( 'Common Cartridge 1.2 (LTI Links)', 'pressbooks-lti-provider' );
 		} else {
-			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1 (LTI Links)', 'pressbooks-lti-pressbooks' );
+			$formats['exotic']['thincc11'] = __( 'Common Cartridge 1.1 (LTI Links)', 'pressbooks-lti-provider' );
 		}
 		return $formats;
 	}
@@ -84,7 +84,7 @@ class Admin {
 	 * @return mixed
 	 */
 	public function fileTypeNames( $formats ) {
-		$formats['imscc'] = __( 'LTI Links', 'pressbooks-lti-pressbooks' );
+		$formats['imscc'] = __( 'LTI Links', 'pressbooks-lti-provider' );
 		return $formats;
 	}
 

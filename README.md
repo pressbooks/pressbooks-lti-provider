@@ -1,9 +1,9 @@
 # Pressbooks LTI Provider 
 **Contributors:** conner_bw, greatislander  
 **Tags:** pressbooks, lti, lms  
-**Requires at least:** 5.1.1  
-**Tested up to:** 5.1.1  
-**Stable tag:** 1.3.0-dev  
+**Requires at least:** 5.2  
+**Tested up to:** 5.2  
+**Stable tag:** 1.3.0  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -65,7 +65,7 @@ Root site compatibility:
 > https://site/format/lti/BOOK_ID/launch/front-matter/introduction
 
 
-## ContentItemSelectionRequest 
+## ContentItemSelectionRequest (Automatic Configuration) 
 
 Pressbooks supports incoming content-item requests for media type values of `application/vnd.ims.lti.v1.ltilink`.
 
@@ -133,8 +133,8 @@ Allows users to export books as "Thin" Common Cartridge zip files. Supports CC 1
  + Files passed the IMS Common Cartridge Validator.
  + Moodle was able to import CC 1.1 ([because there's no code to import 1.2 or 1.3 ?!](https://github.com/moodle/moodle/tree/master/backup/converter))
  + Canvas was able to import CC 1.1, 1.2, and 1.3.
- + Sakai imports but doesn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appear under Lessons. The rest of the content appears as unusable xml files under Resources. Fixed in 12.4 [See this bug report.](https://jira.sakaiproject.org/browse/SAK-40082)
- + Blackboard was able to import CC 1.2.
+ + Sakai imports but didn't know what to do with the LTI links? Only empty Frontmatter, Main Body, Backmatter appeared under Lessons. The rest of the content appeared as unusable XML files under Resources. Fixed in 12.4. [See this bug report for resolution.](https://jira.sakaiproject.org/browse/SAK-40082)
+ + Blackboard was able to import CC 1.1 and 1.2.
 
 Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com/lumenlearning/candela-thin-exports), [Brad Payne](https://github.com/BCcampus/pressbooks-cc-export), [Steel Wagstaff](https://github.com/SteelWagstaff/candela-thin-exports) and everyone in https://pressbooks.community/ who helped us get this working.
 
@@ -156,4 +156,4 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 ## Upgrade Notice 
 
 ### 1.3.0 
-Pressbooks LTI Provider requires Pressbooks >= 5.7.2
+Pressbooks LTI Provider requires Pressbooks >= 5.8.0
