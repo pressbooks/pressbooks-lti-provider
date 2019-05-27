@@ -1,0 +1,381 @@
+# Copyright (C) 2019 Pressbooks (Book Oven Inc.)
+# This file is distributed under the same license as the Pressbooks LTI Provider plugin.
+# Translators:
+# Dubravko Cvikl <dcvikl@cvikl.hr>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Pressbooks LTI Provider 1.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
+"POT-Creation-Date: 2019-05-13T18:27:23+00:00\n"
+"PO-Revision-Date: 2019-02-28 19:56+0000\n"
+"Last-Translator: Dubravko Cvikl <dcvikl@cvikl.hr>, 2019\n"
+"Language-Team: Croatian (Croatia) (https://www.transifex.com/pressbooks/teams/9194/hr_HR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hr_HR\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Domain: pressbooks-lti-provider\n"
+"X-Generator: WP-CLI 2.0.1\n"
+
+#. Plugin Name of the plugin
+msgid "Pressbooks LTI Provider"
+msgstr "Pressbooks LTI davatelj usluge"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://pressbooks.org"
+msgstr "https://pressbooks.org"
+
+#. Description of the plugin
+msgid "A plugin which turns Pressbooks into an LTI provider."
+msgstr "Dodatak koji Pressbooks pretvara u davatelja LTI usluge."
+
+#. Author of the plugin
+msgid "Pressbooks (Book Oven Inc.)"
+msgstr "Pressbooks (Book Oven Inc.)"
+
+#: inc/class-admin.php:68 inc/class-admin.php:72
+msgid "Common Cartridge 1.3 (LTI Links)"
+msgstr "Common Cartridge 1.3 (LTI veze)"
+
+#: inc/class-admin.php:69 inc/class-admin.php:74
+msgid "Common Cartridge 1.2 (LTI Links)"
+msgstr "Common Cartridge 1.2 (LTI veze)"
+
+#: inc/class-admin.php:70 inc/class-admin.php:76
+msgid "Common Cartridge 1.1 (LTI Links)"
+msgstr "Common Cartridge 1.1 (LTI veze)"
+
+#: inc/class-admin.php:87
+msgid "LTI Links"
+msgstr "LTI veze"
+
+#: inc/class-admin.php:178 inc/class-admin.php:179 inc/class-admin.php:208
+msgid "LTI Consumers"
+msgstr "LTI Korisnici"
+
+#: inc/class-admin.php:211
+msgid "Add new"
+msgstr "Dodaj novo"
+
+#. translators: 1: Number of consumers deleted
+#: inc/class-admin.php:216
+msgid "Consumers deleted: %d"
+msgstr "Korisnik izbrisan: %d"
+
+#: inc/class-admin.php:315 inc/class-admin.php:316 inc/class-admin.php:404
+#: inc/class-admin.php:405 templates/book/settings.blade.php:2
+#: templates/network/settings.blade.php:2
+msgid "LTI Settings"
+msgstr "LTI postavke"
+
+#: inc/class-controller.php:119
+msgid ""
+"Unauthorized registration request. Tool Consumer is not in whitelist of "
+"allowed domains."
+msgstr ""
+"Ne autoriziran zahtjev za registraciju. Korisnik alata nije na popisu "
+"dozvoljenih domena."
+
+#: inc/class-table.php:125 templates/network/consumer.blade.php:11
+msgid "Name"
+msgstr "Ime/Naziv"
+
+#: inc/class-table.php:126
+msgid "Base URL"
+msgstr "Osnovna adresa"
+
+#: inc/class-table.php:127 templates/network/consumer.blade.php:15
+msgid "Key"
+msgstr "Ključ"
+
+#: inc/class-table.php:128 templates/book/settings.blade.php:49
+#: templates/network/settings.blade.php:85
+msgid "Version"
+msgstr "Inačica"
+
+#: inc/class-table.php:129
+msgid "Last access"
+msgstr "Zadnji pristup"
+
+#: inc/class-table.php:130
+msgid "Available"
+msgstr "Dostupno"
+
+#: inc/class-table.php:131
+msgid "Protected"
+msgstr "Zaštičeno"
+
+#: inc/class-table.php:216
+msgid "Never"
+msgstr "Nikada"
+
+#: inc/class-tool.php:50
+msgid "Powered by Pressbooks"
+msgstr "Pokreće Pressbooks"
+
+#: inc/class-tool.php:108
+msgid "Invalid launch URL"
+msgstr "Netočna veza pokretanja"
+
+#: inc/class-tool.php:130
+msgid "Return of an LTI link not offered"
+msgstr "Povrat LTI veze nije ponuđen"
+
+#: inc/class-tool.php:134
+msgid "No visible document target offered"
+msgstr "Nije ponuđen vidljivi ciljni dokument"
+
+#: inc/class-tool.php:159
+msgid "Invalid tool consumer."
+msgstr "Nevažeći korisnik alata."
+
+#: inc/class-tool.php:164
+msgid "Return URL was not set."
+msgstr "Nije postavljena adresa za povratak."
+
+#: inc/class-tool.php:169
+msgid "Could not establish proxy with consumer."
+msgstr "Nije moguće ostvariti proxy sa korisnikom."
+
+#: inc/class-tool.php:174
+msgid "The tool has been successfully registered."
+msgstr "Alat je uspješno registriran."
+
+#: inc/class-tool.php:181
+msgid "The tool registration has been cancelled."
+msgstr "Registracija alata je prekinuta."
+
+#: inc/class-tool.php:554
+msgid "Deep link was not found."
+msgstr "Duboka veza nije pronađena."
+
+#: pressbooks-lti-provider.php:23
+msgid "Cannot find Pressbooks install."
+msgstr "Nije pronađena instalacija Pressbooksa."
+
+#: pressbooks-lti-provider.php:34
+msgid "Cannot find PDO for MySQL."
+msgstr "PDO za MySQL nije pronađen."
+
+#: pressbooks-lti-provider.php:55
+msgid "Dependencies Missing"
+msgstr "Nedostaju obavezni dijelovi"
+
+#: pressbooks-lti-provider.php:56
+msgid ""
+"Please run <code>composer install</code> from the root of the Pressbooks LTI"
+" Provider plugin directory."
+msgstr ""
+"Molimo pokrenite <code>composer install</code> i ishodišnoj mapi Pressbooks "
+"LTI dodatka."
+
+#: templates/book/settings.blade.php:5 templates/network/settings.blade.php:20
+msgid ""
+"Pressbooks will try to match the LTI User with their email. If, however, a "
+"matching Pressbooks user is not found then:"
+msgstr ""
+"Pressbooks će pokušati spojiti korisnike putem adresa e-pošte. U koliko neće"
+" biti pronađen odgovarajući Pressbooks korisnik tada:"
+
+#: templates/book/settings.blade.php:12
+#: templates/network/settings.blade.php:48
+msgid "Map Administrator to the following Pressbooks role"
+msgstr "Poveži Administratora sa slijedećom Pressbooks ulogom"
+
+#: templates/book/settings.blade.php:13
+#: templates/network/settings.blade.php:49
+msgid "Map Staff to the following Pressbooks role"
+msgstr "Poveži nastavnike sa slijedećom Pressbooks ulogom"
+
+#: templates/book/settings.blade.php:14
+#: templates/network/settings.blade.php:50
+msgid "Map Learner to the following Pressbooks role"
+msgstr "Poveži učenike/polaznike sa slijedećom Pressbooks ulogom"
+
+#: templates/book/settings.blade.php:19
+#: templates/network/settings.blade.php:55
+msgid "Administrator"
+msgstr "Administrator"
+
+#: templates/book/settings.blade.php:20
+#: templates/network/settings.blade.php:56
+msgid "Editor"
+msgstr "Urednik"
+
+#: templates/book/settings.blade.php:21
+#: templates/network/settings.blade.php:57
+msgid "Author"
+msgstr "Autor"
+
+#: templates/book/settings.blade.php:22
+#: templates/network/settings.blade.php:58
+msgid "Contributor"
+msgstr "Suradnik"
+
+#: templates/book/settings.blade.php:23
+#: templates/network/settings.blade.php:59
+msgid "Subscriber"
+msgstr "Pretplatnik"
+
+#: templates/book/settings.blade.php:24
+#: templates/network/settings.blade.php:60
+msgid "Anonymous Guest"
+msgstr "Anonimni gost"
+
+#: templates/book/settings.blade.php:32
+#: templates/network/settings.blade.php:68
+msgid "Appearance"
+msgstr "Izgled"
+
+#: templates/book/settings.blade.php:35
+#: templates/network/settings.blade.php:71
+msgid ""
+"Display Pressbooks navigation elements in your LMS along with book content."
+msgstr ""
+"Prikaži Pressbooks navigacijske elemente unutar Vašeg LMS sustava zajedno sa"
+" sadržajem knjige."
+
+#: templates/book/settings.blade.php:39
+#: templates/network/settings.blade.php:75
+msgid "Display only book content in LMS."
+msgstr "Unutar LMS sustava prikaži samo sadržaj knjige."
+
+#: templates/book/settings.blade.php:43
+#: templates/network/settings.blade.php:79
+msgid "Common Cartridge"
+msgstr "Nastavna cjelina (Common Cartridge)"
+
+#: templates/book/settings.blade.php:45
+#: templates/network/settings.blade.php:81
+msgid "Export books as Common Cartridge files with LTI links."
+msgstr ""
+"Izvoz knjiga kao nastavnu cjelinu u Common Cartridge zapis putem LTI vaza."
+
+#: templates/book/settings.blade.php:52
+#: templates/network/settings.blade.php:88
+msgid "1.1"
+msgstr "1.1"
+
+#: templates/book/settings.blade.php:56
+#: templates/network/settings.blade.php:92
+msgid "1.2"
+msgstr "1.2"
+
+#: templates/book/settings.blade.php:60
+#: templates/network/settings.blade.php:96
+msgid "1.3"
+msgstr "1.3"
+
+#: templates/book/settings.blade.php:64
+#: templates/network/settings.blade.php:100
+msgid "Show all export versions"
+msgstr "Prikaži sve izvezene inačice"
+
+#: templates/lti/register.blade.php:36
+msgid "Registration request for %s"
+msgstr "Zahtjev za registraciju od %s"
+
+#: templates/lti/register.blade.php:38
+msgid "Go back"
+msgstr "Vrati se"
+
+#: templates/lti/register.blade.php:38
+msgid "Proceed with registration &rarr;"
+msgstr "Nastavi sa registracijom &rarr;"
+
+#: templates/lti/selection.blade.php:26
+msgid "Content item selection request for %s"
+msgstr "Zahtjev za odabir stavke sadržaja za %s"
+
+#: templates/lti/selection.blade.php:30
+msgid "Cover Page"
+msgstr "Korice"
+
+#: templates/lti/selection.blade.php:33
+msgid "Front Matter"
+msgstr "Uvodne stranice"
+
+#: templates/lti/selection.blade.php:38
+msgid "Chapter"
+msgstr "Poglavlje"
+
+#: templates/lti/selection.blade.php:43
+msgid "Back Matter"
+msgstr "Završne stranice"
+
+#: templates/lti/selection.blade.php:46
+msgid "Submit"
+msgstr "Podnesi"
+
+#: templates/network/consumer.blade.php:2
+msgid "Editing"
+msgstr "Uredi"
+
+#: templates/network/consumer.blade.php:2
+msgid "Adding"
+msgstr "Dodaj"
+
+#: templates/network/consumer.blade.php:2
+msgid "LTI Consumer"
+msgstr "LTI korisnik"
+
+#: templates/network/consumer.blade.php:4
+msgid "Back to LTI Consumers listing"
+msgstr "Nazad na popis LIT korisnika"
+
+#: templates/network/consumer.blade.php:19
+msgid "Secret"
+msgstr "Tajna"
+
+#: templates/network/consumer.blade.php:27
+msgid "Enable From"
+msgstr "Omogući  obrazac"
+
+#: templates/network/consumer.blade.php:31
+msgid "Enable Until"
+msgstr "Omogući do"
+
+#: templates/network/settings.blade.php:9
+msgid "LTI2 Registration Whitelist"
+msgstr "Popis dozvoljenih LTI2 registracija"
+
+#: templates/network/settings.blade.php:13
+msgid ""
+"If you want to limit automatic registrations to certain domains add them "
+"here, one domain per line. If the whitelist is empty then automatic "
+"registrations are disabled."
+msgstr ""
+"Ako želite omogućiti automatsku registraciju za određene domene dodajte ih "
+"ovdje, svaku domenu u novi red. Ako ovoj popis ostavite praznim automatska "
+"registracije je onemogućena."
+
+#: templates/network/settings.blade.php:18
+msgid "Sensible Defaults"
+msgstr "Razumne zadane postavke"
+
+#: templates/network/settings.blade.php:24
+msgid ""
+"Prompt for authentication to confirm matching with existing user on initial "
+"LTI launch"
+msgstr ""
+"Pitaj za identifikacijsku kao potvrdu postojećeg korisnika prilikom prvog "
+"pokretanja LTIa "
+
+#: templates/network/settings.blade.php:27
+#: templates/network/settings.blade.php:38
+msgid "No"
+msgstr "Ne"
+
+#: templates/network/settings.blade.php:31
+#: templates/network/settings.blade.php:42
+msgid "Yes"
+msgstr "Da"
+
+#: templates/network/settings.blade.php:35
+msgid "Allow books to override role-mapping and Common Cartridge defaults"
+msgstr ""
+"Dozvoli knjigama prepisivanje pripadnosti ulogama i zadanih vrijednosti "
+"nastavnih cjelina"
