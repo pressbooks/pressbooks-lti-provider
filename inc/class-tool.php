@@ -421,7 +421,12 @@ class Tool extends ToolProvider\ToolProvider {
 	public function loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role ) {
 		if ( $role !== 'anonymous' ) {
 			if ( is_user_member_of_blog( $wp_user->ID ) ) {
-				$wp_user->set_role( $role );
+				// Change role of an existing Pressbooks user to the one provided by the LMS.
+				//
+				// Our customers don't want this behaviour. The LTI certification suite (probably) does...
+				// Commenting out, instead of removing, for future facepalm.
+				//
+				// $wp_user->set_role( $role ); // @codingStandardsIgnoreLine
 			} else {
 				add_user_to_blog( get_current_blog_id(), $wp_user->ID, $role );
 			}
