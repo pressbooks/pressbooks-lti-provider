@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.3.0\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.3.1\n"
 "Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
-"POT-Creation-Date: 2019-05-13T18:27:23+00:00\n"
+"POT-Creation-Date: 2019-05-28T16:07:48+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Last-Translator: Dac Chartrand <dac@pressbooks.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/pressbooks/teams/9194/fr/)\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: pressbooks-lti-provider\n"
-"X-Generator: WP-CLI 2.0.1\n"
+"X-Generator: WP-CLI 2.2.0\n"
 
 #. Plugin Name of the plugin
 msgid "Pressbooks LTI Provider"
@@ -151,7 +151,7 @@ msgstr "L&rsquo;outil a été enregistré avec succès."
 msgid "The tool registration has been cancelled."
 msgstr "L&rsquo;enregistrement de l&rsquo;outil a été annulé."
 
-#: inc/class-tool.php:554
+#: inc/class-tool.php:559
 msgid "Deep link was not found."
 msgstr "Lien profond introuvable"
 
