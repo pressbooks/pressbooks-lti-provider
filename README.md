@@ -1,9 +1,9 @@
 # Pressbooks LTI Provider 
 **Contributors:** conner_bw, greatislander  
 **Tags:** pressbooks, lti, lms  
-**Requires at least:** 5.2  
-**Tested up to:** 5.2  
-**Stable tag:** 1.3.0  
+**Requires at least:** 5.2.1  
+**Tested up to:** 5.2.1  
+**Stable tag:** 1.3.1  
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -148,12 +148,12 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Changelog 
 
-### 1.3.0 
-* See: https://github.com/pressbooks/pressbooks-lti-provider/releases/tag/1.3.0
+### 1.3.1 
+* See: https://github.com/pressbooks/pressbooks-lti-provider/releases/tag/1.3.1
 * Full release history available at: https://github.com/pressbooks/pressbooks-lti-provider/releases
 
 
 ## Upgrade Notice 
 
-### 1.3.0 
-Pressbooks LTI Provider requires Pressbooks >= 5.8.0
+### 1.3.1 
+Pressbooks LTI Provider requires Pressbooks >= 5.8.1

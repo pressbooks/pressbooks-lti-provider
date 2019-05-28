@@ -3,11 +3,11 @@
 Plugin Name: Pressbooks LTI Provider
 Plugin URI: https://pressbooks.org
 Description: A plugin which turns Pressbooks into an LTI provider.
-Version: 1.4.0-dev
+Version: 1.3.1
 Author: Pressbooks (Book Oven Inc.)
 Author URI: https://pressbooks.org
 Requires PHP: 7.1
-Pressbooks tested up to: 5.8.0
+Pressbooks tested up to: 5.8.1
 Text Domain: pressbooks-lti-provider
 License: GPLv3 or later
 Network: True
