@@ -15,9 +15,7 @@
 		"node": ">= 8"
 	},
 	"dependencies": {},
-	"devDependencies": {
-		"pressbooks-build-tools": "^1.4.3"
-	},
+	"devDependencies": {},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/pressbooks/pressbooks-lti-provider.git"
