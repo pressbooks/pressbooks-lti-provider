@@ -25,7 +25,6 @@
 	"require": {
 		"php": ">=7.1",
 		"composer/installers": "~1.4",
-		"yahnis-elsts/plugin-update-checker": "^4.6",
 		"pressbooks/mix": "^2.1",
 		"izumi-kun/lti": "1.1.7"
 	},
