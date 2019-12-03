@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dea1de40698414f03af4de0901a7209",
+    "content-hash": "8c0d56903525dfd11a10d54a0225da79",
     "packages": [
         {
             "name": "composer/installers",
@@ -203,51 +203,6 @@
                 }
             ],
             "time": "2017-09-06T21:35:04+00:00"
-        },
-        {
-            "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "45374e3c02126fbebebf0244c5d5da4c5e0166ac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/45374e3c02126fbebebf0244c5d5da4c5e0166ac",
-                "reference": "45374e3c02126fbebebf0244c5d5da4c5e0166ac",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "plugin-update-checker.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Yahnis Elsts",
-                    "email": "whiteshadow@w-shadow.com",
-                    "homepage": "http://w-shadow.com/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A custom update checker for WordPress plugins and themes. Useful if you can't host your plugin in the official WP repository but still want it to support automatic updates.",
-            "homepage": "https://github.com/YahnisElsts/plugin-update-checker/",
-            "keywords": [
-                "automatic updates",
-                "plugin updates",
-                "theme updates",
-                "wordpress"
-            ],
-            "time": "2019-04-02T17:56:11+00:00"
         }
     ],
     "packages-dev": [

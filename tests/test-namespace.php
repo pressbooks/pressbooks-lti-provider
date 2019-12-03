@@ -12,7 +12,6 @@ class NamespaceTest extends \WP_UnitTestCase {
 		global $wp_filter;
 		$classes = [
 			'\PressbooksLtiProvider\Admin',
-			'\PressbooksLtiProvider\Updates',
 		];
 		foreach ( $classes as $class ) {
 			$result = $class::init();
