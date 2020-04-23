@@ -170,27 +170,26 @@ endif;
  * @param array $options
  */
 function samesite_setcookie($name, $value, array $options) {
-	$header = 'Set-Cookie:';
-	$header .= rawurlencode($name) . '=' . rawurlencode($value) . ';';
-	$header .= 'expires=' . \gmdate('D, d-M-Y H:i:s T', $options['expires']) . ';';
-	$header .= 'Max-Age=' . max(0, (int) ($options['expires'] - time())) . ';';
-	$header .= 'path=' . rawurlencode($options['path']). ';';
-	$header .= 'domain=' . rawurlencode($options['domain']) . ';';
-
-	if (!empty($options['secure'])) {
-		$header .= 'secure;';
-	}
-	$header .= 'httponly;';
-	$header .= 'SameSite=' . rawurlencode($options['samesite']);
-
-    /**
-     * Fix for: https://github.com/pressbooks/pressbooks/issues/1919
-     *
-     * // We need avoid multiple headers since we use redirection from wordpress for LTI Auth.
-     * header($header, false);
-     * // For set cookies in PHP we should use setcookie function. Cookies can't be set using $_COOKIE global variable.
-     * $_COOKIE[$name] = $value;
-     */
+	/**
+	 * Fix for: https://github.com/pressbooks/pressbooks/issues/1919
+	 *
+	 * // We need avoid multiple headers since we use redirection from wordpress for LTI Auth.
+	 * $header = 'Set-Cookie:';
+	 * $header .= rawurlencode($name) . '=' . rawurlencode($value) . ';';
+	 * $header .= 'expires=' . \gmdate('D, d-M-Y H:i:s T', $options['expires']) . ';';
+	 * $header .= 'Max-Age=' . max(0, (int) ($options['expires'] - time())) . ';';
+	 * $header .= 'path=' . rawurlencode($options['path']). ';';
+	 * $header .= 'domain=' . rawurlencode($options['domain']) . ';';
+	 *
+	 * if (!empty($options['secure'])) {
+	 * 	  $header .= 'secure;';
+	 * }
+	 * $header .= 'httponly;';
+	 * $header .= 'SameSite=' . rawurlencode($options['samesite']);
+	 * header($header, false);
+	 * // For set cookies in PHP we should use setcookie function. Cookies can't be set using $_COOKIE global variable.
+	 * $_COOKIE[$name] = $value;
+	 */
 
     setcookie( $name, $value, $options );
 }
