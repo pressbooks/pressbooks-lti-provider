@@ -60,6 +60,11 @@ if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 	}
 }
 
+/**
+ * SAMESITE COOKIE: https://github.com/pressbooks/pressbooks/issues/1919
+ */
+define( 'WP_SAMESITE_COOKIE', 'None' );
+
 // -------------------------------------------------------------------------------------------------------------------
 // Requires
 // -------------------------------------------------------------------------------------------------------------------
@@ -77,4 +82,3 @@ add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
 add_action( 'wp_loaded', '\PressbooksLtiProvider\session_relax' );
 add_filter( 'pb_session_configuration', '\PressbooksLtiProvider\session_configuration' );
 add_filter( 'wp_login_errors', '\PressbooksLtiProvider\login_errors', 10, 2 );
-
