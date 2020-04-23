@@ -65,6 +65,7 @@ if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 // -------------------------------------------------------------------------------------------------------------------
 
 require( __DIR__ . '/inc/namespace.php' );
+require( __DIR__ . '/inc/samesite/samesite.php' );
 
 // -------------------------------------------------------------------------------------------------------------------
 // Hooks
@@ -76,3 +77,4 @@ add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
 add_action( 'wp_loaded', '\PressbooksLtiProvider\session_relax' );
 add_filter( 'pb_session_configuration', '\PressbooksLtiProvider\session_configuration' );
 add_filter( 'wp_login_errors', '\PressbooksLtiProvider\login_errors', 10, 2 );
+
