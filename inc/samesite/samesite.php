@@ -147,7 +147,7 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 
 		$base_options = [
 			'expires' => $expire,
-			'domain' => COOKIE_DOMAIN ? COOKIE_DOMAIN : 'example.org',
+			'domain' => COOKIE_DOMAIN,
 			'httponly' => true,
 			'samesite' => defined( 'WP_SAMESITE_COOKIE' ) ? WP_SAMESITE_COOKIE : 'Lax',
 		]; // httponly is added at samesite_setcookie();
@@ -192,23 +192,23 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 function samesite_setcookie( $name, $value, array $options ) {
 	/**
 	 * Fix for: https://github.com/pressbooks/pressbooks/issues/1919
-	 *
-	 * // We need avoid multiple headers since we use redirection from WordPress for LTI Auth.
-	 * $header = 'Set-Cookie:';
-	 * $header .= rawurlencode($name) . '=' . rawurlencode($value) . ';';
-	 * $header .= 'expires=' . \gmdate('D, d-M-Y H:i:s T', $options['expires']) . ';';
-	 * $header .= 'Max-Age=' . max(0, (int) ($options['expires'] - time())) . ';';
-	 * $header .= 'path=' . rawurlencode($options['path']). ';';
-	 * $header .= 'domain=' . rawurlencode($options['domain']) . ';';
-	 *
-	 * if (!empty($options['secure'])) {
-	 *    $header .= 'secure;';
-	 * }
-	 * $header .= 'httponly;';
-	 * $header .= 'SameSite=' . rawurlencode($options['samesite']);
-	 * header($header, false);
 	 */
-
+	if ( version_compare( PHP_VERSION, '7.3.0' ) >= 0 ) {
+		setcookie( $name, $value, $options );
+	} else {
+		$header = 'Set-Cookie:';
+		$header .= rawurlencode( $name ) . '=' . rawurlencode( $value ) . ';';
+		$header .= 'expires=' . \gmdate( 'D, d-M-Y H:i:s T', $options['expires'] ) . ';';
+		$header .= 'Max-Age=' . max( 0, (int) ( $options['expires'] - time() ) ) . ';';
+		$header .= 'path=' . rawurlencode( $options['path'] ) . ';';
+		$header .= 'domain=' . rawurlencode( $options['domain'] ) . ';';
+		if ( ! empty( $options['secure'] ) ) {
+			$header .= 'secure;';
+		}
+		$header .= 'httponly;';
+		$header .= 'SameSite=' . rawurlencode( $options['samesite'] );
+		header( $header );
+		setcookie( $name, $value, $options['expires'], $options['path'], $options['domain'], $options['secure'], $options['httponly'] . '; samesite=' . $options['samesite'] );
+	}
 	$_COOKIE[ $name ] = $value;
-	setcookie( $name, $value, $options );
 }
