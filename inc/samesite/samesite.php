@@ -209,7 +209,6 @@ function samesite_setcookie( $name, $value, array $options ) {
 	 * header($header, false);
 	 */
 
-
 	$_COOKIE[ $name ] = $value;
 	setcookie( $name, $value, $options );
 }
