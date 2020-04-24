@@ -147,7 +147,7 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 
 		$base_options = [
 			'expires' => $expire,
-			'domain' => COOKIE_DOMAIN,
+			'domain' => COOKIE_DOMAIN ? COOKIE_DOMAIN : 'example.org',
 			'httponly' => true,
 			'samesite' => defined( 'WP_SAMESITE_COOKIE' ) ? WP_SAMESITE_COOKIE : 'Lax',
 		]; // httponly is added at samesite_setcookie();
@@ -207,9 +207,9 @@ function samesite_setcookie( $name, $value, array $options ) {
 	 * $header .= 'httponly;';
 	 * $header .= 'SameSite=' . rawurlencode($options['samesite']);
 	 * header($header, false);
-	 * // For set cookies in PHP we should use setcookie function. Cookies can't be set using $_COOKIE global variable.
-	 * $_COOKIE[$name] = $value;
 	 */
 
+
+	$_COOKIE[ $name ] = $value;
 	setcookie( $name, $value, $options );
 }
