@@ -60,11 +60,17 @@ if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 	}
 }
 
+/**
+ * SAMESITE COOKIE: https://github.com/pressbooks/pressbooks/issues/1919
+ */
+define( 'WP_SAMESITE_COOKIE', 'None' );
+
 // -------------------------------------------------------------------------------------------------------------------
 // Requires
 // -------------------------------------------------------------------------------------------------------------------
 
 require( __DIR__ . '/inc/namespace.php' );
+require( __DIR__ . '/inc/samesite/samesite.php' );
 
 // -------------------------------------------------------------------------------------------------------------------
 // Hooks
