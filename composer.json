@@ -58,7 +58,11 @@
 			"vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml",
 			"@standards"
 		],
-		"standards": [
+    "test-coverage": [
+      "vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml --coverage-html=./coverage-reports",
+      "@standards"
+    ],
+    "standards": [
 			"vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/"
 		],
 		"readme": ["vendor/bin/wp2md -i readme.txt -o README.md"]

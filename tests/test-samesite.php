@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Class SamesiteTest
+ * @group samesite
+ */
 class SamesiteTest extends \WP_UnitTestCase
 {
 
@@ -11,7 +15,7 @@ class SamesiteTest extends \WP_UnitTestCase
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
-	public function test_login() {
+	public function test_setCookie() {
 		$user_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_clear_auth_cookie();
 		add_filter( 'send_auth_cookies', '__return_true' );
