@@ -16,6 +16,7 @@
     </rule>
     <rule ref="HM.Functions.NamespacedFunctions.MissingNamespace">
         <exclude-pattern>/pressbooks-lti-provider.php</exclude-pattern>
+		<exclude-pattern>/samesite/samesite.php</exclude-pattern>
     </rule>
     <!-- Disable all rules for these files: -->
     <exclude-pattern>*.blade.php</exclude-pattern>

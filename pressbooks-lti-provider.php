@@ -2,12 +2,13 @@
 /*
 Plugin Name: Pressbooks LTI Provider
 Plugin URI: https://pressbooks.org
+GitHub Plugin URI: pressbooks/pressbooks-lti-provider
+Release Asset: true
 Description: A plugin which turns Pressbooks into an LTI provider.
-Version: 1.3.1
+Version: 1.4.0-dev
 Author: Pressbooks (Book Oven Inc.)
 Author URI: https://pressbooks.org
 Requires PHP: 7.1
-Pressbooks tested up to: 5.8.1
 Text Domain: pressbooks-lti-provider
 License: GPLv3 or later
 Network: True
@@ -59,18 +60,23 @@ if ( ! class_exists( '\IMSGlobal\LTI\ToolProvider\ToolProvider' ) ) {
 	}
 }
 
+/**
+ * SAMESITE COOKIE: https://github.com/pressbooks/pressbooks/issues/1919
+ */
+define( 'WP_SAMESITE_COOKIE', 'None' );
+
 // -------------------------------------------------------------------------------------------------------------------
 // Requires
 // -------------------------------------------------------------------------------------------------------------------
 
 require( __DIR__ . '/inc/namespace.php' );
+require( __DIR__ . '/inc/samesite/samesite.php' );
 
 // -------------------------------------------------------------------------------------------------------------------
 // Hooks
 // -------------------------------------------------------------------------------------------------------------------
 
 register_activation_hook( __FILE__, [ '\PressbooksLtiProvider\Database', 'installTables' ] );
-add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Updates', 'init' ] );
 add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Admin', 'init' ] );
 add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
 add_action( 'wp_loaded', '\PressbooksLtiProvider\session_relax' );

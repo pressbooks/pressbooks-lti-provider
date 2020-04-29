@@ -25,12 +25,11 @@
 	"require": {
 		"php": ">=7.1",
 		"composer/installers": "~1.4",
-		"yahnis-elsts/plugin-update-checker": "^4.4",
 		"pressbooks/mix": "^2.1",
-		"izumi-kun/lti": "1.1.7"
+		"izumi-kun/lti": "^1.2"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^6.5",
+		"phpunit/phpunit": "^7",
 		"pressbooks/coding-standards": "^1.0",
 		"wpreadme2markdown/wp2md": "^3.0"
 	},
@@ -59,7 +58,11 @@
 			"vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml",
 			"@standards"
 		],
-		"standards": [
+    "test-coverage": [
+      "vendor/bin/phpunit --configuration phpunit.xml --coverage-clover coverage.xml --coverage-html=./coverage-reports",
+      "@standards"
+    ],
+    "standards": [
 			"vendor/bin/phpcs --standard=phpcs.ruleset.xml *.php inc/ bin/"
 		],
 		"readme": ["vendor/bin/wp2md -i readme.txt -o README.md"]
