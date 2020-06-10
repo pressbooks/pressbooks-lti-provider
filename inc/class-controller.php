@@ -51,6 +51,9 @@ class Controller {
 			case 'contentItemSubmit':
 				$this->contentItemSubmit( $params );
 				break;
+			case 'createbook':
+				// Process incoming request, check authenticity of the LTI launch request, book creation and user match starts here
+				break;
 			default:
 				$this->default( $action, $params );
 		}

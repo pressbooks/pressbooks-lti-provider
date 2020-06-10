@@ -43,7 +43,7 @@ function do_format( $format ) {
 	$controller = array_shift( $params );
 	$action = array_shift( $params );
 	if ( 'lti' === $controller ) {
-		if ( \Pressbooks\Book::isBook() ) {
+		if ( \Pressbooks\Book::isBook() || 'createbook' === $action ) {
 			// Book
 			$admin = Admin::init();
 			$controller = new Controller( $admin );
