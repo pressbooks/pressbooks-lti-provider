@@ -660,4 +660,32 @@ class Tool extends ToolProvider\ToolProvider {
 		return true;
 	}
 
+	/**
+	 * Process incoming request, check authenticity of the LTI launch request
+	 *
+	 * @param array $params
+	 *
+	 * @return bool
+	 */
+	public function processRequest( $params ) {
+		if ( empty( $params ) ) {
+			return false;
+		}
+		$this->setParams( $params );
+		$this->setParameterConstraint(
+			'oauth_consumer_key', true, 50, [
+				'basic-lti-launch-request',
+				'ContentItemSelectionRequest',
+			]
+		);
+		$this->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
+		$this->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
+		$this->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
+		if ( ! $this->validateRegistrationRequest() ) {
+			$this->ok      = false;
+			$this->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
+		}
+
+	}
+
 }

@@ -52,7 +52,15 @@ class Controller {
 				$this->contentItemSubmit( $params );
 				break;
 			case 'createbook':
-				// Process incoming request, check authenticity of the LTI launch request, book creation and user match starts here
+				$connector = Database::getConnector();
+				$tool = new Tool( $connector );
+				$tool->setAdmin( $this->admin );
+				$tool->setAction( $action );
+				$tool->processRequest( $params );
+				$tool->handleRequest();
+				// book creation and
+				// user match starts here
+				// log in user to book
 				break;
 			default:
 				$this->default( $action, $params );
@@ -111,16 +119,7 @@ class Controller {
 			$tool->setupDeepLink();
 			\Pressbooks\Redirect\location( $tool->getRedirectUrl() );
 		} else {
-			// Process incoming request, check authenticity of the LTI launch request, execute requested action...
-			$tool->setParams( $params );
-			$tool->setParameterConstraint( 'oauth_consumer_key', true, 50, [ 'basic-lti-launch-request', 'ContentItemSelectionRequest' ] );
-			$tool->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
-			$tool->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
-			$tool->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
-			if ( ! $tool->validateRegistrationRequest() ) {
-				$tool->ok = false;
-				$tool->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
-			}
+			$tool->processRequest( $params );
 			$tool->handleRequest();
 		}
 	}
