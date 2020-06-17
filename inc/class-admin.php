@@ -403,7 +403,7 @@ EOJS;
 				$parent_slug,
 				__( 'LTI Settings', 'pressbooks-lti-provider' ),
 				__( 'LTI Settings', 'pressbooks-lti-provider' ),
-				'manage_network',
+				'manage_options',
 				'pb_lti_settings',
 				[ $this, 'printBookSettingsMenu' ]
 			);
