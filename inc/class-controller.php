@@ -59,6 +59,8 @@ class Controller {
 				$tool->processRequest( $params );
 				$tool->handleRequest();
 				// book creation and
+				$create_book = new Createbook( $tool );
+				$create_book->build;
 				// user match starts here
 				// log in user to book
 				break;

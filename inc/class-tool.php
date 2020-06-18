@@ -663,14 +663,11 @@ class Tool extends ToolProvider\ToolProvider {
 	/**
 	 * Process incoming request, check authenticity of the LTI launch request
 	 *
-	 * @param array $params
+	 * @since 1.4.0
 	 *
-	 * @return bool
+	 * @param array $params
 	 */
 	public function processRequest( $params ) {
-		if ( empty( $params ) ) {
-			return false;
-		}
 		$this->setParams( $params );
 		$this->setParameterConstraint(
 			'oauth_consumer_key', true, 50, [
