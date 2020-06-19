@@ -362,7 +362,7 @@ class Tool extends ToolProvider\ToolProvider {
 		$is_new_user = false;
 
 		// Try to find a matching WordPress user with LTI ID
-		$wp_user = $this->matchUser( $lti_id );
+		$wp_user = $this->matchUserById( $lti_id );
 		if ( $wp_user ) {
 			$lti_id_was_matched = true;
 		} else {
@@ -445,7 +445,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @return false|\WP_User
 	 */
-	public function matchUser( $lti_id ) {
+	public function matchUserById( $lti_id ) {
 		global $wpdb;
 		$condition = "{$lti_id}|%";
 		$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", self::META_KEY, $condition ) );
@@ -685,4 +685,151 @@ class Tool extends ToolProvider\ToolProvider {
 
 	}
 
+	/**
+	 * Builds a book title from expected values and applies an opinionated format.
+	 * Supplies default values should arguments be empty
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param $course_name
+	 * @param $course_id
+	 * @param $activity_name
+	 * @param $activity_id
+	 *
+	 * @return string
+	 */
+	public function buildTitle( $course_name, $course_id, $activity_name, $activity_id ) {
+		$course   = ( ! empty( $course_name ) ? $course_name : 'Course ' . $course_id );
+		$activity = ( ! empty( $activity_name ) ? $activity_name : 'Activity ' . $activity_id );
+
+		$title = sprintf( '%1$s: %2$s', $course, $activity );
+
+		return $title;
+
+	}
+
+	/**
+	 * Takes an activity name, massages it into compliance for a valid domain
+	 *
+	 * @param $resource_link_title
+	 *
+	 * @return string
+	 */
+	public function buildAndValidateUrl( $resource_link_title ) {
+		global $wpdb, $domain;
+
+		$current_network          = get_network();
+		$base                     = $current_network->path;
+		$scheme                   = wp_parse_url( network_home_url(), PHP_URL_SCHEME );
+		$illegal_names            = get_site_option( 'illegal_names' );
+		$minimum_site_name_length = apply_filters( 'minimum_site_name_length', 4 );
+
+		// remove spaces.
+		$blog_name = preg_replace( '/\s+/', '', $resource_link_title );
+
+		// only lower case and numbers.
+		$blog_name = strtolower( $blog_name );
+
+		// at least some letters.
+		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {
+			//@TODO
+		}
+		// illegal names.
+		if ( in_array( $blog_name, $illegal_names, true ) ) {
+			//@TODO
+		}
+		// at least 4 characters
+		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
+			//@TODO
+		}
+
+		if ( is_subdomain_install() ) {
+			$host = wp_parse_url( esc_url( $domain ), PHP_URL_HOST );
+			$host = explode( '.', $host );
+			if ( count( $host ) > 2 ) {
+				array_shift( $host );
+			}
+			$bare_domain = implode( '.', $host );
+			$my_domain   = $blog_name . '.' . $bare_domain;
+			$path       = $base;
+			// disambiguate with sequential numbers
+			$i = 1;
+			while ( domain_exists( $my_domain, $path ) ) {
+				$my_domain = "{$my_domain}{$i}";
+				++$i;
+			}
+		} else {
+			$illegal_names = array_merge( $illegal_names, get_subdirectory_reserved_names() );
+			$my_domain      = "$domain";
+			$path          = $base . $blog_name . '/';
+
+			// disambiguate with sequential numbers
+			$i = 1;
+			while ( domain_exists( $my_domain, $path ) ) {
+				$path = untrailingslashit( $path ) . $i . '/';
+				;
+				++$i;
+			}
+		}
+
+		return sprintf( '%1$s://%2$s%3$s', $scheme, $my_domain, $path );
+	}
+
+
+	/**
+	 * WIP - make fuzzy
+	 *
+	 * @param $user
+	 *
+	 * @return bool|false|\WP_User
+	 */
+	public function fuzzyUserMatch( $user ) {
+		//@TODO - make it more fuzzy
+
+		$person_attributes = [
+			'lis_person_contact_email_primary',
+			'lis_person_name_given',
+			'lis_person_name_family',
+			'lis_person_name_full',
+			'user_id',
+			'resource_link_id',
+			'tool_consumer_instance_guid',
+			'ext_user_username',
+		];
+
+		$wp_user = $this->matchUserById( $user['tool_consumer_instance_guid'] . $user['user_id'] );
+		if ( ! $wp_user ) {
+			// Try to match the LTI User with their email
+			$wp_user = get_user_by( 'email', $_POST['lis_person_contact_email_primary'] );
+		}
+		if ( ! $wp_user ) {
+			// Try to match the LTI User with their email
+			$wp_user = get_user_by( 'login', $_POST['ext_user_username'] );
+		}
+		return $wp_user;
+	}
+
+	/**
+	 * Create a new book, launched via LTI
+	 *
+	 * @param string $new_book_url
+	 * @param string $title
+	 * @param $user_id
+	 *
+	 * @return int|\WP_Error
+	 */
+	public function createNewBook( $new_book_url, $title, $user_id ) {
+		$url    = untrailingslashit( $new_book_url );
+		$domain = wp_parse_url( $url, PHP_URL_HOST );
+		$path   = wp_parse_url( $url, PHP_URL_PATH );
+
+		$book_id = wpmu_create_blog( $domain, $path, $title, $user_id );
+
+		if ( ! $book_id ) {
+			$this->ok      = false;
+			$this->message = __( 'Book creation failed', 'pressbooks-lti-provider' );
+		}
+
+		return $book_id;
+	}
 }

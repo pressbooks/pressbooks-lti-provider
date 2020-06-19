@@ -85,7 +85,7 @@ class ToolTest extends \WP_UnitTestCase {
 		$lti_id = "{$guid}|" . $user->getId();
 
 		// User doesn't exist yet
-		$this->assertFalse( $this->tool->matchUser( $lti_id ) );
+		$this->assertFalse( $this->tool->matchUserById( $lti_id ) );
 
 		$this->tool->setupUser( $user, $guid );
 		$user = get_user_by( 'email', $email );
@@ -94,7 +94,7 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertTrue( is_user_member_of_blog( $user->ID ) );
 
 		// User was created and linked
-		$this->assertInstanceOf( '\WP_User', $this->tool->matchUser( $lti_id ) );
+		$this->assertInstanceOf( '\WP_User', $this->tool->matchUserById( $lti_id ) );
 	}
 
 	public function test_authenticateUser() {
