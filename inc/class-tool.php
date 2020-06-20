@@ -699,10 +699,12 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @return string
 	 */
 	public function buildTitle( $course_name, $course_id, $activity_name, $activity_id ) {
-		$course   = ( ! empty( $course_name ) ? $course_name : 'Course ' . $course_id );
-		$activity = ( ! empty( $activity_name ) ? $activity_name : 'Activity ' . $activity_id );
+		$course   = ( ! empty( $course_name ) ? $course_name : 'Course ID ' . $course_id );
+		$activity = ( ! empty( $activity_name ) ? $activity_name : 'Activity ID ' . $activity_id );
 
 		$title = sprintf( '%1$s: %2$s', $course, $activity );
+		$title = wp_strip_all_tags( $title, false );
+		$title = ( strlen( $title ) <= 1 ) ? 'Untitled' : $title;
 
 		return $title;
 
