@@ -85,9 +85,7 @@ class Controller {
 				$tool->user->setNames( $_POST['lis_person_name_given'], $_POST['lis_person_name_family'], $_POST['lis_person_name_full'] );
 				$tool->user->setRecordId( $_POST['user_id'] );
 				$tool->user->setResourceLinkId( $_POST['resource_link_id'] );
-				//$tool->user->getId();
 				$tool->setupUser( $tool->user, $_POST['tool_consumer_instance_guid'] );
-				//$tool->loginUser()
 				$tool->handleRequest();
 				break;
 			default:
