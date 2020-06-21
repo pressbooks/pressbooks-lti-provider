@@ -818,7 +818,8 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
-	 * @param $user_info
+	 *
+	 * @param array $user_info
 	 *
 	 * @return bool|\WP_User
 	 */
@@ -843,21 +844,27 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 
 		// Try to match the LTI User with their email
-		$wp_user = get_user_by( 'email', $_POST['lis_person_contact_email_primary'] );
+		$wp_user = get_user_by( 'email', $user_info['lis_person_contact_email_primary'] );
+		$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", 'last_name', $user_info['lis_person_name_family'] ) );
 
 		if ( ! $wp_user ) {
-			// Try to match the LTI User with their email
-			$wp_user = get_user_by( 'login', $_POST['ext_user_username'] );
+			// Try to match the LTI User with their username
+			$wp_user = get_user_by( 'login', $user_info['ext_user_username'] );
+			if ( $wp_user ) {
+				if ( 0 === strcmp( strtolower( $wp_user->last_name ), strtolower( $query_result ) ) ) {
+					return $wp_user;
+				}
+			}
 		}
 		if ( ! $wp_user ) {
 			// Try to match the LTI User with their id
 			// the risk here is that a user gets mis-identified with another user_id
-			$wp_user = get_user_by( 'id', $_POST['user_id'] );
+			$wp_user = get_user_by( 'id', $user_info['user_id'] );
 
 			// mitigate that risk by also looking for a match against last name
+			// TODO: could also check for context_id (course) or consumer_guid to boost confidence
 			if ( $wp_user ) {
-				$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", 'last_name', $user_info['lis_person_name_family'] ) );
-				if ( 0 === strcmp( $wp_user->last_name, $query_result ) ) {
+				if ( 0 === strcmp( strtolower( $wp_user->last_name ), strtolower( $query_result ) ) ) {
 					return $wp_user;
 				} else {
 					return false;

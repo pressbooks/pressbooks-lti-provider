@@ -197,4 +197,23 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1] ) );
 
 	}
+
+	public function test_fuzzyUserMatch() {
+		update_user_meta( 1, 'last_name', 'Tukey' );
+		$fake_person_attributes = [
+			'lis_person_contact_email_primary' => 'admin@exmple.org',
+			'lis_person_name_given'            => '',
+			'lis_person_name_family'           => 'Tukey',
+			'lis_person_name_full'             => '',
+			'user_id'                          => '1',
+			'resource_link_id'                 => '',
+			'tool_consumer_instance_guid'      => '',
+			'ext_user_username'                => 'admin'
+		];
+		$wrong_keys = [ 'ballon' => 'red', 'quantity' => 99 ];
+
+
+		$this->assertFalse( $this->tool->fuzzyUserMatch( $wrong_keys ) );
+
+	}
 }
