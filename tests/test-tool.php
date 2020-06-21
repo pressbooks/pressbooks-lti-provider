@@ -184,4 +184,17 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'Untitled', $this->tool->buildTitle( $malicious_path[0], $malicious_path[1], $malicious_path[2], $malicious_path[3] ) );
 	}
 
+	public function test_validateLtiBookExists() {
+		update_option( 'pressbooks_lti_consumer_context', [ 'resource_link_id' => 33 ] );
+		$no_exist          = [ 'https://pressbooks.test/activityname', 33 ];
+		$no_url            = [ 'noHostHere', 33 ];
+		$happy_path_no_lti = [ 'https://example.org', 34 ];
+		$happy_path        = [ 'https://example.org', 33 ];
+
+		$this->assertFalse( $this->tool->validateLtiBookExists( $no_exist[0], $no_exist[1] ) );
+		$this->assertFalse( $this->tool->validateLtiBookExists( $no_url[0], $no_url[1] ) );
+		$this->assertFalse( $this->tool->validateLtiBookExists( $happy_path_no_lti[0], $happy_path_no_lti[1] ) );
+		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1] ) );
+
+	}
 }

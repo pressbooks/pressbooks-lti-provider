@@ -818,12 +818,12 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
-	 * @param $wp_user \WP_User
+	 * @param $user_info
 	 *
 	 * @return bool|\WP_User
 	 */
-	public function fuzzyUserMatch( $wp_user ) {
-		//@TODO - make it more fuzzy
+	public function fuzzyUserMatch( $user_info ) {
+		global $wpdb;
 
 		$person_attributes = [
 			'lis_person_contact_email_primary',
@@ -836,13 +836,33 @@ class Tool extends ToolProvider\ToolProvider {
 			'ext_user_username',
 		];
 
-		if ( ! $wp_user ) {
-			// Try to match the LTI User with their email
-			$wp_user = get_user_by( 'email', $_POST['lis_person_contact_email_primary'] );
+		foreach ( $person_attributes as $attribute ) {
+			if ( ! array_key_exists( $attribute, $user_info ) ) {
+				return false;
+			}
 		}
+
+		// Try to match the LTI User with their email
+		$wp_user = get_user_by( 'email', $_POST['lis_person_contact_email_primary'] );
+
 		if ( ! $wp_user ) {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'login', $_POST['ext_user_username'] );
+		}
+		if ( ! $wp_user ) {
+			// Try to match the LTI User with their id
+			// the risk here is that a user gets mis-identified with another user_id
+			$wp_user = get_user_by( 'id', $_POST['user_id'] );
+
+			// mitigate that risk by also looking for a match against last name
+			if ( $wp_user ) {
+				$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", 'last_name', $user_info['lis_person_name_family'] ) );
+				if ( 0 === strcmp( $wp_user->last_name, $query_result ) ) {
+					return $wp_user;
+				} else {
+					return false;
+				}
+			}
 		}
 
 		return $wp_user;
@@ -892,7 +912,7 @@ class Tool extends ToolProvider\ToolProvider {
 		$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
 		$path          = $parts['path'];
 		if ( ! isset( $parts['host'] ) ) {
-			return '';
+			return false;
 		}
 		$domain = $parts['host'];
 
