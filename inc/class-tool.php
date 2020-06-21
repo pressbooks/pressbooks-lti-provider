@@ -753,30 +753,52 @@ class Tool extends ToolProvider\ToolProvider {
 			}
 			$bare_domain = implode( '.', $host );
 			$my_domain   = $blog_name . '.' . $bare_domain;
-			$path       = $base;
-			// disambiguate with sequential numbers
-			$i = 1;
-			while ( domain_exists( $my_domain, $path ) ) {
-				$my_domain = "{$my_domain}{$i}";
-				++$i;
-			}
+			$path        = $base;
+
 		} else {
 			$illegal_names = array_merge( $illegal_names, get_subdirectory_reserved_names() );
-			$my_domain      = "$domain";
+			$my_domain     = "$domain";
 			$path          = $base . $blog_name . '/';
 
-			// disambiguate with sequential numbers
-			$i = 1;
-			while ( domain_exists( $my_domain, $path ) ) {
-				$path = untrailingslashit( $path ) . $i . '/';
-				;
-				++$i;
-			}
 		}
 
 		return sprintf( '%1$s://%2$s%3$s', $scheme, $my_domain, $path );
 	}
 
+	/**
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	public function maybeDisambiguateDomain( $url ) {
+		// return empty on failure
+		$parts = wp_parse_url( trailingslashit( $url ) );
+		if ( ! isset( $parts['host'] ) ) {
+			return '';
+		}
+
+		$domain = $parts['host'];
+		$path = $parts['path'];
+
+		// disambiguate with sequential numbers
+		if ( is_subdomain_install() ) {
+			$i = 1;
+			while ( domain_exists( $parts['host'], $parts['path'], 1 ) ) {
+				$domain = "{$parts['host']}{$i}";
+				++ $i;
+			}
+		} else {
+			$i = 1;
+			while ( domain_exists( $parts['host'], $parts['path'], 1 ) ) {
+				$path = untrailingslashit( $parts['path'] ) . $i . '/';
+				;
+				++ $i;
+			}
+		}
+
+		return sprintf( '%1$s://%2$s%3$s', $parts['scheme'], $domain, $path );
+
+	}
 
 	/**
 	 * WIP - make fuzzy

