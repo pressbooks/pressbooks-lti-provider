@@ -715,7 +715,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @param $resource_link_title
 	 *
-	 * @return string
+	 * @return bool|string
 	 */
 	public function buildAndValidateUrl( $resource_link_title ) {
 		global $wpdb, $domain;
@@ -734,15 +734,24 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// at least some letters.
 		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {
-			//@TODO
+			// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
+			$this->ok = false;
+			$this->message = __( 'The activity name needs to contain some letters', 'pressbooks-lti-provider' );
+			return false;
 		}
 		// illegal names.
 		if ( in_array( $blog_name, $illegal_names, true ) ) {
-			//@TODO
+			// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
+			$this->ok = false;
+			$this->message = __( 'The activity name uses a reserved word', 'pressbooks-lti-provider' );
+			return false;
 		}
 		// at least 4 characters
 		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
-			//@TODO
+			// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
+			$this->ok = false;
+			$this->message = __( 'Needs to be at least 4 characters', 'pressbooks-lti-provider' );
+			return false;
 		}
 
 		if ( is_subdomain_install() ) {
@@ -756,11 +765,19 @@ class Tool extends ToolProvider\ToolProvider {
 			$path        = $base;
 
 		} else {
-			$illegal_names = array_merge( $illegal_names, get_subdirectory_reserved_names() );
-			$my_domain     = "$domain";
-			$path          = $base . $blog_name . '/';
+			$illegal_sub_directory_names = array_merge( $illegal_names, get_subdirectory_reserved_names() );
+			if ( in_array( $blog_name, $illegal_sub_directory_names, true ) ) {
+				// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
+				$this->ok = false;
+				$this->message = __( 'The activity name uses a reserved word', 'pressbooks-lti-provider' );
+				return false;
+			}
+			$my_domain = "$domain";
+			$path      = $base . $blog_name . '/';
 
 		}
+
+		$path = ( 0 === strcmp( $path, '/' ) ) ? '' : $path;
 
 		return sprintf( '%1$s://%2$s%3$s', $scheme, $my_domain, $path );
 	}
@@ -772,7 +789,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 */
 	public function maybeDisambiguateDomain( $url ) {
 		// return empty on failure
-		$parts = wp_parse_url( trailingslashit( $url ) );
+		$parts = wp_parse_url( $url );
 		if ( ! isset( $parts['host'] ) ) {
 			return '';
 		}
@@ -780,34 +797,32 @@ class Tool extends ToolProvider\ToolProvider {
 		$domain = $parts['host'];
 		$path = $parts['path'];
 
-		// disambiguate with sequential numbers
+		// disambiguate with sequential numbers, limit to prevent endless loop
 		if ( is_subdomain_install() ) {
 			$i = 1;
-			while ( domain_exists( $parts['host'], $parts['path'], 1 ) ) {
+			while ( domain_exists( $domain, $parts['path'], 1 ) && $i < 1000 ) {
 				$domain = "{$parts['host']}{$i}";
 				++ $i;
 			}
 		} else {
 			$i = 1;
-			while ( domain_exists( $parts['host'], $parts['path'], 1 ) ) {
-				$path = untrailingslashit( $parts['path'] ) . $i . '/';
-				;
+			while ( domain_exists( $parts['host'], $path, 1 ) && $i < 1000 ) {
+				$path = ( 0 === strcmp( $parts['path'], '/' ) ) ? $path : untrailingslashit( $path );
+				$path = $path . $i;
 				++ $i;
 			}
 		}
 
-		return sprintf( '%1$s://%2$s%3$s', $parts['scheme'], $domain, $path );
+		return sprintf( '%1$s://%2$s%3$s', $parts['scheme'], $domain, untrailingslashit( $path ) );
 
 	}
 
 	/**
-	 * WIP - make fuzzy
+	 * @param $wp_user \WP_User
 	 *
-	 * @param $user
-	 *
-	 * @return bool|false|\WP_User
+	 * @return bool|\WP_User
 	 */
-	public function fuzzyUserMatch( $user ) {
+	public function fuzzyUserMatch( $wp_user ) {
 		//@TODO - make it more fuzzy
 
 		$person_attributes = [
@@ -821,7 +836,6 @@ class Tool extends ToolProvider\ToolProvider {
 			'ext_user_username',
 		];
 
-		$wp_user = $this->matchUserById( $user['tool_consumer_instance_guid'] . $user['user_id'] );
 		if ( ! $wp_user ) {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $_POST['lis_person_contact_email_primary'] );
@@ -830,6 +844,7 @@ class Tool extends ToolProvider\ToolProvider {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'login', $_POST['ext_user_username'] );
 		}
+
 		return $wp_user;
 	}
 
@@ -838,11 +853,13 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @param string $new_book_url
 	 * @param string $title
-	 * @param $user_id
+	 * @param int $user_id
+	 * @param int $resource_link_id the ID of the activity from the Consumer
+	 * @param int $context_id the ID of the course the activity belongs to, from the Consumer
 	 *
 	 * @return int|\WP_Error
 	 */
-	public function createNewBook( $new_book_url, $title, $user_id ) {
+	public function createNewBook( $new_book_url, $title, $user_id, $resource_link_id, $context_id ) {
 		$url    = untrailingslashit( $new_book_url );
 		$domain = wp_parse_url( $url, PHP_URL_HOST );
 		$path   = wp_parse_url( $url, PHP_URL_PATH );
@@ -854,6 +871,41 @@ class Tool extends ToolProvider\ToolProvider {
 			$this->message = __( 'Book creation failed', 'pressbooks-lti-provider' );
 		}
 
+		add_blog_option(
+			$book_id, 'pressbooks_lti_consumer_context', [
+				'resource_link_id' => $resource_link_id,
+				'context_id' => $context_id,
+			]
+		);
+
 		return $book_id;
+	}
+
+	/**
+	 * @param $url
+	 * @param $resource_link_id
+	 *
+	 * @return bool
+	 */
+	public function validateLtiBookExists( $url, $resource_link_id ) {
+		$parts         = wp_parse_url( untrailingslashit( $url ) );
+		$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
+		$path          = $parts['path'];
+		if ( ! isset( $parts['host'] ) ) {
+			return '';
+		}
+		$domain = $parts['host'];
+
+		$book_id = ( domain_exists( $domain, $path ) ) ? true : false;
+
+		if ( $book_id ) {
+			$options = get_blog_option( $book_id, 'pressbooks_lti_consumer_context' );
+			// check if the book has been created already by the same activity in the course
+			$exists = ( 0 === strcmp( $options['resource_link_id'], $resource_link_id ) ) ? true : false;
+		} else {
+			$exists = false;
+		}
+
+		return $exists;
 	}
 }

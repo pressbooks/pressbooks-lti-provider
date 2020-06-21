@@ -57,35 +57,69 @@ class Controller {
 				$tool->setAdmin( $this->admin );
 				$tool->setAction( $action );
 				$tool->processRequest( $params );
+				$user_id = false;
 
-				// book creation
-				$new_book_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
+				// create a url from the name of the activity link
+				$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
+				if ( false === $activity_url ) {
+					// TODO: Return the book for viewing pleasure
+					$tool->handleRequest();
+					do_exit();
+				}
+				$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'] );
 
-				$title = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
-
-				// user match starts here.
-				$user_id = $tool->fuzzyUserMatch( $_POST );
-				if ( false === $user_id ) {
-					$new_user = $tool->createUser( $_POST['ext_user_username'], $_POST['lis_person_contact_email_primary'] );
-					$user_id  = $new_user[0];
+				// do not create if the book exists and was created by the same resource_link_id
+				if ( $exists ) {
+					// TODO: Return the book for viewing pleasure
+					$tool->handleRequest();
+					do_exit();
 				}
 
+				$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
+				$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
+
+				// user match starts here.
+				$wp_user = $tool->matchUserById( $_POST['tool_consumer_instance_guid'] . $_POST['user_id'] );
+
+				if ( ! $wp_user ) {
+					$user_id = $tool->fuzzyUserMatch( $_POST );
+				}
+
+				if ( false === $user_id ) {
+					try {
+						$new_user = $tool->createUser( $_POST['ext_user_username'], $_POST['lis_person_contact_email_primary'] );
+					} catch ( \Exception $e ) {
+						return; // TODO: Decide how to handle exceptions
+					}
+
+					$user_id = $new_user[0];
+				}
+
+				// try to create a book
 				if ( $user_id ) {
-					$tool->createNewBook( $new_book_url, $title, $user_id->ID );
+					try {
+						$tool->createNewBook( $new_book_url, $title, $user_id->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+					} catch ( \Exception $e ) {
+						return; // TODO: Decide how to handle exceptions
+					}
 				}
 
 				// bail put error messages in front of Consumer.
 				if ( false === $tool->ok ) {
 					$tool->handleRequest();
+					do_exit();
 					break;
 				}
+
 				// log in user to book
 				$tool->user = new ToolProvider\User();
 				$tool->user->setEmail( $_POST['lis_person_contact_email_primary'] );
 				$tool->user->setNames( $_POST['lis_person_name_given'], $_POST['lis_person_name_family'], $_POST['lis_person_name_full'] );
 				$tool->user->setRecordId( $_POST['user_id'] );
 				$tool->user->setResourceLinkId( $_POST['resource_link_id'] );
+				// how to give the user an id
 				$tool->setupUser( $tool->user, $_POST['tool_consumer_instance_guid'] );
+
 				$tool->handleRequest();
 				break;
 			default:
