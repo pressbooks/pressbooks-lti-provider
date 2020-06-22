@@ -52,75 +52,7 @@ class Controller {
 				$this->contentItemSubmit( $params );
 				break;
 			case 'createbook':
-				$connector = Database::getConnector();
-				$tool      = new Tool( $connector );
-				$tool->setAdmin( $this->admin );
-				$tool->setAction( $action );
-				$tool->processRequest( $params );
-				$user_id = false;
-
-				// create a url from the name of the activity link
-				$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
-				if ( false === $activity_url ) {
-					// TODO: Return the book for viewing pleasure
-					$tool->handleRequest();
-					do_exit();
-				}
-				$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'] );
-
-				// do not create if the book exists and was created by the same resource_link_id
-				if ( $exists ) {
-					// TODO: Return the book for viewing pleasure
-					$tool->handleRequest();
-					do_exit();
-				}
-
-				$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
-				$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
-
-				// user match starts here.
-				$wp_user = $tool->matchUserById( $_POST['tool_consumer_instance_guid'] . $_POST['user_id'] );
-
-				if ( ! $wp_user ) {
-					$user_id = $tool->fuzzyUserMatch( $_POST );
-				}
-
-				if ( false === $user_id ) {
-					try {
-						$new_user = $tool->createUser( $_POST['ext_user_username'], $_POST['lis_person_contact_email_primary'] );
-					} catch ( \Exception $e ) {
-						return; // TODO: Decide how to handle exceptions
-					}
-
-					$user_id = $new_user[0];
-				}
-
-				// try to create a book
-				if ( $user_id ) {
-					try {
-						$tool->createNewBook( $new_book_url, $title, $user_id->ID, $_POST['resource_link_id'], $_POST['context_id'] );
-					} catch ( \Exception $e ) {
-						return; // TODO: Decide how to handle exceptions
-					}
-				}
-
-				// bail put error messages in front of Consumer.
-				if ( false === $tool->ok ) {
-					$tool->handleRequest();
-					do_exit();
-					break;
-				}
-
-				// log in user to book
-				$tool->user = new ToolProvider\User();
-				$tool->user->setEmail( $_POST['lis_person_contact_email_primary'] );
-				$tool->user->setNames( $_POST['lis_person_name_given'], $_POST['lis_person_name_family'], $_POST['lis_person_name_full'] );
-				$tool->user->setRecordId( $_POST['user_id'] );
-				$tool->user->setResourceLinkId( $_POST['resource_link_id'] );
-				// how to give the user an id
-				$tool->setupUser( $tool->user, $_POST['tool_consumer_instance_guid'] );
-
-				$tool->handleRequest();
+				$this->createBook( $action, $params );
 				break;
 			default:
 				$this->default( $action, $params );
@@ -158,6 +90,96 @@ class Controller {
 		$form_params = $consumer->signParameters( $_SESSION['pb_lti_return_url'], 'ContentItemSelection', $_SESSION['pb_lti_consumer_version'], $form_params );
 		$page = ToolProvider\ToolProvider::sendForm( $_SESSION['pb_lti_return_url'], $form_params );
 		echo $page;
+	}
+
+	/**
+	 * @param $action
+	 * @param $params
+	 */
+	public function createBook( $action, $params ) {
+		$connector = Database::getConnector();
+		$tool      = new Tool( $connector );
+		$tool->setAdmin( $this->admin );
+		$tool->initSessionVars();
+		$tool->setAction( $action );
+		$lti_id = "{$_POST['tool_consumer_instance_guid']}|{$_POST['user_id']}";
+
+		// create a url from the name of the activity link
+		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
+		if ( false === $activity_url ) {
+			// TODO: Return the book for viewing pleasure
+			return;
+		}
+		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'] );
+
+		// do not create if the book exists and was created by the same resource_link_id
+		if ( $exists ) {
+			// TODO: Return the book for viewing pleasure
+			// return;
+		}
+
+		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
+		$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
+
+		// user match starts here.
+		$wp_user = $tool->matchUserById( $_POST['tool_consumer_instance_guid'] . '|' . $_POST['user_id'] );
+		if ( ! $wp_user ) {
+			$wp_user            = $this->userMatch( $tool, $_POST );
+			$lti_id_was_matched = false;
+		} else {
+			$lti_id_was_matched = true;
+		}
+
+		// try to create a book
+		if ( $wp_user ) {
+			try {
+				$tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+			} catch ( \Exception $e ) {
+				// TODO: Decide how to handle exceptions
+				return;
+			}
+		}
+
+		if ( $wp_user ) {
+			$settings = $this->admin->getBookSettings();
+			if ( $this->admin->getSettings()['prompt_for_authentication'] && $lti_id_was_matched === false ) {
+				$this->authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
+			} else {
+				$this->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
+			}
+		}
+		// bail put error messages in front of Consumer.
+		if ( false === $tool->ok ) {
+			return;
+		}
+		$tool->processRequest( $params );
+
+	}
+
+	/**
+	 * @param $tool
+	 * @param $args
+	 *
+	 * @return mixed|void
+	 */
+	public function userMatch( $tool, $args ) {
+
+		$wp_user = $tool->fuzzyUserMatch( $args );
+
+		// create a new user if none found
+		if ( false === $wp_user ) {
+			try {
+				$new_user = $tool->createUser( $args['ext_user_username'], $args['lis_person_contact_email_primary'] );
+			} catch ( \Exception $e ) {
+				// TODO: Decide how to handle exceptions
+				return;
+			}
+			if ( $new_user ) {
+				$wp_user = get_user_by( 'ID', $new_user[0] );
+			}
+		}
+
+		return $wp_user;
 	}
 
 	/**
