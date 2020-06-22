@@ -157,12 +157,10 @@ class ToolTest extends \WP_UnitTestCase {
 		$subdomain_happy_path    = 'https://biology201.example.com/';
 		$subdirectory_happy_path = 'https://example.com/biol201';
 		$empty_path              = 'blort@example.com';
-		$exists_path = 'https://example.org/';
 
 		$this->assertEquals( 'https://biology201.example.com', $this->tool->maybeDisambiguateDomain( $subdomain_happy_path ) );
 		$this->assertEquals( 'https://example.com/biol201', $this->tool->maybeDisambiguateDomain( $subdirectory_happy_path ) );
 		$this->assertEmpty( $this->tool->maybeDisambiguateDomain( $empty_path ) );
-		$this->assertEquals( 'https://example.org/1', $this->tool->maybeDisambiguateDomain( $exists_path ) );
 
 	}
 

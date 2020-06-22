@@ -807,8 +807,7 @@ class Tool extends ToolProvider\ToolProvider {
 		} else {
 			$i = 1;
 			while ( domain_exists( $parts['host'], $path, 1 ) && $i < 1000 ) {
-				$path = ( 0 === strcmp( $parts['path'], '/' ) ) ? $path : untrailingslashit( $path );
-				$path = $path . $i;
+				$path = untrailingslashit( $parts['path'] ) . $i;
 				++ $i;
 			}
 		}
