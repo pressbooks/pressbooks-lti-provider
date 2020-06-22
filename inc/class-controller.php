@@ -143,9 +143,9 @@ class Controller {
 		if ( $wp_user ) {
 			$settings = $this->admin->getBookSettings();
 			if ( $this->admin->getSettings()['prompt_for_authentication'] && $lti_id_was_matched === false ) {
-				$this->authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
+				$tool->authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
 			} else {
-				$this->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
+				$tool->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
 			}
 		}
 		// bail put error messages in front of Consumer.
