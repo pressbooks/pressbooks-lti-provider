@@ -103,6 +103,10 @@ class Tool extends ToolProvider\ToolProvider {
 			$this->initSessionVars();
 			$this->setupUser( $this->user, $this->consumer->consumerGuid );
 			$this->setupDeepLink();
+		} elseif ( $this->getAction() === 'createbook' ) {
+			$this->initSessionVars();
+			$this->setupUser( $this->user, $this->consumer->consumerGuid );
+
 		} else {
 			$this->ok = false;
 			$this->message = __( 'Invalid launch URL', 'pressbooks-lti-provider' );
@@ -312,7 +316,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @throws \LogicException
 	 */
 	public function setupUser( $user, $guid ) {
-
+		global $wpdb;
 		if ( ! is_object( $this->admin ) ) {
 			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
 		}
@@ -368,8 +372,21 @@ class Tool extends ToolProvider\ToolProvider {
 		} else {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $email );
-		}
 
+			if ( ! $wp_user ) {
+				// Try to match the LTI User with their id
+				// the risk is that a user gets mis-identified with am already existing user_id belonging to another person
+				// mitigate that risk by also looking for a match against last name
+				$wp_user = get_user_by( 'id', $net_id );
+
+				if ( $wp_user ) {
+					$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", 'last_name', $_POST['lis_person_name_family'] ) );
+					if ( ! 0 === strcmp( strtolower( $wp_user->last_name ), strtolower( $query_result ) ) ) {
+						$wp_user = false;
+					}
+				}
+			}
+		}
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
 			try {
@@ -718,7 +735,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @return bool|string
 	 */
 	public function buildAndValidateUrl( $resource_link_title ) {
-		global $wpdb, $domain;
+		global $domain;
 
 		$current_network          = get_network();
 		$base                     = $current_network->path;
@@ -734,24 +751,21 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// at least some letters.
 		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {
-			// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
 			$this->ok = false;
-			$this->message = __( 'The activity name needs to contain some letters', 'pressbooks-lti-provider' );
-			return false;
+			$this->message = __( 'Sorry, the activity name needs to contain at least some letters', 'pressbooks-lti-provider' );
+			$this->handleRequest();
 		}
 		// illegal names.
 		if ( in_array( $blog_name, $illegal_names, true ) ) {
-			// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
 			$this->ok = false;
-			$this->message = __( 'The activity name uses a reserved word', 'pressbooks-lti-provider' );
-			return false;
+			$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
+			$this->handleRequest();
 		}
 		// at least 4 characters
 		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
-			// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
 			$this->ok = false;
-			$this->message = __( 'Needs to be at least 4 characters', 'pressbooks-lti-provider' );
-			return false;
+			$this->message = __( 'Sorry, the activity name needs to be at least 4 characters', 'pressbooks-lti-provider' );
+			$this->handleRequest();
 		}
 
 		if ( is_subdomain_install() ) {
@@ -767,10 +781,9 @@ class Tool extends ToolProvider\ToolProvider {
 		} else {
 			$illegal_sub_directory_names = array_merge( $illegal_names, get_subdirectory_reserved_names() );
 			if ( in_array( $blog_name, $illegal_sub_directory_names, true ) ) {
-				// TODO: Decide when handling restrictions around url creation (force assumptions or user feedback)
 				$this->ok = false;
-				$this->message = __( 'The activity name uses a reserved word', 'pressbooks-lti-provider' );
-				return false;
+				$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
+				$this->handleRequest();
 			}
 			$my_domain = "$domain";
 			$path      = $base . $blog_name . '/';
@@ -891,11 +904,6 @@ class Tool extends ToolProvider\ToolProvider {
 		$path   = wp_parse_url( $url, PHP_URL_PATH );
 
 		$book_id = wpmu_create_blog( $domain, $path, $title, $user_id );
-
-		if ( ! $book_id ) {
-			$this->ok      = false;
-			$this->message = __( 'Book creation failed', 'pressbooks-lti-provider' );
-		}
 
 		add_blog_option(
 			$book_id, 'pressbooks_lti_consumer_context', [

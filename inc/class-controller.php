@@ -97,62 +97,44 @@ class Controller {
 	 * @param $params
 	 */
 	public function createBook( $action, $params ) {
+		// TC creates anonymous LTI launch request
 		$connector = Database::getConnector();
 		$tool      = new Tool( $connector );
 		$tool->setAdmin( $this->admin );
-		$tool->initSessionVars();
 		$tool->setAction( $action );
-		$lti_id = "{$_POST['tool_consumer_instance_guid']}|{$_POST['user_id']}";
+		// TP validates LTI launch and creates tool state
+		$tool->processRequest( $params );
+		// authenticates, sets session variables and sets up user
+		$tool->handleRequest();
 
-		// create a url from the name of the activity link
+		// Creates a url from the name of the activity link
 		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
-		if ( false === $activity_url ) {
-			// TODO: Return the book for viewing pleasure
-			return;
-		}
-		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'] );
+		$exists       = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'] );
 
-		// do not create if the book exists and was created by the same resource_link_id
-		if ( $exists ) {
+		// Display book, if the book already exists and was created by the same resource_link_id
+		if ( $exists && is_user_logged_in() && $this->storage && (int) $this->storage->user->ID === (int) wp_get_current_user()->ID ) {
 			// TODO: Return the book for viewing pleasure
-			// return;
 		}
 
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
 		$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
 
-		// user match starts here.
-		$wp_user = $tool->matchUserById( $_POST['tool_consumer_instance_guid'] . '|' . $_POST['user_id'] );
-		if ( ! $wp_user ) {
-			$wp_user            = $this->userMatch( $tool, $_POST );
-			$lti_id_was_matched = false;
-		} else {
-			$lti_id_was_matched = true;
-		}
+		// user
+		$wp_user = $tool->matchUserById( $tool->consumer->consumerGuid . $tool->user->getId() );
 
 		// try to create a book
 		if ( $wp_user ) {
 			try {
-				$tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+				$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
 			} catch ( \Exception $e ) {
-				// TODO: Decide how to handle exceptions
-				return;
+				$tool->ok      = false;
+				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
+				$tool->handleRequest();
 			}
-		}
 
-		if ( $wp_user ) {
-			$settings = $this->admin->getBookSettings();
-			if ( $this->admin->getSettings()['prompt_for_authentication'] && $lti_id_was_matched === false ) {
-				$tool->authenticateUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
-			} else {
-				$tool->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $settings['admin_default'] );
-			}
+			$tool->loginUser( $wp_user, $tool->user->getId(), true, $tool->user->roles[0] );
+
 		}
-		// bail put error messages in front of Consumer.
-		if ( false === $tool->ok ) {
-			return;
-		}
-		$tool->processRequest( $params );
 
 	}
 
