@@ -157,10 +157,12 @@ class ToolTest extends \WP_UnitTestCase {
 		$subdomain_happy_path    = 'https://biology201.example.com/';
 		$subdirectory_happy_path = 'https://example.com/biol201';
 		$empty_path              = 'blort@example.com';
+		//$disambiguate            = 'http://example.org/testpath1041';
 
 		$this->assertEquals( 'https://biology201.example.com', $this->tool->maybeDisambiguateDomain( $subdomain_happy_path ) );
 		$this->assertEquals( 'https://example.com/biol201', $this->tool->maybeDisambiguateDomain( $subdirectory_happy_path ) );
 		$this->assertEmpty( $this->tool->maybeDisambiguateDomain( $empty_path ) );
+		//$this->assertEquals( 'http://example.org/testpath10411', $this->tool->maybeDisambiguateDomain( $disambiguate ) );
 
 	}
 
@@ -196,22 +198,4 @@ class ToolTest extends \WP_UnitTestCase {
 
 	}
 
-	public function test_fuzzyUserMatch() {
-		update_user_meta( 1, 'last_name', 'Tukey' );
-		$fake_person_attributes = [
-			'lis_person_contact_email_primary' => 'admin@exmple.org',
-			'lis_person_name_given'            => '',
-			'lis_person_name_family'           => 'Tukey',
-			'lis_person_name_full'             => '',
-			'user_id'                          => '1',
-			'resource_link_id'                 => '',
-			'tool_consumer_instance_guid'      => '',
-			'ext_user_username'                => 'admin'
-		];
-		$wrong_keys = [ 'ballon' => 'red', 'quantity' => 99 ];
-
-
-		$this->assertFalse( $this->tool->fuzzyUserMatch( $wrong_keys ) );
-
-	}
 }

@@ -112,7 +112,7 @@ class Controller {
 		$exists       = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'] );
 
 		// Display book, if the book already exists and was created by the same resource_link_id
-		if ( $exists && is_user_logged_in() && $this->storage && (int) $this->storage->user->ID === (int) wp_get_current_user()->ID ) {
+		if ( $exists && $tool->user->isLearner() ) {
 			// TODO: Return the book for viewing pleasure
 		}
 
@@ -120,48 +120,37 @@ class Controller {
 		$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
 
 		// user
-		$wp_user = $tool->matchUserById( $tool->consumer->consumerGuid . $tool->user->getId() );
+		$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
+		$wp_user = $tool->matchUserById( $lti_id );
 
 		// try to create a book
 		if ( $wp_user ) {
-			try {
-				$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
-			} catch ( \Exception $e ) {
-				$tool->ok      = false;
-				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
-				$tool->handleRequest();
+			$lti_id_was_matched = true;
+
+			// restrict book creation to staff or admins
+			if ( $tool->user->isStaff() || $tool->user->isAdmin() ) {
+				try {
+					$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+				} catch ( \Exception $e ) {
+					$tool->ok      = false;
+					$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
+					$tool->handleRequest();
+				}
 			}
-
-			$tool->loginUser( $wp_user, $tool->user->getId(), true, $tool->user->roles[0] );
-
+			// Role
+			$settings = $this->admin->getBookSettings();
+			if ( $tool->user->isAdmin() ) {
+				$role = $settings['admin_default'];
+			} elseif ( $$tool->user->isStaff() ) {
+				$role = $settings['staff_default'];
+			} elseif ( $$tool->user->isLearner() ) {
+				$role = $settings['learner_default'];
+			} else {
+				$role = 'anonymous';
+			}
+			$tool->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
 		}
 
-	}
-
-	/**
-	 * @param $tool
-	 * @param $args
-	 *
-	 * @return mixed|void
-	 */
-	public function userMatch( $tool, $args ) {
-
-		$wp_user = $tool->fuzzyUserMatch( $args );
-
-		// create a new user if none found
-		if ( false === $wp_user ) {
-			try {
-				$new_user = $tool->createUser( $args['ext_user_username'], $args['lis_person_contact_email_primary'] );
-			} catch ( \Exception $e ) {
-				// TODO: Decide how to handle exceptions
-				return;
-			}
-			if ( $new_user ) {
-				$wp_user = get_user_by( 'ID', $new_user[0] );
-			}
-		}
-
-		return $wp_user;
 	}
 
 	/**

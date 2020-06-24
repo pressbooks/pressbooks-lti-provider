@@ -372,20 +372,6 @@ class Tool extends ToolProvider\ToolProvider {
 		} else {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $email );
-
-			if ( ! $wp_user ) {
-				// Try to match the LTI User with their id
-				// the risk is that a user gets mis-identified with am already existing user_id belonging to another person
-				// mitigate that risk by also looking for a match against last name
-				$wp_user = get_user_by( 'id', $net_id );
-
-				if ( $wp_user ) {
-					$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", 'last_name', $_POST['lis_person_name_family'] ) );
-					if ( ! 0 === strcmp( strtolower( $wp_user->last_name ), strtolower( $query_result ) ) ) {
-						$wp_user = false;
-					}
-				}
-			}
 		}
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
