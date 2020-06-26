@@ -316,7 +316,6 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @throws \LogicException
 	 */
 	public function setupUser( $user, $guid ) {
-		global $wpdb;
 		if ( ! is_object( $this->admin ) ) {
 			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
 		}
@@ -380,7 +379,7 @@ class Tool extends ToolProvider\ToolProvider {
 			// looking for a 0,1,2,3 in consumer key to affect what gets prepended to a userID
 			$id_scope   = intval( substr( $id_scope, 2, 1 ) );
 			$user_login = $user->getId( $id_scope );
-			$user_login = sanitize_multisite_user( $user_login );
+			$user_login = $this->sanitizeUser( $user_login );
 			$user_login = apply_filters( 'pre_user_login', $user_login );
 
 			// Then they pick the third value '0' in the consumer key to set the scope = Use ID value only
@@ -746,15 +745,14 @@ class Tool extends ToolProvider\ToolProvider {
 
 		// remove spaces.
 		$blog_name = preg_replace( '/\s+/', '', $resource_link_title );
-
+		// remove accents
+		$blog_name = remove_accents( $blog_name );
 		// only lower case and numbers.
 		$blog_name = strtolower( $blog_name );
 
 		// at least some letters.
 		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {
-			$this->ok = false;
-			$this->message = __( 'Sorry, the activity name needs to contain at least some letters', 'pressbooks-lti-provider' );
-			$this->handleRequest();
+			$blog_name .= 'a';
 		}
 		// illegal names.
 		if ( in_array( $blog_name, $illegal_names, true ) ) {
@@ -764,9 +762,7 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 		// at least 4 characters
 		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
-			$this->ok = false;
-			$this->message = __( 'Sorry, the activity name needs to be at least 4 characters', 'pressbooks-lti-provider' );
-			$this->handleRequest();
+			$blog_name = str_pad( $blog_name, 4, '1' );
 		}
 
 		if ( is_subdomain_install() ) {

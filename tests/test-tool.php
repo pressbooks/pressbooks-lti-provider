@@ -21,25 +21,26 @@ class ToolTest extends \WP_UnitTestCase {
 			->method( 'getSettings' )
 			->willReturn(
 				[
-					'whitelist' => "pressbooks.test\r\nnpressbooks.education\r\n",
+					'whitelist'                 => "pressbooks.test\r\nnpressbooks.education\r\n",
 					'prompt_for_authentication' => 0,
-					'book_override' => 1,
-					'admin_default' => 'subscriber',
-					'staff_default' => 'subscriber',
-					'learner_default' => 'subscriber',
-					'hide_navigation' => 0,
+					'book_override'             => 1,
+					'admin_default'             => 'subscriber',
+					'staff_default'             => 'subscriber',
+					'learner_default'           => 'subscriber',
+					'hide_navigation'           => 0,
 				]
 			);
 		$stub1
 			->method( 'getBookSettings' )
 			->willReturn(
 				[
-					'admin_default' => 'subscriber',
-					'staff_default' => 'subscriber',
+					'admin_default'   => 'subscriber',
+					'staff_default'   => 'subscriber',
 					'learner_default' => 'subscriber',
 					'hide_navigation' => 0,
 				]
 			);
+
 		return $stub1;
 	}
 
@@ -49,11 +50,11 @@ class ToolTest extends \WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$connector = PressbooksLtiProvider\Database::getConnector();
-		$tool = new PressbooksLtiProvider\Tool( $connector );
+		$tool      = new PressbooksLtiProvider\Tool( $connector );
 		$tool->setAdmin( $this->getMockAdmin() );
-		$consumer = new \IMSGlobal\LTI\ToolProvider\ToolConsumer( 'WP0-ZRTCXX', $connector );
+		$consumer       = new \IMSGlobal\LTI\ToolProvider\ToolConsumer( 'WP0-ZRTCXX', $connector );
 		$tool->consumer = $consumer;
-		$this->tool = $tool;
+		$this->tool     = $tool;
 	}
 
 	public function test_getters_and_setters() {
@@ -76,14 +77,14 @@ class ToolTest extends \WP_UnitTestCase {
 	public function test_setupUser() {
 		$this->_book();
 		$prefix = uniqid( 'test' );
-		$email = "{$prefix}@pressbooks.test";
+		$email  = "{$prefix}@pressbooks.test";
 
-		$guid = rand();
-		$user = new \IMSGlobal\LTI\ToolProvider\User();
+		$guid            = rand();
+		$user            = new \IMSGlobal\LTI\ToolProvider\User();
 		$user->ltiUserId = 1;
 		$user->setEmail( $email );
 		$user->roles = [ 'urn:lti:role:ims/lis/Administrator' ];
-		$lti_id = "{$guid}|" . $user->getId();
+		$lti_id      = "{$guid}|" . $user->getId();
 
 		// User doesn't exist yet
 		$this->assertFalse( $this->tool->matchUserById( $lti_id ) );
@@ -106,22 +107,19 @@ class ToolTest extends \WP_UnitTestCase {
 				'user_nicename' => $edge_user,
 				'first_name'    => 'FirstName',
 				'last_name'     => 'LastName',
-				//'user_email'=> $tool_provider->user->email,
-				//'user_url' => 'http://',
 				'display_name'  => 'FirstName LastName'
 			]
 		);
 
 		$test_insert = get_user_by( 'login', $edge_user );
-		$this->assertInstanceOf( '\WP_User', $test_insert );
 
-		$email2 = "{$prefix}@pressbooks.test";
+		// User doesn't exist yet
+		$this->assertInstanceOf( '\WP_User', $test_insert );
 
 		$guid2                    = rand();
 		$consumer_user            = new \IMSGlobal\LTI\ToolProvider\User();
-		$consumer_user->ltiUserId = 1;
 		$consumer_user->ltiUserId = $edge_user;
-		$consumer_user->setEmail( $email2 );
+		$consumer_user->setEmail( $email );
 		$consumer_user->roles = [ 'urn:lti:role:ims/lis/Instructor' ];
 		$lti_id2              = "{$guid2}|" . $consumer_user->getId();
 
@@ -197,15 +195,20 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_maybeDisambiguateDomain() {
+		$blog_id      = $this->factory()->blog->create();
+		$obj          = get_blog_details( $blog_id );
+		$disambiguate = $obj->siteurl;
+
 		$subdomain_happy_path    = 'https://biology201.example.com/';
 		$subdirectory_happy_path = 'https://example.com/biol201';
 		$empty_path              = 'blort@example.com';
-		//$disambiguate            = 'http://example.org/testpath1041';
 
 		$this->assertEquals( 'https://biology201.example.com', $this->tool->maybeDisambiguateDomain( $subdomain_happy_path ) );
 		$this->assertEquals( 'https://example.com/biol201', $this->tool->maybeDisambiguateDomain( $subdirectory_happy_path ) );
 		$this->assertEmpty( $this->tool->maybeDisambiguateDomain( $empty_path ) );
-		//$this->assertEquals( 'http://example.org/testpath10411', $this->tool->maybeDisambiguateDomain( $disambiguate ) );
+		$this->assertEquals( "{$disambiguate}1", $this->tool->maybeDisambiguateDomain( $disambiguate ) );
+
+		// @TODO - add tests for subdomain network
 
 	}
 
@@ -228,19 +231,43 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_validateLtiBookExists() {
-//		$blog_id = $this->factory()->blog->create();
-//		switch_to_blog( $blog_id );
+		$blog_id = $this->factory()->blog->create();
+		$obj     = get_blog_details( $blog_id );
+		$exists  = $obj->siteurl;
+
 		update_option( 'pressbooks_lti_consumer_context', [ 'resource_link_id' => 33 ] );
 		$no_exist          = [ 'https://pressbooks.test/activityname', 33 ];
 		$no_url            = [ 'noHostHere', 33 ];
-		$happy_path_no_lti = [ 'https://example.org', 34 ];
-		$happy_path        = [ 'https://example.org', 33 ];
+		$happy_path_no_lti = [ $exists, 34 ];
+		$happy_path        = [ $exists, 33 ];
 
 		$this->assertFalse( $this->tool->validateLtiBookExists( $no_exist[0], $no_exist[1] ) );
 		$this->assertFalse( $this->tool->validateLtiBookExists( $no_url[0], $no_url[1] ) );
 		$this->assertFalse( $this->tool->validateLtiBookExists( $happy_path_no_lti[0], $happy_path_no_lti[1] ) );
 		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1] ) );
+	}
 
+	public function test_buildAndValidateUrl() {
+		$activity_title = 'my Moödle Äctivity ß';
+		$too_short      = 'abc';
+		$no_characters  = '12345';
+
+		$this->assertEquals( 'http://example.org/mymoodleactivitys/', $this->tool->buildAndValidateUrl( $activity_title ) );
+		$this->assertEquals( 'http://example.org/abc1/', $this->tool->buildAndValidateUrl( $too_short ) );
+		$this->assertEquals( 'http://example.org/12345a/', $this->tool->buildAndValidateUrl( $no_characters ) );
+
+		// @TODO - add tests for subdomain network
+	}
+
+	public function test_createNewBook() {
+		$id         = get_current_user_id();
+		$happy_path = [ 'http://example.org/mymoodleactivity/', 'Course: My Moodle Activity', $id, '33', '12345' ];
+		$maybe_book = $this->tool->createNewBook( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3], $happy_path[4] );
+		$this->assertInternalType( 'int', $maybe_book );
+
+		$options = get_blog_option( $maybe_book, 'pressbooks_lti_consumer_context' );
+		$this->assertEquals( '33', $options['resource_link_id'] );
+		$this->assertEquals( '12345', $options['context_id'] );
 	}
 
 }
