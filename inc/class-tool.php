@@ -373,6 +373,21 @@ class Tool extends ToolProvider\ToolProvider {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $email );
 		}
+		// edge case where consumer key (e.g. WP0-ZRTCXX) is used to determine login
+		if ( ! $wp_user ) {
+			// get the consumer key
+			$id_scope = $this->consumer->getKey();
+			// looking for a 0,1,2,3 in consumer key to affect what gets prepended to a userID
+			$id_scope   = intval( substr( $id_scope, 2, 1 ) );
+			$user_login = $user->getId( $id_scope );
+			$user_login = sanitize_multisite_user( $user_login );
+			$user_login = apply_filters( 'pre_user_login', $user_login );
+
+			// Then they pick the third value '0' in the consumer key to set the scope = Use ID value only
+			// Then based on that they use the user ID value only (from TC)
+			$wp_user = get_user_by( 'login', $user_login );
+		}
+
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
 		if ( ! $wp_user && $role !== 'anonymous' ) {
 			try {
@@ -813,64 +828,6 @@ class Tool extends ToolProvider\ToolProvider {
 
 		return sprintf( '%1$s://%2$s%3$s', $parts['scheme'], $domain, untrailingslashit( $path ) );
 
-	}
-
-	/**
-	 *
-	 * @param array $user_info
-	 *
-	 * @return bool|\WP_User
-	 */
-	public function fuzzyUserMatch( $user_info ) {
-		global $wpdb;
-
-		$person_attributes = [
-			'lis_person_contact_email_primary',
-			'lis_person_name_given',
-			'lis_person_name_family',
-			'lis_person_name_full',
-			'user_id',
-			'resource_link_id',
-			'tool_consumer_instance_guid',
-			'ext_user_username',
-		];
-
-		foreach ( $person_attributes as $attribute ) {
-			if ( ! array_key_exists( $attribute, $user_info ) ) {
-				return false;
-			}
-		}
-
-		// Try to match the LTI User with their email
-		$wp_user = get_user_by( 'email', $user_info['lis_person_contact_email_primary'] );
-		$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", 'last_name', $user_info['lis_person_name_family'] ) );
-
-		if ( ! $wp_user ) {
-			// Try to match the LTI User with their username
-			$wp_user = get_user_by( 'login', $user_info['ext_user_username'] );
-			if ( $wp_user ) {
-				if ( 0 === strcmp( strtolower( $wp_user->last_name ), strtolower( $query_result ) ) ) {
-					return $wp_user;
-				}
-			}
-		}
-		if ( ! $wp_user ) {
-			// Try to match the LTI User with their id
-			// the risk here is that a user gets mis-identified with another user_id
-			$wp_user = get_user_by( 'id', $user_info['user_id'] );
-
-			// mitigate that risk by also looking for a match against last name
-			// TODO: could also check for context_id (course) or consumer_guid to boost confidence
-			if ( $wp_user ) {
-				if ( 0 === strcmp( strtolower( $wp_user->last_name ), strtolower( $query_result ) ) ) {
-					return $wp_user;
-				} else {
-					return false;
-				}
-			}
-		}
-
-		return $wp_user;
 	}
 
 	/**

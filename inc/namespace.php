@@ -158,3 +158,27 @@ function deep_link( $suffix = '' ) {
 	}
 	return $url;
 }
+
+/**
+ * Multisite has more restrictions on user login character set
+ *
+ * @see https://core.trac.wordpress.org/ticket/17904
+ * @see \Pressbooks\Admin\Users\UserBulk
+ * @since 1.4.0
+ * @param $username
+ *
+ * @return string
+ */
+function sanitize_multisite_user( $username ) {
+	$unique_username = sanitize_user( $username, true );
+	$unique_username = strtolower( $unique_username );
+	$unique_username = preg_replace( '/[^a-z0-9]/', '', $unique_username );
+
+	if ( preg_match( '/^[0-9]*$/', $unique_username ) ) {
+		$unique_username .= 'a'; // usernames must have letters too
+	}
+
+	$unique_username = str_pad( $unique_username, 4, '1' );
+
+	return $unique_username;
+}

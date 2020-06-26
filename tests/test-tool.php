@@ -51,6 +51,8 @@ class ToolTest extends \WP_UnitTestCase {
 		$connector = PressbooksLtiProvider\Database::getConnector();
 		$tool = new PressbooksLtiProvider\Tool( $connector );
 		$tool->setAdmin( $this->getMockAdmin() );
+		$consumer = new \IMSGlobal\LTI\ToolProvider\ToolConsumer( 'WP0-ZRTCXX', $connector );
+		$tool->consumer = $consumer;
 		$this->tool = $tool;
 	}
 
@@ -94,6 +96,47 @@ class ToolTest extends \WP_UnitTestCase {
 
 		// User was created and linked
 		$this->assertInstanceOf( '\WP_User', $this->tool->matchUserById( $lti_id ) );
+
+		// Edge case, user exists in WP, no email (bad practice), consumer key determines scope
+		$edge_user = '452475';
+		wp_insert_user(
+			[
+				'user_login'    => $edge_user,
+				'user_pass'     => wp_generate_password(),
+				'user_nicename' => $edge_user,
+				'first_name'    => 'FirstName',
+				'last_name'     => 'LastName',
+				//'user_email'=> $tool_provider->user->email,
+				//'user_url' => 'http://',
+				'display_name'  => 'FirstName LastName'
+			]
+		);
+
+		$test_insert = get_user_by( 'login', $edge_user );
+		$this->assertInstanceOf( '\WP_User', $test_insert );
+
+		$email2 = "{$prefix}@pressbooks.test";
+
+		$guid2                    = rand();
+		$consumer_user            = new \IMSGlobal\LTI\ToolProvider\User();
+		$consumer_user->ltiUserId = 1;
+		$consumer_user->ltiUserId = $edge_user;
+		$consumer_user->setEmail( $email2 );
+		$consumer_user->roles = [ 'urn:lti:role:ims/lis/Instructor' ];
+		$lti_id2              = "{$guid2}|" . $consumer_user->getId();
+
+		// User doesn't exist yet
+		$this->assertFalse( $this->tool->matchUserById( $lti_id2 ) );
+
+		$this->tool->setupUser( $consumer_user, $guid2 );
+		$user2 = get_user_by( 'login', $edge_user );
+		$this->assertInstanceOf( '\WP_User', $user2 );
+		$this->assertEquals( $edge_user, $user2->user_login );
+		$this->assertTrue( is_user_member_of_blog( $user2->ID ) );
+
+		// User was created and linked
+		$this->assertInstanceOf( '\WP_User', $this->tool->matchUserById( $lti_id2 ) );
+
 	}
 
 	public function test_authenticateUser() {
@@ -185,6 +228,8 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_validateLtiBookExists() {
+//		$blog_id = $this->factory()->blog->create();
+//		switch_to_blog( $blog_id );
 		update_option( 'pressbooks_lti_consumer_context', [ 'resource_link_id' => 33 ] );
 		$no_exist          = [ 'https://pressbooks.test/activityname', 33 ];
 		$no_url            = [ 'noHostHere', 33 ];
