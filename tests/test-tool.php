@@ -270,4 +270,9 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( '12345', $options['context_id'] );
 	}
 
+	public function test_processRequest() {
+		$params = [ 'hello' => 'world', 'foo' => 'bar' ];
+		$this->tool->processRequest( $params );
+		$this->assertTrue( array_key_exists( 'hello', $this->tool->getParams() ) );
+	}
 }
