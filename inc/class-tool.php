@@ -743,12 +743,8 @@ class Tool extends ToolProvider\ToolProvider {
 		$illegal_names            = get_site_option( 'illegal_names' );
 		$minimum_site_name_length = apply_filters( 'minimum_site_name_length', 4 );
 
-		// remove spaces.
-		$blog_name = preg_replace( '/\s+/', '', $resource_link_title );
-		// remove accents
-		$blog_name = remove_accents( $blog_name );
-		// only lower case and numbers.
-		$blog_name = strtolower( $blog_name );
+		$blog_name = sanitize_title_with_dashes( remove_accents( $resource_link_title ) );
+		$blog_name = preg_replace( '/-/', '', $blog_name );
 
 		// at least some letters.
 		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {

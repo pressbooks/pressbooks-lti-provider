@@ -248,7 +248,7 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_buildAndValidateUrl() {
-		$activity_title = 'my Moödle Äctivity ß';
+		$activity_title = '    <b>"my"</b> Moödle Äctivity ß    ';
 		$too_short      = 'abc';
 		$no_characters  = '12345';
 
