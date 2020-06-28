@@ -247,6 +247,11 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertFalse( $this->tool->validateLtiBookExists( $different_resource[0], $different_resource[1], $different_resource[2] ) );
 		$this->assertFalse( $this->tool->validateLtiBookExists( $different_course[0], $different_course[1], $different_course[2] ) );
 		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1], $happy_path[2] ) );
+
+		delete_option( 'pressbooks_lti_consumer_context' );
+		$this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1], $happy_path[2] );
+		$this->assertArrayHasKey( 'context_id', get_option( 'pressbooks_lti_consumer_context' ) );
+
 	}
 
 	public function test_buildAndValidateUrl() {

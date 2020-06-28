@@ -119,7 +119,7 @@ class Controller {
 
 		// Display book, if the book already exists and was created by the same resource_link_id
 		if ( $exists || $tool->user->isLearner() ) {
-			// TODO: Return the book for viewing pleasure
+			// TODO: Make this work, return the book for viewing pleasure
 			\Pressbooks\Redirect\location( trailingslashit( $activity_url ) . 'format/lti/launch' );
 		}
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
@@ -159,7 +159,7 @@ class Controller {
 			}
 			$tool->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
 
-			// TODO: Return the book for viewing pleasure
+			// TODO: Make this work, return the book for viewing pleasure
 			\Pressbooks\Redirect\location( trailingslashit( $new_book_url ) . 'format/lti/launch' );
 
 		}

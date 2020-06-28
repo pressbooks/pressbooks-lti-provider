@@ -848,12 +848,13 @@ class Tool extends ToolProvider\ToolProvider {
 		$path   = wp_parse_url( $url, PHP_URL_PATH );
 
 		$book_id = wpmu_create_blog( $domain, $path, $title, $user_id );
-		add_action( 'pb_new_blog', add_blog_option(
+
+		add_blog_option(
 			$book_id, 'pressbooks_lti_consumer_context', [
 				'resource_link_id' => $resource_link_id,
 				'context_id'       => $context_id,
 			]
-		) );
+		);
 
 		return $book_id;
 	}
