@@ -119,7 +119,7 @@ class ToolTest extends \WP_UnitTestCase {
 		$guid2                    = rand();
 		$consumer_user            = new \IMSGlobal\LTI\ToolProvider\User();
 		$consumer_user->ltiUserId = $edge_user;
-		$consumer_user->setEmail( $email );
+		$consumer_user->setEmail( 'whatever@exmaple.org' );
 		$consumer_user->roles = [ 'urn:lti:role:ims/lis/Instructor' ];
 		$lti_id2              = "{$guid2}|" . $consumer_user->getId();
 
@@ -132,7 +132,7 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( $edge_user, $user2->user_login );
 		$this->assertTrue( is_user_member_of_blog( $user2->ID ) );
 
-		// User was created and linked
+		// Existing user was recognized and linked
 		$this->assertInstanceOf( '\WP_User', $this->tool->matchUserById( $lti_id2 ) );
 
 	}
@@ -235,28 +235,32 @@ class ToolTest extends \WP_UnitTestCase {
 		$obj     = get_blog_details( $blog_id );
 		$exists  = $obj->siteurl;
 
-		update_option( 'pressbooks_lti_consumer_context', [ 'resource_link_id' => 33 ] );
-		$no_exist          = [ 'https://pressbooks.test/activityname', 33 ];
-		$no_url            = [ 'noHostHere', 33 ];
-		$happy_path_no_lti = [ $exists, 34 ];
-		$happy_path        = [ $exists, 33 ];
+		update_option( 'pressbooks_lti_consumer_context', [ 'resource_link_id' => 33, 'context_id' => 2 ] );
+		$no_exist           = [ 'https://pressbooks.test/activityname', 33, 2 ];
+		$no_url             = [ 'noHostHere', 33, 2 ];
+		$different_resource = [ $exists, 34, 2 ];
+		$different_course   = [ $exists, 33, 3 ];
+		$happy_path         = [ $exists, 33, 2 ];
 
-		$this->assertFalse( $this->tool->validateLtiBookExists( $no_exist[0], $no_exist[1] ) );
-		$this->assertFalse( $this->tool->validateLtiBookExists( $no_url[0], $no_url[1] ) );
-		$this->assertFalse( $this->tool->validateLtiBookExists( $happy_path_no_lti[0], $happy_path_no_lti[1] ) );
-		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1] ) );
+		$this->assertFalse( $this->tool->validateLtiBookExists( $no_exist[0], $no_exist[1], $no_exist[2] ) );
+		$this->assertFalse( $this->tool->validateLtiBookExists( $no_url[0], $no_url[1], $no_url[2] ) );
+		$this->assertFalse( $this->tool->validateLtiBookExists( $different_resource[0], $different_resource[1], $different_resource[2] ) );
+		$this->assertFalse( $this->tool->validateLtiBookExists( $different_course[0], $different_course[1], $different_course[2] ) );
+		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1], $happy_path[2] ) );
 	}
 
 	public function test_buildAndValidateUrl() {
 		$activity_title = '    <b>"my"</b> Moödle Äctivity ß    ';
 		$too_short      = 'abc';
 		$no_characters  = '12345';
+		$illegal        = 'blog';
+		$sub_directory_illegal = 'embed';
 
 		$this->assertEquals( 'http://example.org/mymoodleactivitys/', $this->tool->buildAndValidateUrl( $activity_title ) );
 		$this->assertEquals( 'http://example.org/abc1/', $this->tool->buildAndValidateUrl( $too_short ) );
 		$this->assertEquals( 'http://example.org/12345a/', $this->tool->buildAndValidateUrl( $no_characters ) );
-
-		// @TODO - add tests for subdomain network
+		$this->assertEquals( '', $this->tool->buildAndValidateUrl( $illegal ) );
+		$this->assertEquals( '', $this->tool->buildAndValidateUrl( $sub_directory_illegal ) );
 	}
 
 	public function test_createNewBook() {

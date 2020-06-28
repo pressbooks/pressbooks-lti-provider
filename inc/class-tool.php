@@ -730,9 +730,11 @@ class Tool extends ToolProvider\ToolProvider {
 	/**
 	 * Takes an activity name, massages it into compliance for a valid domain
 	 *
-	 * @param $resource_link_title
+	 * @param $resource_link_title string Activity name derived from the Tool Consumer
 	 *
 	 * @return bool|string
+	 * @since 1.4.0
+	 *
 	 */
 	public function buildAndValidateUrl( $resource_link_title ) {
 		global $domain;
@@ -755,6 +757,7 @@ class Tool extends ToolProvider\ToolProvider {
 			$this->ok = false;
 			$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
 			$this->handleRequest();
+			return '';
 		}
 		// at least 4 characters
 		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
@@ -777,6 +780,7 @@ class Tool extends ToolProvider\ToolProvider {
 				$this->ok = false;
 				$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
 				$this->handleRequest();
+				return '';
 			}
 			$my_domain = "$domain";
 			$path      = $base . $blog_name . '/';
@@ -789,9 +793,12 @@ class Tool extends ToolProvider\ToolProvider {
 	}
 
 	/**
-	 * @param string $url
+	 * Creates a unique URL based on a given URL
+	 *
+	 * @param $url
 	 *
 	 * @return string
+	 * @since 1.4.0
 	 */
 	public function maybeDisambiguateDomain( $url ) {
 		// return empty on failure
@@ -825,13 +832,15 @@ class Tool extends ToolProvider\ToolProvider {
 	/**
 	 * Create a new book, launched via LTI
 	 *
-	 * @param string $new_book_url
-	 * @param string $title
-	 * @param int $user_id
-	 * @param int $resource_link_id the ID of the activity from the Consumer
-	 * @param int $context_id the ID of the course the activity belongs to, from the Consumer
+	 * @param string $new_book_url URL of the new book to be created
+	 * @param string $title Title of the book
+	 * @param int $user_id ID of the user creating the book
+	 * @param int $resource_link_id ID of the activity, derived from the Tool Consumer
+	 * @param int $context_id ID of the course the activity belongs to, derived from the Tool Consumer
 	 *
 	 * @return int|\WP_Error
+	 * @since 1.4.0
+	 *
 	 */
 	public function createNewBook( $new_book_url, $title, $user_id, $resource_link_id, $context_id ) {
 		$url    = untrailingslashit( $new_book_url );
@@ -839,25 +848,29 @@ class Tool extends ToolProvider\ToolProvider {
 		$path   = wp_parse_url( $url, PHP_URL_PATH );
 
 		$book_id = wpmu_create_blog( $domain, $path, $title, $user_id );
-
-		add_blog_option(
+		add_action( 'pb_new_blog', add_blog_option(
 			$book_id, 'pressbooks_lti_consumer_context', [
 				'resource_link_id' => $resource_link_id,
-				'context_id' => $context_id,
+				'context_id'       => $context_id,
 			]
-		);
+		) );
 
 		return $book_id;
 	}
 
 	/**
-	 * @param $url
-	 * @param $resource_link_id
+	 * Checks for both an existing domain and expected values in the options table
+	 *
+	 * @param $url string URL of the book to check
+	 * @param $resource_link_id string ID of the activity, derived from the Tool Consumer
+	 * @param $context_id string ID of the course the activity belongs to, derived from the Tool Consumer
 	 *
 	 * @return bool
+	 * @since 1.4.0
+	 *
 	 */
-	public function validateLtiBookExists( $url, $resource_link_id ) {
-		$parts         = wp_parse_url( untrailingslashit( $url ) );
+	public function validateLtiBookExists( $url, $resource_link_id, $context_id ) {
+		$parts         = wp_parse_url( $url );
 		$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
 		$path          = $parts['path'];
 		if ( ! isset( $parts['host'] ) ) {
@@ -865,12 +878,24 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 		$domain = $parts['host'];
 
-		$book_id = ( domain_exists( $domain, $path ) ) ? true : false;
+		$exists = ( domain_exists( $domain, $path ) ) ? true : false;
 
-		if ( $book_id ) {
+		if ( $exists ) {
+			$book_id = get_blog_id_from_url( $domain, $path );
 			$options = get_blog_option( $book_id, 'pressbooks_lti_consumer_context' );
-			// check if the book has been created already by the same activity in the course
-			$exists = ( 0 === strcmp( $options['resource_link_id'], $resource_link_id ) ) ? true : false;
+			// Check if the book has been created already by the same activity in the same course.
+			if ( $options ) {
+				$same_activity = 0 === strcmp( $options['resource_link_id'], $resource_link_id );
+				$same_course   = 0 === strcmp( $options['context_id'], $context_id );
+				$exists        = true === $same_activity && true === $same_course;
+			} else {
+				update_blog_option(
+					$book_id, 'pressbooks_lti_consumer_context', [
+						'resource_link_id' => $resource_link_id,
+						'context_id'       => $context_id,
+					]
+				);
+			}
 		} else {
 			$exists = false;
 		}
