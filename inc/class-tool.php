@@ -103,6 +103,10 @@ class Tool extends ToolProvider\ToolProvider {
 			$this->initSessionVars();
 			$this->setupUser( $this->user, $this->consumer->consumerGuid );
 			$this->setupDeepLink();
+		} elseif ( $this->getAction() === 'createbook' ) {
+			$this->initSessionVars();
+			$this->setupUser( $this->user, $this->consumer->consumerGuid );
+
 		} else {
 			$this->ok = false;
 			$this->message = __( 'Invalid launch URL', 'pressbooks-lti-provider' );
@@ -312,7 +316,6 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @throws \LogicException
 	 */
 	public function setupUser( $user, $guid ) {
-
 		if ( ! is_object( $this->admin ) ) {
 			throw new \LogicException( '$this->admin is not an object. It must be set before calling setupUser()' );
 		}
@@ -362,12 +365,26 @@ class Tool extends ToolProvider\ToolProvider {
 		$is_new_user = false;
 
 		// Try to find a matching WordPress user with LTI ID
-		$wp_user = $this->matchUser( $lti_id );
+		$wp_user = $this->matchUserById( $lti_id );
 		if ( $wp_user ) {
 			$lti_id_was_matched = true;
 		} else {
 			// Try to match the LTI User with their email
 			$wp_user = get_user_by( 'email', $email );
+		}
+		// edge case where consumer key (e.g. WP0-ZRTCXX) is used to determine login
+		if ( ! $wp_user ) {
+			// get the consumer key
+			$id_scope = $this->consumer->getKey();
+			// looking for a 0,1,2,3 in consumer key to affect what gets prepended to a userID
+			$id_scope   = intval( substr( $id_scope, 2, 1 ) );
+			$user_login = $user->getId( $id_scope );
+			$user_login = $this->sanitizeUser( $user_login );
+			$user_login = apply_filters( 'pre_user_login', $user_login );
+
+			// Then they pick the third value '0' in the consumer key to set the scope = Use ID value only
+			// Then based on that they use the user ID value only (from TC)
+			$wp_user = get_user_by( 'login', $user_login );
 		}
 
 		// If there's no match then check if we should create a user (Anonymous Guest = No, Everything Else = Yes)
@@ -445,7 +462,7 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @return false|\WP_User
 	 */
-	public function matchUser( $lti_id ) {
+	public function matchUserById( $lti_id ) {
 		global $wpdb;
 		$condition = "{$lti_id}|%";
 		$query_result = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s", self::META_KEY, $condition ) );
@@ -660,4 +677,230 @@ class Tool extends ToolProvider\ToolProvider {
 		return true;
 	}
 
+	/**
+	 * Process incoming request, check authenticity of the LTI launch request
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param array $params
+	 */
+	public function processRequest( $params ) {
+		$this->setParams( $params );
+		$this->setParameterConstraint(
+			'oauth_consumer_key', true, 50, [
+				'basic-lti-launch-request',
+				'ContentItemSelectionRequest',
+			]
+		);
+		$this->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
+		$this->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
+		$this->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
+		if ( ! $this->validateRegistrationRequest() ) {
+			$this->ok      = false;
+			$this->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
+		}
+
+	}
+
+	/**
+	 * Builds a book title from expected values and applies an opinionated format.
+	 * Supplies default values should arguments be empty
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param $course_name
+	 * @param $course_id
+	 * @param $activity_name
+	 * @param $activity_id
+	 *
+	 * @return string
+	 */
+	public function buildTitle( $course_name, $course_id, $activity_name, $activity_id ) {
+		$course   = ( ! empty( $course_name ) ? $course_name : 'Course ID ' . $course_id );
+		$activity = ( ! empty( $activity_name ) ? $activity_name : 'Activity ID ' . $activity_id );
+
+		$title = sprintf( '%1$s: %2$s', $course, $activity );
+		$title = wp_strip_all_tags( $title, false );
+		$title = ( strlen( $title ) <= 1 ) ? 'Untitled' : $title;
+
+		return $title;
+
+	}
+
+	/**
+	 * Takes an activity name, massages it into compliance for a valid domain
+	 *
+	 * @param $resource_link_title string Activity name derived from the Tool Consumer
+	 *
+	 * @return bool|string
+	 * @since 1.4.0
+	 *
+	 */
+	public function buildAndValidateUrl( $resource_link_title ) {
+		global $domain;
+
+		$current_network          = get_network();
+		$base                     = $current_network->path;
+		$scheme                   = wp_parse_url( network_home_url(), PHP_URL_SCHEME );
+		$illegal_names            = get_site_option( 'illegal_names' );
+		$minimum_site_name_length = apply_filters( 'minimum_site_name_length', 4 );
+
+		$blog_name = sanitize_title_with_dashes( remove_accents( $resource_link_title ) );
+		$blog_name = preg_replace( '/-/', '', $blog_name );
+
+		// at least some letters.
+		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {
+			$blog_name .= 'a';
+		}
+		// illegal names.
+		if ( in_array( $blog_name, $illegal_names, true ) ) {
+			$this->ok = false;
+			$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
+			$this->handleRequest();
+			return '';
+		}
+		// at least 4 characters
+		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
+			$blog_name = str_pad( $blog_name, 4, '1' );
+		}
+
+		if ( is_subdomain_install() ) {
+			$host = wp_parse_url( esc_url( $domain ), PHP_URL_HOST );
+			$host = explode( '.', $host );
+			if ( count( $host ) > 2 ) {
+				array_shift( $host );
+			}
+			$bare_domain = implode( '.', $host );
+			$my_domain   = $blog_name . '.' . $bare_domain;
+			$path        = $base;
+
+		} else {
+			$illegal_sub_directory_names = array_merge( $illegal_names, get_subdirectory_reserved_names() );
+			if ( in_array( $blog_name, $illegal_sub_directory_names, true ) ) {
+				$this->ok = false;
+				$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
+				$this->handleRequest();
+				return '';
+			}
+			$my_domain = "$domain";
+			$path      = $base . $blog_name . '/';
+
+		}
+
+		$path = ( 0 === strcmp( $path, '/' ) ) ? '' : $path;
+
+		return sprintf( '%1$s://%2$s%3$s', $scheme, $my_domain, $path );
+	}
+
+	/**
+	 * Creates a unique URL based on a given URL
+	 *
+	 * @param $url
+	 *
+	 * @return string
+	 * @since 1.4.0
+	 */
+	public function maybeDisambiguateDomain( $url ) {
+		// return empty on failure
+		$parts = wp_parse_url( $url );
+		if ( ! isset( $parts['host'] ) ) {
+			return '';
+		}
+
+		$domain = $parts['host'];
+		$path = $parts['path'];
+
+		// disambiguate with sequential numbers, limit to prevent endless loop
+		if ( is_subdomain_install() ) {
+			$i = 1;
+			while ( domain_exists( $domain, $parts['path'], 1 ) && $i < 1000 ) {
+				$domain = "{$parts['host']}{$i}";
+				++ $i;
+			}
+		} else {
+			$i = 1;
+			while ( domain_exists( $parts['host'], $path, 1 ) && $i < 1000 ) {
+				$path = untrailingslashit( $parts['path'] ) . $i;
+				++ $i;
+			}
+		}
+
+		return sprintf( '%1$s://%2$s%3$s', $parts['scheme'], $domain, untrailingslashit( $path ) );
+
+	}
+
+	/**
+	 * Create a new book, launched via LTI
+	 *
+	 * @param string $new_book_url URL of the new book to be created
+	 * @param string $title Title of the book
+	 * @param int $user_id ID of the user creating the book
+	 * @param int $resource_link_id ID of the activity, derived from the Tool Consumer
+	 * @param int $context_id ID of the course the activity belongs to, derived from the Tool Consumer
+	 *
+	 * @return int|\WP_Error
+	 * @since 1.4.0
+	 *
+	 */
+	public function createNewBook( $new_book_url, $title, $user_id, $resource_link_id, $context_id ) {
+		$url    = untrailingslashit( $new_book_url );
+		$domain = wp_parse_url( $url, PHP_URL_HOST );
+		$path   = wp_parse_url( $url, PHP_URL_PATH );
+
+		$book_id = wpmu_create_blog( $domain, $path, $title, $user_id );
+
+		add_blog_option(
+			$book_id, 'pressbooks_lti_consumer_context', [
+				'resource_link_id' => $resource_link_id,
+				'context_id'       => $context_id,
+			]
+		);
+
+		return $book_id;
+	}
+
+	/**
+	 * Checks for both an existing domain and expected values in the options table
+	 *
+	 * @param $url string URL of the book to check
+	 * @param $resource_link_id string ID of the activity, derived from the Tool Consumer
+	 * @param $context_id string ID of the course the activity belongs to, derived from the Tool Consumer
+	 *
+	 * @return bool
+	 * @since 1.4.0
+	 *
+	 */
+	public function validateLtiBookExists( $url, $resource_link_id, $context_id ) {
+		$parts         = wp_parse_url( $url );
+		$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
+		$path          = $parts['path'];
+		if ( ! isset( $parts['host'] ) ) {
+			return false;
+		}
+		$domain = $parts['host'];
+
+		$exists = ( domain_exists( $domain, $path ) ) ? true : false;
+
+		if ( $exists ) {
+			$book_id = get_blog_id_from_url( $domain, $path );
+			$options = get_blog_option( $book_id, 'pressbooks_lti_consumer_context' );
+			// Check if the book has been created already by the same activity in the same course.
+			if ( $options ) {
+				$same_activity = 0 === strcmp( $options['resource_link_id'], $resource_link_id );
+				$same_course   = 0 === strcmp( $options['context_id'], $context_id );
+				$exists        = true === $same_activity && true === $same_course;
+			} else {
+				update_blog_option(
+					$book_id, 'pressbooks_lti_consumer_context', [
+						'resource_link_id' => $resource_link_id,
+						'context_id'       => $context_id,
+					]
+				);
+			}
+		} else {
+			$exists = false;
+		}
+
+		return $exists;
+	}
 }
