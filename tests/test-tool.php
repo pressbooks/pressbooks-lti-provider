@@ -283,5 +283,8 @@ class ToolTest extends \WP_UnitTestCase {
 		$params = [ 'hello' => 'world', 'foo' => 'bar' ];
 		$this->tool->processRequest( $params );
 		$this->assertTrue( array_key_exists( 'hello', $this->tool->getParams() ) );
+		$_POST['lti_message_type'] = 'ToolProxyRegistrationRequest';
+		$this->tool->processRequest( $params );
+		$this->assertFalse( $this->tool->ok );
 	}
 }
