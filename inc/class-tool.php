@@ -106,7 +106,6 @@ class Tool extends ToolProvider\ToolProvider {
 		} elseif ( $this->getAction() === 'createbook' ) {
 			$this->initSessionVars();
 			$this->setupUser( $this->user, $this->consumer->consumerGuid );
-
 		} else {
 			$this->ok = false;
 			$this->message = __( 'Invalid launch URL', 'pressbooks-lti-provider' );
@@ -374,16 +373,11 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 		// edge case where consumer key (e.g. WP0-ZRTCXX) is used to determine login
 		if ( ! $wp_user ) {
-			// get the consumer key
 			$id_scope = $this->consumer->getKey();
-			// looking for a 0,1,2,3 in consumer key to affect what gets prepended to a userID
 			$id_scope   = intval( substr( $id_scope, 2, 1 ) );
 			$user_login = $user->getId( $id_scope );
 			$user_login = $this->sanitizeUser( $user_login );
 			$user_login = apply_filters( 'pre_user_login', $user_login );
-
-			// Then they pick the third value '0' in the consumer key to set the scope = Use ID value only
-			// Then based on that they use the user ID value only (from TC)
 			$wp_user = get_user_by( 'login', $user_login );
 		}
 
@@ -748,18 +742,17 @@ class Tool extends ToolProvider\ToolProvider {
 		$blog_name = sanitize_title_with_dashes( remove_accents( $resource_link_title ) );
 		$blog_name = preg_replace( '/-/', '', $blog_name );
 
-		// at least some letters.
 		if ( preg_match( '/^[0-9]*$/', $blog_name ) ) {
 			$blog_name .= 'a';
 		}
-		// illegal names.
+
 		if ( in_array( $blog_name, $illegal_names, true ) ) {
 			$this->ok = false;
 			$this->message = __( 'Sorry, the activity name uses a reserved word', 'pressbooks-lti-provider' );
 			$this->handleRequest();
 			return '';
 		}
-		// at least 4 characters
+
 		if ( strlen( $blog_name ) < $minimum_site_name_length ) {
 			$blog_name = str_pad( $blog_name, 4, '1' );
 		}
@@ -801,7 +794,6 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @since 1.4.0
 	 */
 	public function maybeDisambiguateDomain( $url ) {
-		// return empty on failure
 		$parts = wp_parse_url( $url );
 		if ( ! isset( $parts['host'] ) ) {
 			return '';
@@ -810,7 +802,6 @@ class Tool extends ToolProvider\ToolProvider {
 		$domain = $parts['host'];
 		$path = $parts['path'];
 
-		// disambiguate with sequential numbers, limit to prevent endless loop
 		if ( is_subdomain_install() ) {
 			$i = 1;
 			while ( domain_exists( $domain, $parts['path'], 1 ) && $i < 1000 ) {

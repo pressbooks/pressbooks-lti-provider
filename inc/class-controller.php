@@ -93,75 +93,47 @@ class Controller {
 	}
 
 	/**
+	 * Creates a book from an LTI request
+	 *
 	 * @param $action
 	 * @param $params
+	 * @since 1.4.0
 	 */
 	public function createBook( $action, $params ) {
-		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
-			wp_die( __( 'You do not have permission to do that.' ) );
-		}
-
-		// TC creates anonymous LTI launch request
 		$connector = Database::getConnector();
 		$tool      = new Tool( $connector );
 		$tool->setAdmin( $this->admin );
 		$tool->setAction( $action );
-
-		// TP validates LTI launch and creates tool state
 		$tool->processRequest( $params );
-
-		// Authenticates, sets session variables and sets up user
 		$tool->handleRequest();
 
-		// Creates a url from the name of the activity link
 		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
 		$exists       = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
 
-		// Display book, if the book already exists and was created by the same resource_link_id
 		if ( $exists || $tool->user->isLearner() ) {
-			// TODO: Make this work, return the book for viewing pleasure
-			\Pressbooks\Redirect\location( trailingslashit( $activity_url ) . 'format/lti/launch' );
+			\Pressbooks\Redirect\location( $activity_url );
+			do_exit();
 		}
+
+		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
+			wp_die( __( 'You do not have permission to do that.' ) );
+		}
+
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
 		$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
 
-		// User
 		$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
 		$wp_user = $tool->matchUserById( $lti_id );
 
-		// Try to create a book.
 		if ( $wp_user ) {
-			$lti_id_was_matched = true;
-
-			// Restrict book creation to staff or admins.
 			if ( $tool->user->isStaff() || $tool->user->isAdmin() ) {
-				try {
-					$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
-					if ( ! is_wp_error( $book_id ) ) {
-						switch_to_blog( $book_id );
-					}
-				} catch ( \Exception $e ) {
+				$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+				if ( is_wp_error( $book_id ) ) {
 					$tool->ok      = false;
 					$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
 					$tool->handleRequest();
 				}
 			}
-			// Role
-			$settings = $this->admin->getBookSettings();
-			if ( $tool->user->isAdmin() ) {
-				$role = $settings['admin_default'];
-			} elseif ( $tool->user->isStaff() ) {
-				$role = $settings['staff_default'];
-			} elseif ( $tool->user->isLearner() ) {
-				$role = $settings['learner_default'];
-			} else {
-				$role = 'anonymous';
-			}
-			$tool->loginUser( $wp_user, $lti_id, $lti_id_was_matched, $role );
-
-			// TODO: Make this work, return the book for viewing pleasure
-			\Pressbooks\Redirect\location( trailingslashit( $new_book_url ) . 'format/lti/launch' );
-
 		}
 
 	}
