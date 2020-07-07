@@ -33,14 +33,14 @@ class ThinCCTest extends \WP_UnitTestCase {
 	public function test_sanityCheckExports() {
 		$this->_book();
 
-		$this->assertTrue( $this->thincc11->convert(), "Could not convert with CommonCartridge11" );
-		$this->assertTrue( $this->thincc11->validate(), "Could not validate with CommonCartridge11" );
+		$this->assertTrue( $this->thincc11->convert(), 'Could not convert with CommonCartridge11' );
+		$this->assertTrue( $this->thincc11->validate(), 'Could not validate with CommonCartridge11' );
 
-		$this->assertTrue( $this->thincc12->convert(), "Could not convert with CommonCartridge12" );
-		$this->assertTrue( $this->thincc12->validate(), "Could not validate with CommonCartridge12" );
+		$this->assertTrue( $this->thincc12->convert(), 'Could not convert with CommonCartridge12' );
+		$this->assertTrue( $this->thincc12->validate(), 'Could not validate with CommonCartridge12' );
 
-		$this->assertTrue( $this->thincc13->convert(), "Could not convert with CommonCartridge13" );
-		$this->assertTrue( $this->thincc13->validate(), "Could not validate with CommonCartridge13" );
+		$this->assertTrue( $this->thincc13->convert(), 'Could not convert with CommonCartridge13' );
+		$this->assertTrue( $this->thincc13->validate(), 'Could not validate with CommonCartridge13' );
 	}
 
 	public function test_deleteTmpDir() {
