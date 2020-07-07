@@ -208,7 +208,6 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( "{$disambiguate}1", $this->tool->maybeDisambiguateDomain( $disambiguate ) );
 
 		// @TODO - add tests for subdomain network
-
 	}
 
 	public function test_buildTitle() {
@@ -255,7 +254,6 @@ class ToolTest extends \WP_UnitTestCase {
 		delete_option( $this->tool::CONSUMER_CONTEXT_KEY );
 		$this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1], $happy_path[2] );
 		$this->assertArrayHasKey( 'context_id', get_option( 'pressbooks_lti_consumer_context' ) );
-
 	}
 
 	public function test_buildAndValidateUrl() {
