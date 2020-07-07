@@ -61,7 +61,12 @@ class NamespaceTest extends \WP_UnitTestCase {
 
 	public function test_session_configuration() {
 		$_SERVER['REQUEST_URI'] = '/contains/format/lti/something';
-		$options = \PressbooksLtiProvider\session_configuration( [ 'read_and_close' => true, 'some_other_setting' => true ] );
+		$options = \PressbooksLtiProvider\session_configuration(
+			[
+				'read_and_close' => true,
+				'some_other_setting' => true,
+			]
+		);
 		$this->assertArrayNotHasKey( 'read_and_close', $options );
 		$this->assertArrayHasKey( 'some_other_setting', $options );
 	}

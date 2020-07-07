@@ -101,14 +101,14 @@ class Controller {
 	 */
 	public function createBook( $action, $params ) {
 		$connector = Database::getConnector();
-		$tool      = new Tool( $connector );
+		$tool = new Tool( $connector );
 		$tool->setAdmin( $this->admin );
 		$tool->setAction( $action );
 		$tool->processRequest( $params );
 		$tool->handleRequest();
 
 		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
-		$exists       = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
+		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
 
 		if ( $exists || $tool->user->isLearner() ) {
 			\Pressbooks\Redirect\location( $activity_url );
@@ -120,22 +120,18 @@ class Controller {
 		}
 
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
-		$title        = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
-
+		$title = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
 		$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
 		$wp_user = $tool->matchUserById( $lti_id );
 
-		if ( $wp_user ) {
-			if ( $tool->user->isStaff() || $tool->user->isAdmin() ) {
-				$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
-				if ( is_wp_error( $book_id ) ) {
-					$tool->ok      = false;
-					$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
-					$tool->handleRequest();
-				}
+		if ( $wp_user && $tool->user->isStaff() || $tool->user->isAdmin() ) {
+			$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+			if ( is_wp_error( $book_id ) ) {
+				$tool->ok      = false;
+				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
+				$tool->handleRequest();
 			}
 		}
-
 	}
 
 	/**
