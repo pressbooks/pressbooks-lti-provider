@@ -868,18 +868,14 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 */
 	public function validateLtiBookExists( $url, $resource_link_id, $context_id ) {
-		$parts         = wp_parse_url( $url );
-		$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
-		$path          = $parts['path'];
-		if ( ! isset( $parts['host'] ) ) {
+		$parts = domain_and_path( $url );
+		if ( ! $parts ) {
 			return false;
 		}
-		$domain = $parts['host'];
-
-		$exists = ( domain_exists( $domain, $path ) ) ? true : false;
+		$exists = ( domain_exists( $parts[0], $parts[1] ) ) ? true : false;
 
 		if ( $exists ) {
-			$book_id = get_blog_id_from_url( $domain, $path );
+			$book_id = get_blog_id_from_url( $parts[0], $parts[1] );
 			$options = get_blog_option( $book_id, self::CONSUMER_CONTEXT_KEY );
 			// Check if the book has been created already by the same activity in the same course.
 			if ( $options ) {

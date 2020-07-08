@@ -158,3 +158,23 @@ function deep_link( $suffix = '' ) {
 	}
 	return $url;
 }
+
+/**
+ * Helper function to get common url bits
+ *
+ * @param $url
+ *
+ * @return array|bool
+ * @since 1.4.0
+ */
+function domain_and_path( $url ) {
+	$parts = wp_parse_url( $url );
+	$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
+	$path = $parts['path'];
+	if ( ! isset( $parts['host'] ) ) {
+		return false;
+	}
+	$domain = $parts['host'];
+
+	return [ $domain, $path ];
+}
