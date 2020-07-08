@@ -88,9 +88,21 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$this->assertTrue( is_object( $blade ) );
 	}
 
-	public function is_json() {
+	public function test_is_json() {
 		$this->assertFalse( \PressbooksLtiProvider\is_json( 'Nope' ) );
 		$this->assertTrue( \PressbooksLtiProvider\is_json( '{ "Yes": 1 }' ) );
+	}
+
+	public function test_domain_and_path() {
+		$happy_subdomain = \PressbooksLtiProvider\domain_and_path( 'https://subdomain.pressbooks.test/sub/' );
+		$happy_path = \PressbooksLtiProvider\domain_and_path( 'https://pressbooks.test/happy' );
+		$happy_no_path = \PressbooksLtiProvider\domain_and_path( 'https://pressbooks.test' );
+		$this->assertEquals( 'subdomain.pressbooks.test', $happy_subdomain[0] );
+		$this->assertEquals( '/sub/', $happy_subdomain[1] );
+		$this->assertEquals( 'pressbooks.test', $happy_path[0] );
+		$this->assertEquals( '/happy', $happy_path[1] );
+		$this->assertEquals( '/', $happy_no_path[1] );
+		$this->assertFalse( \PressbooksLtiProvider\domain_and_path( '/justapath/' ) );
 	}
 
 }

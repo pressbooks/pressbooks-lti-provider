@@ -100,27 +100,28 @@ class Controller {
 	 * @since 1.4.0
 	 */
 	public function createBook( $action, $params ) {
+		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
+			wp_die( __( 'You do not have permission to do that.' ) );
+		}
 		$connector = Database::getConnector();
 		$tool = new Tool( $connector );
 		$tool->setAdmin( $this->admin );
 		$tool->setAction( $action );
 		$tool->processRequest( $params );
-		$tool->handleRequest();
-
 		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
 		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
 
-		if ( $exists || $tool->user->isLearner() ) {
-			\Pressbooks\Redirect\location( $activity_url );
-			do_exit();
-		}
-
-		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
-			wp_die( __( 'You do not have permission to do that.' ) );
+		if ( $exists || ( 0 === strcmp( $_POST['roles'], 'Learner' ) ) ){
+			$parts = domain_and_path( $activity_url );
+			$blog_id = get_blog_id_from_url( $parts[0], $parts[1] );
+			switch_to_blog( $blog_id );
+			$tool->setAction( 'launch' );
+			$tool->handleRequest();
 		}
 
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
 		$title = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
+		$tool->handleRequest();
 		$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
 		$wp_user = $tool->matchUserById( $lti_id );
 
@@ -129,7 +130,6 @@ class Controller {
 			if ( is_wp_error( $book_id ) ) {
 				$tool->ok      = false;
 				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
-				$tool->handleRequest();
 			}
 		}
 	}
