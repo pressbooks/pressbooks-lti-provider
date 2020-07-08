@@ -20,15 +20,15 @@ class AdminTest extends \WP_UnitTestCase {
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc13'] ) ); // The default
 
-		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION, [ 'cc_version' => '1.2' ] );
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc12'] ) );
 
-		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION, [ 'cc_version' => '1.1' ] );
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc11'] ) );
 
-		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => 'all' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION, [ 'cc_version' => 'all' ] );
 		$formats = $this->admin->exportFormats( [] );
 		$this->assertTrue( isset( $formats['exotic']['thincc13'] ) );
 		$this->assertTrue( isset( $formats['exotic']['thincc12'] ) );
@@ -46,11 +46,11 @@ class AdminTest extends \WP_UnitTestCase {
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc13'] ) ); // The default
 
-		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.2' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION, [ 'cc_version' => '1.2' ] );
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc12'] ) );
 
-		update_option( \PressbooksLtiProvider\Admin::OPTION,  [ 'cc_version' => '1.1' ] );
+		update_option( \PressbooksLtiProvider\Admin::OPTION, [ 'cc_version' => '1.1' ] );
 		$formats = $this->admin->exportFileFormats( [] );
 		$this->assertTrue( isset( $formats['thincc11'] ) );
 
