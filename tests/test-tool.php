@@ -255,9 +255,9 @@ class ToolTest extends \WP_UnitTestCase {
 
 	public function test_buildAndValidateUrl() {
 		$activity_title = '    <b>"my"</b> Moödle Äctivity ß    ';
-		$too_short      = 'abc';
+		$too_short = 'abc';
 		$no_characters  = '12345';
-		$illegal        = 'blog';
+		$illegal = 'blog';
 		$sub_directory_illegal = 'embed';
 
 		$this->assertEquals( 'http://example.org/mymoodleactivitys/', $this->tool->buildAndValidateUrl( $activity_title ) );
@@ -268,7 +268,7 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_createNewBook() {
-		$id         = get_current_user_id();
+		$id = get_current_user_id();
 		$happy_path = [ 'http://example.org/mymoodleactivity/', 'Course: My Moodle Activity', $id, '33', '12345' ];
 		$maybe_book = $this->tool->createNewBook( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3], $happy_path[4] );
 		$this->assertInternalType( 'int', $maybe_book );
