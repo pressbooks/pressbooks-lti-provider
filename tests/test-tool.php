@@ -21,21 +21,21 @@ class ToolTest extends \WP_UnitTestCase {
 			->method( 'getSettings' )
 			->willReturn(
 				[
-					'whitelist'                 => "pressbooks.test\r\nnpressbooks.education\r\n",
+					'whitelist' => "pressbooks.test\r\nnpressbooks.education\r\n",
 					'prompt_for_authentication' => 0,
-					'book_override'             => 1,
-					'admin_default'             => 'subscriber',
-					'staff_default'             => 'subscriber',
-					'learner_default'           => 'subscriber',
-					'hide_navigation'           => 0,
+					'book_override' => 1,
+					'admin_default' => 'subscriber',
+					'staff_default' => 'subscriber',
+					'learner_default' => 'subscriber',
+					'hide_navigation' => 0,
 				]
 			);
 		$stub1
 			->method( 'getBookSettings' )
 			->willReturn(
 				[
-					'admin_default'   => 'subscriber',
-					'staff_default'   => 'subscriber',
+					'admin_default' => 'subscriber',
+					'staff_default' => 'subscriber',
 					'learner_default' => 'subscriber',
 					'hide_navigation' => 0,
 				]
@@ -77,14 +77,13 @@ class ToolTest extends \WP_UnitTestCase {
 	public function test_setupUser() {
 		$this->_book();
 		$prefix = uniqid( 'test' );
-		$email  = "{$prefix}@pressbooks.test";
-
-		$guid            = rand();
-		$user            = new \IMSGlobal\LTI\ToolProvider\User();
+		$email = "{$prefix}@pressbooks.test";
+		$guid = rand();
+		$user = new \IMSGlobal\LTI\ToolProvider\User();
 		$user->ltiUserId = 1;
 		$user->setEmail( $email );
 		$user->roles = [ 'urn:lti:role:ims/lis/Administrator' ];
-		$lti_id      = "{$guid}|" . $user->getId();
+		$lti_id = "{$guid}|" . $user->getId();
 
 		// User doesn't exist yet
 		$this->assertFalse( $this->tool->matchUserById( $lti_id ) );
@@ -194,20 +193,17 @@ class ToolTest extends \WP_UnitTestCase {
 	}
 
 	public function test_maybeDisambiguateDomain() {
-		$blog_id      = $this->factory()->blog->create();
-		$obj          = get_blog_details( $blog_id );
+		$blog_id = $this->factory()->blog->create();
+		$obj = get_blog_details( $blog_id );
 		$disambiguate = $obj->siteurl;
-
-		$subdomain_happy_path    = 'https://biology201.example.com/';
+		$subdomain_happy_path = 'https://biology201.example.com/';
 		$subdirectory_happy_path = 'https://example.com/biol201';
-		$empty_path              = 'blort@example.com';
+		$empty_path = 'blort@example.com';
 
 		$this->assertEquals( 'https://biology201.example.com', $this->tool->maybeDisambiguateDomain( $subdomain_happy_path ) );
 		$this->assertEquals( 'https://example.com/biol201', $this->tool->maybeDisambiguateDomain( $subdirectory_happy_path ) );
 		$this->assertEmpty( $this->tool->maybeDisambiguateDomain( $empty_path ) );
 		$this->assertEquals( "{$disambiguate}1", $this->tool->maybeDisambiguateDomain( $disambiguate ) );
-
-		// @TODO - add tests for subdomain network
 	}
 
 	public function test_buildTitle() {
@@ -239,6 +235,7 @@ class ToolTest extends \WP_UnitTestCase {
 				'context_id' => 2,
 			]
 		);
+
 		$no_exist           = [ 'https://pressbooks.test/activityname', 33, 2 ];
 		$no_url             = [ 'noHostHere', 33, 2 ];
 		$different_resource = [ $exists, 34, 2 ];

@@ -111,7 +111,7 @@ class Controller {
 		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
 		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
 
-		if ( $exists || ( 0 === strcmp( $_POST['roles'], 'Learner' ) ) ){
+		if ( $exists || ( 0 === strcmp( $_POST['roles'], 'Learner' ) ) ) {
 			$parts = domain_and_path( $activity_url );
 			$blog_id = get_blog_id_from_url( $parts[0], $parts[1] );
 			switch_to_blog( $blog_id );
