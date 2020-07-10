@@ -109,13 +109,15 @@ class Tool extends ToolProvider\ToolProvider {
 	 * and resourceLink properties to access the current user, context and resource link.
 	 */
 	protected function onLaunch() {
-		if ( $this->getAction() === 'launch' ) {
+		$params = $this->getParams();
+
+		if  ( isset( $params['method'] ) && 'createbook' === $params['method'] ) {
+			$this->initSessionVars();
+			$this->setupUser( $this->user, $this->consumer->consumerGuid );
+		} elseif ( $this->getAction() === 'launch' ) {
 			$this->initSessionVars();
 			$this->setupUser( $this->user, $this->consumer->consumerGuid );
 			$this->setupDeepLink();
-		} elseif ( $this->getAction() === 'createbook' ) {
-			$this->initSessionVars();
-			$this->setupUser( $this->user, $this->consumer->consumerGuid );
 		} else {
 			$this->ok = false;
 			$this->message = __( 'Invalid launch URL', 'pressbooks-lti-provider' );

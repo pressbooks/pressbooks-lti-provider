@@ -449,27 +449,28 @@ EOJS;
 	 * @return array{admin_default: string, staff_default: string, learner_default: string, hide_navigation: int, cc_version: string}
 	 */
 	public function getBookSettings() {
-		if ( $this->getSettings()['book_override'] ) {
-			$options = get_option( self::OPTION, [] );
-		} else {
-			$options = [];
+		$network_settings = $this->getSettings();
+		$book_settings = get_option( self::OPTION, [] );
+		$book_settings = is_array( $book_settings ) ? $book_settings : [];
+
+		if ( $network_settings['book_override'] ) {
+			$options = $book_settings;
 		}
-		$defaults = $this->getSettings();
 
 		if ( empty( $options['admin_default'] ) ) {
-			$options['admin_default'] = $defaults['admin_default'];
+			$options['admin_default'] = $network_settings['admin_default'];
 		}
 		if ( empty( $options['staff_default'] ) ) {
-			$options['staff_default'] = $defaults['staff_default'];
+			$options['staff_default'] = $network_settings['staff_default'];
 		}
 		if ( empty( $options['learner_default'] ) ) {
-			$options['learner_default'] = $defaults['learner_default'];
+			$options['learner_default'] = $network_settings['learner_default'];
 		}
 		if ( ! isset( $options['hide_navigation'] ) ) {
-			$options['hide_navigation'] = $defaults['hide_navigation'];
+			$options['hide_navigation'] = $network_settings['hide_navigation'];
 		}
 		if ( ! isset( $options['cc_version'] ) ) {
-			$options['cc_version'] = $defaults['cc_version'];
+			$options['cc_version'] = $network_settings['cc_version'];
 		}
 
 		return $options;

@@ -47,6 +47,7 @@ function do_format( $format ) {
 			// Book
 			$admin = Admin::init();
 			$controller = new Controller( $admin );
+			$params['method'] = $action;
 			$controller->handleRequest( $action, $params );
 			do_exit();
 		} elseif ( ctype_digit( strval( $action ) ) && get_blog_details( $action ) !== false ) {

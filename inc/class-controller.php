@@ -3,6 +3,7 @@
 namespace PressbooksLtiProvider;
 
 use IMSGlobal\LTI\ToolProvider;
+use function Pressbooks\Redirect\location;
 
 class Controller {
 
@@ -111,13 +112,8 @@ class Controller {
 		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
 		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
 
-
-		if ( $exists || ( 0 === strcmp( $_POST['roles'], 'Learner' ) ) ) {
-			$parts = domain_and_path( $activity_url );
-			$blog_id = get_blog_id_from_url( $parts[0], $parts[1] );
-			switch_to_blog( $blog_id );
-			$tool->setAction( 'launch' );
-			$tool->handleRequest();
+		if ( $exists ) {
+			location( $activity_url );
 		}
 
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
@@ -129,7 +125,7 @@ class Controller {
 		if ( $wp_user && $tool->user->isStaff() || $tool->user->isAdmin() ) {
 			$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
 			if ( is_wp_error( $book_id ) ) {
-				$tool->ok      = false;
+				$tool->ok = false;
 				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
 			}
 		}
@@ -152,7 +148,7 @@ class Controller {
 			$tool->setParams( $this->storage->params );
 			$tool->loginUser( $this->storage->user, $this->storage->ltiId, $this->storage->ltiIdWasMatched, $this->storage->role );
 			$tool->setupDeepLink();
-			\Pressbooks\Redirect\location( $tool->getRedirectUrl() );
+			location( $tool->getRedirectUrl() );
 		} else {
 			$tool->processRequest( $params );
 			$tool->handleRequest();
