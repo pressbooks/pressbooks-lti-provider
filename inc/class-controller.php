@@ -51,6 +51,9 @@ class Controller {
 			case 'contentItemSubmit':
 				$this->contentItemSubmit( $params );
 				break;
+			case 'createbook':
+				$this->createBook( $action, $params );
+				break;
 			default:
 				$this->default( $action, $params );
 		}
@@ -90,6 +93,49 @@ class Controller {
 	}
 
 	/**
+	 * Creates a book from an LTI request
+	 *
+	 * @param $action
+	 * @param $params
+	 * @since 1.4.0
+	 */
+	public function createBook( $action, $params ) {
+		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
+			wp_die( __( 'You do not have permission to do that.' ) );
+		}
+		$connector = Database::getConnector();
+		$tool = new Tool( $connector );
+		$tool->setAdmin( $this->admin );
+		$tool->setAction( $action );
+		$tool->processRequest( $params );
+		$activity_url = $tool->buildAndValidateUrl( $_POST['resource_link_title'] );
+		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
+
+
+		if ( $exists || ( 0 === strcmp( $_POST['roles'], 'Learner' ) ) ) {
+			$parts = domain_and_path( $activity_url );
+			$blog_id = get_blog_id_from_url( $parts[0], $parts[1] );
+			switch_to_blog( $blog_id );
+			$tool->setAction( 'launch' );
+			$tool->handleRequest();
+		}
+
+		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
+		$title = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
+		$tool->handleRequest();
+		$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
+		$wp_user = $tool->matchUserById( $lti_id );
+
+		if ( $wp_user && $tool->user->isStaff() || $tool->user->isAdmin() ) {
+			$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+			if ( is_wp_error( $book_id ) ) {
+				$tool->ok      = false;
+				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
+			}
+		}
+	}
+
+	/**
 	 * @param string $action
 	 * @param array $params
 	 */
@@ -108,16 +154,7 @@ class Controller {
 			$tool->setupDeepLink();
 			\Pressbooks\Redirect\location( $tool->getRedirectUrl() );
 		} else {
-			// Process incoming request, check authenticity of the LTI launch request, execute requested action...
-			$tool->setParams( $params );
-			$tool->setParameterConstraint( 'oauth_consumer_key', true, 50, [ 'basic-lti-launch-request', 'ContentItemSelectionRequest' ] );
-			$tool->setParameterConstraint( 'resource_link_id', true, 50, [ 'basic-lti-launch-request' ] );
-			$tool->setParameterConstraint( 'user_id', true, 50, [ 'basic-lti-launch-request' ] );
-			$tool->setParameterConstraint( 'roles', true, null, [ 'basic-lti-launch-request' ] );
-			if ( ! $tool->validateRegistrationRequest() ) {
-				$tool->ok = false;
-				$tool->message = __( 'Unauthorized registration request. Tool Consumer is not in whitelist of allowed domains.', 'pressbooks-lti-provider' );
-			}
+			$tool->processRequest( $params );
 			$tool->handleRequest();
 		}
 	}
