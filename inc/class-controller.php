@@ -48,15 +48,12 @@ class Controller {
 			unset( $_SESSION['pb_lti_prompt_for_authentication'] ); // Unset, don't reuse
 		}
 
-		switch ( $action ) {
-			case 'contentItemSubmit':
-				$this->contentItemSubmit( $params );
-				break;
-			case 'createbook':
-				$this->createBook( $action, $params );
-				break;
-			default:
-				$this->default( $action, $params );
+		if ( 'contentItemSubmit' === $action ) {
+			$this->contentItemSubmit( $params );
+		} elseif ( 'launch' === $action && isset( $params['method'] ) && 'createbook' === $params['method'] ) {
+			$this->createBook( $action, $params );
+		} else {
+			$this->default( $action, $params );
 		}
 	}
 
