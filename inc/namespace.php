@@ -43,7 +43,7 @@ function do_format( $format ) {
 	$controller = array_shift( $params );
 	$action = array_shift( $params );
 	if ( 'lti' === $controller ) {
-		if ( \Pressbooks\Book::isBook() || 'createbook' === $action ) {
+		if ( \Pressbooks\Book::isBook() ) {
 			// Book
 			$admin = Admin::init();
 			$controller = new Controller( $admin );
@@ -157,24 +157,4 @@ function deep_link( $suffix = '' ) {
 		$url .= '/' . $suffix;
 	}
 	return $url;
-}
-
-/**
- * Helper function to get common url bits
- *
- * @param $url
- *
- * @return array|bool
- * @since 1.4.0
- */
-function domain_and_path( $url ) {
-	$parts = wp_parse_url( $url );
-	$parts['path'] = ( ! isset( $parts['path'] ) ) ? '/' : $parts['path'];
-	$path = $parts['path'];
-	if ( ! isset( $parts['host'] ) ) {
-		return false;
-	}
-	$domain = $parts['host'];
-
-	return [ $domain, $path ];
 }

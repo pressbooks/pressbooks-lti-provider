@@ -4,9 +4,10 @@
  * @group table
  */
 
+use IMSGlobal\LTI\ToolProvider\ToolConsumer;
 
-class TableTest extends \WP_UnitTestCase {
-
+class TableTest extends \WP_UnitTestCase
+{
 	public function setUp() {
 		parent::setUp();
 		$GLOBALS['hook_suffix'] = '';
@@ -50,11 +51,8 @@ class TableTest extends \WP_UnitTestCase {
 
 	public function test_columnName() {
 		$_REQUEST['page'] = 1;
-		$item = [
-			'ID' => 1,
-			'name' => 'Test',
-		];
-		$string_table = $this->table->column_name( $item );
+		$item = [ 'ID' => 1, 'name' => 'Test' ];
+		$string_table = $this->table->column_name($item);
 		$str_match_1 = "<div class=\"row-title\"><a href=\"http://example.org/wp-admin/network/admin.php?page=1&action=edit&ID=1\" class=\"title\">Test</a></div> <div class=\"row-actions\"><span class='edit'><a href=\"http://example.org/wp-admin/network/admin.php?page=1&action=edit&ID=1\" aria-label=\"Edit &#8220;Test&#8221;\">Edit</a> | </span><span class='trash'><a href=\"http://example.org/wp-admin/network/admin.php?page=1&#038;action=delete&#038;ID=1&#038";
 		$str_match_2 = " class=\"submitdelete\" aria-label=\"Move &#8220;Test&#8221; to the Trash\" onclick=\"if ( !confirm('Are you sure you want to delete this?') ) { return false }\">Trash</a></span></div><button type=\"button\" class=\"toggle-row\"><span class=\"screen-reader-text\">Show more details</span></button>";
 		$this->assertStringContainsString( $str_match_1, $string_table );
@@ -65,7 +63,7 @@ class TableTest extends \WP_UnitTestCase {
 		$item_available = [ 'available' => true ];
 		$item_unavailable = [ 'available' => '' ];
 		$this->assertEquals( '✅', $this->table->column_available( $item_available ) );
-		$this->assertEquals( '❌', $this->table->column_available( $item_unavailable ) );
+		$this->assertEquals( '❌',  $this->table->column_available( $item_unavailable ) );
 	}
 
 	public function test_protected() {
@@ -82,7 +80,7 @@ class TableTest extends \WP_UnitTestCase {
 		$import_class = new \ReflectionClass( 'PressbooksLtiProvider\Table' );
 		$determine_base_url = $import_class->getMethod( 'determineBaseUrl' );
 		$determine_base_url->setAccessible( true );
-		$url = $determine_base_url->invokeArgs( $this->table, [ $tool_consumer ] );
+		$url =  $determine_base_url->invokeArgs( $this->table, [ $tool_consumer ] );
 		$this->assertEquals( '', $url );
 	}
 }
