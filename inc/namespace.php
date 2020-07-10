@@ -48,7 +48,7 @@ function do_format( $format ) {
 			$admin = Admin::init();
 			$controller = new Controller( $admin );
 			$params['method'] = $action;
-			$controller->handleRequest( $action, $params );
+			$controller->handleRequest( 'launch', $params );
 			do_exit();
 		} elseif ( ctype_digit( strval( $action ) ) && get_blog_details( $action ) !== false ) {
 			$blog_id = $action;
