@@ -98,9 +98,6 @@ class Controller {
 	 * @since 1.4.0
 	 */
 	public function createBook( $action, $params ) {
-		if ( empty( $_SESSION['pb_lti_consumer_pk'] ) || empty( $_SESSION['pb_lti_consumer_version'] ) || empty( $_SESSION['pb_lti_return_url'] ) ) {
-			wp_die( __( 'You do not have permission to do that.' ) );
-		}
 		$connector = Database::getConnector();
 		$tool = new Tool( $connector );
 		$tool->setAdmin( $this->admin );
@@ -110,6 +107,7 @@ class Controller {
 		$exists = $tool->validateLtiBookExists( $activity_url, $_POST['resource_link_id'], $_POST['context_id'] );
 
 		if ( $exists ) {
+			$tool->handleRequest();
 			location( $activity_url );
 		}
 
