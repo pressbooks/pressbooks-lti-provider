@@ -49,6 +49,16 @@ class NamespaceTest extends \WP_UnitTestCase {
 		\PressbooksLtiProvider\do_format( "lti/{$book_id}" );
 		$buffer = ob_get_clean();
 		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
+
+		$_POST['resource_link_title'] = 'Book created from tool laucher';
+		$_POST['resource_link_id'] = '1';
+		$_POST['context_id'] = '2';
+		$_POST['context_label'] = 'My context label';
+
+		ob_start();
+		\PressbooksLtiProvider\do_format( "lti/createbook" );
+		$buffer = ob_get_clean();
+		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
 	}
 
 	public function test_session_relax() {

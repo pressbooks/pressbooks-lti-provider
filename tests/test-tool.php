@@ -267,17 +267,6 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->assertEquals( '', $this->tool->buildAndValidateUrl( $sub_directory_illegal ) );
 	}
 
-	public function test_createNewBook() {
-		$id = get_current_user_id();
-		$happy_path = [ 'http://example.org/mymoodleactivity/', 'Course: My Moodle Activity', $id, '33', '12345' ];
-		$maybe_book = $this->tool->createNewBook( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3], $happy_path[4] );
-		$this->assertInternalType( 'int', $maybe_book );
-
-		$options = get_blog_option( $maybe_book, 'pressbooks_lti_consumer_context' );
-		$this->assertEquals( '33', $options['resource_link_id'] );
-		$this->assertEquals( '12345', $options['context_id'] );
-	}
-
 	public function test_processRequest() {
 		$params = [
 			'hello' => 'world',
@@ -288,5 +277,16 @@ class ToolTest extends \WP_UnitTestCase {
 		$_POST['lti_message_type'] = 'ToolProxyRegistrationRequest';
 		$this->tool->processRequest( $params );
 		$this->assertFalse( $this->tool->ok );
+	}
+
+	public function test_createNewBook() {
+		$id = get_current_user_id();
+		$happy_path = [ 'http://example.org/mymoodleactivity/', 'Course: My Moodle Activity', $id, '33', '12345' ];
+		$maybe_book = $this->tool->createNewBook( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3], $happy_path[4] );
+		$this->assertInternalType( 'int', $maybe_book );
+
+		$options = get_blog_option( $maybe_book, 'pressbooks_lti_consumer_context' );
+		$this->assertEquals( '33', $options['resource_link_id'] );
+		$this->assertEquals( '12345', $options['context_id'] );
 	}
 }
