@@ -2,8 +2,8 @@
 
 namespace PressbooksLtiProvider;
 
-use IMSGlobal\LTI\ToolProvider;
 use function Pressbooks\Redirect\location;
+use IMSGlobal\LTI\ToolProvider;
 
 class Controller {
 

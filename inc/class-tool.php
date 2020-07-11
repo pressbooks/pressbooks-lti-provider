@@ -111,7 +111,7 @@ class Tool extends ToolProvider\ToolProvider {
 	protected function onLaunch() {
 		$params = $this->getParams();
 
-		if  ( isset( $params['method'] ) && 'createbook' === $params['method'] ) {
+		if ( isset( $params['method'] ) && 'createbook' === $params['method'] ) {
 			$this->initSessionVars();
 			$this->setupUser( $this->user, $this->consumer->consumerGuid );
 		} elseif ( $this->getAction() === 'launch' ) {
