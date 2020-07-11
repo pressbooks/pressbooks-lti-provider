@@ -114,16 +114,18 @@ class Controller {
 		$new_book_url = $tool->maybeDisambiguateDomain( $activity_url );
 		$title = $tool->buildTitle( $_POST['context_label'], $_POST['context_id'], $_POST['resource_link_title'], $_POST['resource_link_id'] );
 		$tool->handleRequest();
-		$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
-		$wp_user = $tool->matchUserById( $lti_id );
+		try {
+			$lti_id = "{$tool->consumer->consumerGuid}|{$tool->user->getId()}";
+			$wp_user = $tool->matchUserById( $lti_id );
 
-		if ( $wp_user && $tool->user->isStaff() || $tool->user->isAdmin() ) {
-			$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
-			if ( is_wp_error( $book_id ) ) {
-				$tool->ok = false;
-				$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
+			if ( $wp_user && $tool->user->isStaff() || $tool->user->isAdmin() ) {
+				$book_id = $tool->createNewBook( $new_book_url, $title, $wp_user->ID, $_POST['resource_link_id'], $_POST['context_id'] );
+				if ( is_wp_error( $book_id ) ) {
+					$tool->ok = false;
+					$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
+				}
 			}
-		}
+		} catch ( \Exception $e ) {}
 	}
 
 	/**

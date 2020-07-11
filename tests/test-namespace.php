@@ -28,6 +28,9 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$this->assertRegExp( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid );
 	}
 
+	/**
+	 * @group format
+	 */
 	public function test_do_format() {
 		// Book
 		$this->_book();
@@ -47,6 +50,16 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$_REQUEST['page_id'] = 123;
 		ob_start();
 		\PressbooksLtiProvider\do_format( "lti/{$book_id}" );
+		$buffer = ob_get_clean();
+		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
+
+		$_POST['resource_link_title'] = 'Book created from tool laucher';
+		$_POST['resource_link_id'] = '1';
+		$_POST['context_id'] = '2';
+		$_POST['context_label'] = 'My context label';
+
+		ob_start();
+		\PressbooksLtiProvider\do_format( "lti/createbook" );
 		$buffer = ob_get_clean();
 		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
 	}
