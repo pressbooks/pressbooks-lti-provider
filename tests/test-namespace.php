@@ -28,9 +28,6 @@ class NamespaceTest extends \WP_UnitTestCase {
 		$this->assertRegExp( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid );
 	}
 
-	/**
-	 * @group format
-	 */
 	public function test_do_format() {
 		// Book
 		$this->_book();

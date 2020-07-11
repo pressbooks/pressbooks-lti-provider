@@ -125,7 +125,8 @@ class Controller {
 					$tool->message = __( 'Sorry, a book could not be created', 'pressbooks-lti-provider' );
 				}
 			}
-		} catch ( \Exception $e ) {}
+		} catch ( \Exception $e ) {
+		}
 	}
 
 	/**
