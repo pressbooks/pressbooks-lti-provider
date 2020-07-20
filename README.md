@@ -2,7 +2,7 @@
 **Contributors:** conner_bw, greatislander  
 **Tags:** pressbooks, lti, lms  
 **Requires at least:** 5.2.1  
-**Tested up to:** 5.4.1  
+**Tested up to:** 5.4.2
 **Stable tag:** 1.3.3
 **License:** GPLv3 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
