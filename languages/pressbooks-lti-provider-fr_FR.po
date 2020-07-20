@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.3.2\n"
-"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider\n"
-"POT-Creation-Date: 2020-04-28T22:51:43+00:00\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
+"POT-Creation-Date: 2020-07-07T17:17:34+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Last-Translator: Dac Chartrand <dac@pressbooks.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/pressbooks/teams/9194/fr/)\n"
@@ -74,13 +74,9 @@ msgstr "Clients supprimés&nbsp;: %d"
 msgid "LTI Settings"
 msgstr "Paramètres LTI"
 
-#: inc/class-controller.php:119
-msgid ""
-"Unauthorized registration request. Tool Consumer is not in whitelist of "
-"allowed domains."
+#: inc/class-controller.php:129
+msgid "Sorry, a book could not be created"
 msgstr ""
-"Demande d&rsquo;enregistrement non-autorisée. Le client de l&rsquo;outil "
-"n&rsquo;est pas sur la liste blanche des domaines autorisés."
 
 #: inc/class-table.php:125 templates/network/consumer.blade.php:11
 msgid "Name"
@@ -115,45 +111,57 @@ msgstr "Protégé"
 msgid "Never"
 msgstr "Jamais"
 
-#: inc/class-tool.php:50
+#: inc/class-tool.php:60
 msgid "Powered by Pressbooks"
 msgstr "Propulsé par Pressbooks"
 
-#: inc/class-tool.php:108
+#: inc/class-tool.php:123
 msgid "Invalid launch URL"
 msgstr "URL d&rsquo;activation invalide"
 
-#: inc/class-tool.php:130
+#: inc/class-tool.php:145
 msgid "Return of an LTI link not offered"
 msgstr "Le renvoi à lien LTI n&rsquo;est pas offert."
 
-#: inc/class-tool.php:134
+#: inc/class-tool.php:149
 msgid "No visible document target offered"
 msgstr "Aucun document cible visible n&rsquo;est offert."
 
-#: inc/class-tool.php:159
+#: inc/class-tool.php:174
 msgid "Invalid tool consumer."
 msgstr "Client de l&rsquo;outil invalide"
 
-#: inc/class-tool.php:164
+#: inc/class-tool.php:179
 msgid "Return URL was not set."
 msgstr "L&rsquo;adresse URL de renvoi n&rsquo;a pas été indiquée."
 
-#: inc/class-tool.php:169
+#: inc/class-tool.php:184
 msgid "Could not establish proxy with consumer."
 msgstr "Impossible de trouver le serveur mandataire du client."
 
-#: inc/class-tool.php:174
+#: inc/class-tool.php:189
 msgid "The tool has been successfully registered."
 msgstr "L&rsquo;outil a été enregistré avec succès."
 
-#: inc/class-tool.php:181
+#: inc/class-tool.php:196
 msgid "The tool registration has been cancelled."
 msgstr "L&rsquo;enregistrement de l&rsquo;outil a été annulé."
 
-#: inc/class-tool.php:559
+#: inc/class-tool.php:582
 msgid "Deep link was not found."
 msgstr "Lien profond introuvable"
+
+#: inc/class-tool.php:706
+msgid ""
+"Unauthorized registration request. Tool Consumer is not in whitelist of "
+"allowed domains."
+msgstr ""
+"Demande d&rsquo;enregistrement non-autorisée. Le client de l&rsquo;outil "
+"n&rsquo;est pas sur la liste blanche des domaines autorisés."
+
+#: inc/class-tool.php:761 inc/class-tool.php:784
+msgid "Sorry, the activity name uses a reserved word"
+msgstr ""
 
 #: pressbooks-lti-provider.php:24
 msgid "Cannot find Pressbooks install."
