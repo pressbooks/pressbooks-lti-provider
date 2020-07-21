@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Pressbooks LTI Provider plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.3.2\n"
-"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider\n"
-"POT-Creation-Date: 2020-04-28T22:51:43+00:00\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
+"POT-Creation-Date: 2020-07-07T17:17:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,13 +66,9 @@ msgstr "Consumers deleted: %d"
 msgid "LTI Settings"
 msgstr "LTI Settings"
 
-#: inc/class-controller.php:119
-msgid ""
-"Unauthorized registration request. Tool Consumer is not in whitelist of "
-"allowed domains."
-msgstr ""
-"Unauthorized registration request. Tool Consumer is not in whitelist of "
-"allowed domains."
+#: inc/class-controller.php:129
+msgid "Sorry, a book could not be created"
+msgstr "Sorry, a book could not be created"
 
 #: inc/class-table.php:125 templates/network/consumer.blade.php:11
 msgid "Name"
@@ -107,45 +103,57 @@ msgstr "Protected"
 msgid "Never"
 msgstr "Never"
 
-#: inc/class-tool.php:50
+#: inc/class-tool.php:60
 msgid "Powered by Pressbooks"
 msgstr "Powered by Pressbooks"
 
-#: inc/class-tool.php:108
+#: inc/class-tool.php:123
 msgid "Invalid launch URL"
 msgstr "Invalid launch URL"
 
-#: inc/class-tool.php:130
+#: inc/class-tool.php:145
 msgid "Return of an LTI link not offered"
 msgstr "Return of an LTI link not offered"
 
-#: inc/class-tool.php:134
+#: inc/class-tool.php:149
 msgid "No visible document target offered"
 msgstr "No visible document target offered"
 
-#: inc/class-tool.php:159
+#: inc/class-tool.php:174
 msgid "Invalid tool consumer."
 msgstr "Invalid tool consumer."
 
-#: inc/class-tool.php:164
+#: inc/class-tool.php:179
 msgid "Return URL was not set."
 msgstr "Return URL was not set."
 
-#: inc/class-tool.php:169
+#: inc/class-tool.php:184
 msgid "Could not establish proxy with consumer."
 msgstr "Could not establish proxy with consumer."
 
-#: inc/class-tool.php:174
+#: inc/class-tool.php:189
 msgid "The tool has been successfully registered."
 msgstr "The tool has been successfully registered."
 
-#: inc/class-tool.php:181
+#: inc/class-tool.php:196
 msgid "The tool registration has been cancelled."
 msgstr "The tool registration has been cancelled."
 
-#: inc/class-tool.php:559
+#: inc/class-tool.php:582
 msgid "Deep link was not found."
 msgstr "Deep link was not found."
+
+#: inc/class-tool.php:706
+msgid ""
+"Unauthorized registration request. Tool Consumer is not in whitelist of "
+"allowed domains."
+msgstr ""
+"Unauthorized registration request. Tool Consumer is not in whitelist of "
+"allowed domains."
+
+#: inc/class-tool.php:761 inc/class-tool.php:784
+msgid "Sorry, the activity name uses a reserved word"
+msgstr "Sorry, the activity name uses a reserved word"
 
 #: pressbooks-lti-provider.php:24
 msgid "Cannot find Pressbooks install."

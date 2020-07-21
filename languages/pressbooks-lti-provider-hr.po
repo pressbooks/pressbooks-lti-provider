@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.3.2\n"
-"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider\n"
-"POT-Creation-Date: 2020-04-28T22:51:43+00:00\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
+"Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
+"POT-Creation-Date: 2020-07-07T17:17:34+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Last-Translator: Dubravko Cvikl <dcvikl@cvikl.hr>, 2019\n"
 "Language-Team: Croatian (Croatia) (https://www.transifex.com/pressbooks/teams/9194/hr_HR/)\n"
@@ -71,13 +71,9 @@ msgstr "Korisnik izbrisan: %d"
 msgid "LTI Settings"
 msgstr "LTI postavke"
 
-#: inc/class-controller.php:119
-msgid ""
-"Unauthorized registration request. Tool Consumer is not in whitelist of "
-"allowed domains."
+#: inc/class-controller.php:129
+msgid "Sorry, a book could not be created"
 msgstr ""
-"Ne autoriziran zahtjev za registraciju. Korisnik alata nije na popisu "
-"dozvoljenih domena."
 
 #: inc/class-table.php:125 templates/network/consumer.blade.php:11
 msgid "Name"
@@ -112,45 +108,57 @@ msgstr "Zaštičeno"
 msgid "Never"
 msgstr "Nikada"
 
-#: inc/class-tool.php:50
+#: inc/class-tool.php:60
 msgid "Powered by Pressbooks"
 msgstr "Pokreće Pressbooks"
 
-#: inc/class-tool.php:108
+#: inc/class-tool.php:123
 msgid "Invalid launch URL"
 msgstr "Netočna veza pokretanja"
 
-#: inc/class-tool.php:130
+#: inc/class-tool.php:145
 msgid "Return of an LTI link not offered"
 msgstr "Povrat LTI veze nije ponuđen"
 
-#: inc/class-tool.php:134
+#: inc/class-tool.php:149
 msgid "No visible document target offered"
 msgstr "Nije ponuđen vidljivi ciljni dokument"
 
-#: inc/class-tool.php:159
+#: inc/class-tool.php:174
 msgid "Invalid tool consumer."
 msgstr "Nevažeći korisnik alata."
 
-#: inc/class-tool.php:164
+#: inc/class-tool.php:179
 msgid "Return URL was not set."
 msgstr "Nije postavljena adresa za povratak."
 
-#: inc/class-tool.php:169
+#: inc/class-tool.php:184
 msgid "Could not establish proxy with consumer."
 msgstr "Nije moguće ostvariti proxy sa korisnikom."
 
-#: inc/class-tool.php:174
+#: inc/class-tool.php:189
 msgid "The tool has been successfully registered."
 msgstr "Alat je uspješno registriran."
 
-#: inc/class-tool.php:181
+#: inc/class-tool.php:196
 msgid "The tool registration has been cancelled."
 msgstr "Registracija alata je prekinuta."
 
-#: inc/class-tool.php:559
+#: inc/class-tool.php:582
 msgid "Deep link was not found."
 msgstr "Duboka veza nije pronađena."
+
+#: inc/class-tool.php:706
+msgid ""
+"Unauthorized registration request. Tool Consumer is not in whitelist of "
+"allowed domains."
+msgstr ""
+"Ne autoriziran zahtjev za registraciju. Korisnik alata nije na popisu "
+"dozvoljenih domena."
+
+#: inc/class-tool.php:761 inc/class-tool.php:784
+msgid "Sorry, the activity name uses a reserved word"
+msgstr ""
 
 #: pressbooks-lti-provider.php:24
 msgid "Cannot find Pressbooks install."
