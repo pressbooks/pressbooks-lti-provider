@@ -398,6 +398,7 @@ class Tool extends ToolProvider\ToolProvider {
 			try {
 				list( $user_id, $username ) = $this->createUser( $username, $email );
 				$wp_user = get_userdata( $user_id );
+				$wp_user->set_role( $role );
 				$is_new_user = true;
 			} catch ( \Exception $e ) {
 				return; // TODO: What should we do on fail?!
