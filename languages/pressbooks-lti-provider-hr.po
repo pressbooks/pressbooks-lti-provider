@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
 "Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
-"POT-Creation-Date: 2020-07-07T17:17:34+00:00\n"
+"POT-Creation-Date: 2020-08-19T03:45:37+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Last-Translator: Dubravko Cvikl <dcvikl@cvikl.hr>, 2019\n"
 "Language-Team: Croatian (Croatia) (https://www.transifex.com/pressbooks/teams/9194/hr_HR/)\n"
@@ -144,11 +144,11 @@ msgstr "Alat je uspješno registriran."
 msgid "The tool registration has been cancelled."
 msgstr "Registracija alata je prekinuta."
 
-#: inc/class-tool.php:582
+#: inc/class-tool.php:583
 msgid "Deep link was not found."
 msgstr "Duboka veza nije pronađena."
 
-#: inc/class-tool.php:706
+#: inc/class-tool.php:707
 msgid ""
 "Unauthorized registration request. Tool Consumer is not in whitelist of "
 "allowed domains."
@@ -156,7 +156,7 @@ msgstr ""
 "Ne autoriziran zahtjev za registraciju. Korisnik alata nije na popisu "
 "dozvoljenih domena."
 
-#: inc/class-tool.php:761 inc/class-tool.php:784
+#: inc/class-tool.php:762 inc/class-tool.php:785
 msgid "Sorry, the activity name uses a reserved word"
 msgstr ""
 

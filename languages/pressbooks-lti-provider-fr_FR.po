@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
 "Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
-"POT-Creation-Date: 2020-07-07T17:17:34+00:00\n"
+"POT-Creation-Date: 2020-08-19T03:45:37+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Last-Translator: Dac Chartrand <dac@pressbooks.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/pressbooks/teams/9194/fr/)\n"
@@ -147,11 +147,11 @@ msgstr "L&rsquo;outil a été enregistré avec succès."
 msgid "The tool registration has been cancelled."
 msgstr "L&rsquo;enregistrement de l&rsquo;outil a été annulé."
 
-#: inc/class-tool.php:582
+#: inc/class-tool.php:583
 msgid "Deep link was not found."
 msgstr "Lien profond introuvable"
 
-#: inc/class-tool.php:706
+#: inc/class-tool.php:707
 msgid ""
 "Unauthorized registration request. Tool Consumer is not in whitelist of "
 "allowed domains."
@@ -159,7 +159,7 @@ msgstr ""
 "Demande d&rsquo;enregistrement non-autorisée. Le client de l&rsquo;outil "
 "n&rsquo;est pas sur la liste blanche des domaines autorisés."
 
-#: inc/class-tool.php:761 inc/class-tool.php:784
+#: inc/class-tool.php:762 inc/class-tool.php:785
 msgid "Sorry, the activity name uses a reserved word"
 msgstr ""
 
