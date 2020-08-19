@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
+"Project-Id-Version: Pressbooks LTI Provider 1.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
-"POT-Creation-Date: 2020-08-19T03:45:37+00:00\n"
+"POT-Creation-Date: 2020-08-19T14:43:32+00:00\n"
 "PO-Revision-Date: 2019-02-28 19:56+0000\n"
 "Last-Translator: Eduardo Vera <info@yachaypuriq.xyz>, 2020\n"
 "Language-Team: Spanish (https://www.transifex.com/pressbooks/teams/9194/es/)\n"
