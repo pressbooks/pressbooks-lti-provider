@@ -5,7 +5,7 @@ Plugin URI: https://pressbooks.org
 GitHub Plugin URI: pressbooks/pressbooks-lti-provider
 Release Asset: true
 Description: A plugin which turns Pressbooks into an LTI provider.
-Version: 1.4.0-dev
+Version: 1.3.4
 Author: Pressbooks (Book Oven Inc.)
 Author URI: https://pressbooks.org
 Requires PHP: 7.1
