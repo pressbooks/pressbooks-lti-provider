@@ -1,16 +1,21 @@
 # Copyright (C) 2020 Pressbooks (Book Oven Inc.)
 # This file is distributed under the same license as the Pressbooks LTI Provider plugin.
+# Translators:
+# Eduardo Vera <info@yachaypuriq.xyz>, 2020
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Pressbooks LTI Provider 1.4.0-dev\n"
 "Report-Msgid-Bugs-To: https://github.com/pressbooks/pressbooks-lti-provider/\n"
 "POT-Creation-Date: 2020-08-19T03:45:37+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2019-02-28 19:56+0000\n"
+"Last-Translator: Eduardo Vera <info@yachaypuriq.xyz>, 2020\n"
+"Language-Team: Spanish (https://www.transifex.com/pressbooks/teams/9194/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: pressbooks-lti-provider\n"
 "X-Generator: WP-CLI 2.3.0\n"
 
@@ -25,7 +30,9 @@ msgstr "https://pressbooks.org"
 
 #. Description of the plugin
 msgid "A plugin which turns Pressbooks into an LTI provider."
-msgstr "A plugin which turns Pressbooks into an LTI provider."
+msgstr ""
+"Plugin que convierte Pressbooks en un proveedor de Interoperabilidad entre "
+"Herramientas de Aprendizaje (LTI)."
 
 #. Author of the plugin
 msgid "Pressbooks (Book Oven Inc.)"
@@ -33,175 +40,176 @@ msgstr "Pressbooks (Book Oven Inc.)"
 
 #: inc/class-admin.php:68 inc/class-admin.php:72
 msgid "Common Cartridge 1.3 (LTI Links)"
-msgstr "Common Cartridge 1.3 (LTI Links)"
+msgstr "Common Cartridge 1.3 (enlaces LTI)"
 
 #: inc/class-admin.php:69 inc/class-admin.php:74
 msgid "Common Cartridge 1.2 (LTI Links)"
-msgstr "Common Cartridge 1.2 (LTI Links)"
+msgstr "Common Cartridge 1.2 (enlaces LTI)"
 
 #: inc/class-admin.php:70 inc/class-admin.php:76
 msgid "Common Cartridge 1.1 (LTI Links)"
-msgstr "Common Cartridge 1.1 (LTI Links)"
+msgstr "Common Cartridge 1.1 (enlaces LTI)"
 
 #: inc/class-admin.php:87
 msgid "LTI Links"
-msgstr "LTI Links"
+msgstr "Enlaces LTI"
 
 #: inc/class-admin.php:178 inc/class-admin.php:179 inc/class-admin.php:208
 msgid "LTI Consumers"
-msgstr "LTI Consumers"
+msgstr "Consumidores LTI"
 
 #: inc/class-admin.php:211
 msgid "Add new"
-msgstr "Add new"
+msgstr "Añadir nuevo"
 
 #. translators: 1: Number of consumers deleted
 #: inc/class-admin.php:216
 msgid "Consumers deleted: %d"
-msgstr "Consumers deleted: %d"
+msgstr "Consumidores borrados: %d"
 
 #: inc/class-admin.php:315 inc/class-admin.php:316 inc/class-admin.php:404
 #: inc/class-admin.php:405 templates/book/settings.blade.php:2
 #: templates/network/settings.blade.php:2
 msgid "LTI Settings"
-msgstr "LTI Settings"
+msgstr "Ajustes de LTI"
 
 #: inc/class-controller.php:129
 msgid "Sorry, a book could not be created"
-msgstr "Sorry, a book could not be created"
+msgstr "Lo siento, no se ha podido crear el libro"
 
 #: inc/class-table.php:125 templates/network/consumer.blade.php:11
 msgid "Name"
-msgstr "Name"
+msgstr "Nombre"
 
 #: inc/class-table.php:126
 msgid "Base URL"
-msgstr "Base URL"
+msgstr "URL base"
 
 #: inc/class-table.php:127 templates/network/consumer.blade.php:15
 msgid "Key"
-msgstr "Key"
+msgstr "Clave"
 
 #: inc/class-table.php:128 templates/book/settings.blade.php:49
 #: templates/network/settings.blade.php:85
 msgid "Version"
-msgstr "Version"
+msgstr "Versión"
 
 #: inc/class-table.php:129
 msgid "Last access"
-msgstr "Last access"
+msgstr "Último acceso"
 
 #: inc/class-table.php:130
 msgid "Available"
-msgstr "Available"
+msgstr "Disponible"
 
 #: inc/class-table.php:131
 msgid "Protected"
-msgstr "Protected"
+msgstr "Protegido"
 
 #: inc/class-table.php:216
 msgid "Never"
-msgstr "Never"
+msgstr "Nunca"
 
 #: inc/class-tool.php:60
 msgid "Powered by Pressbooks"
-msgstr "Powered by Pressbooks"
+msgstr "Funciona con Pressbooks"
 
 #: inc/class-tool.php:123
 msgid "Invalid launch URL"
-msgstr "Invalid launch URL"
+msgstr "URL de lanzamiento no válida"
 
 #: inc/class-tool.php:145
 msgid "Return of an LTI link not offered"
-msgstr "Return of an LTI link not offered"
+msgstr "No hay un retorno para el enlace LTI"
 
 #: inc/class-tool.php:149
 msgid "No visible document target offered"
-msgstr "No visible document target offered"
+msgstr "No hay un destino de documento visible"
 
 #: inc/class-tool.php:174
 msgid "Invalid tool consumer."
-msgstr "Invalid tool consumer."
+msgstr "Herramienta de consumidor no válida."
 
 #: inc/class-tool.php:179
 msgid "Return URL was not set."
-msgstr "Return URL was not set."
+msgstr "No se ha definido la URL de retorno."
 
 #: inc/class-tool.php:184
 msgid "Could not establish proxy with consumer."
-msgstr "Could not establish proxy with consumer."
+msgstr "No se pudo establecer un proxy con el consumidor."
 
 #: inc/class-tool.php:189
 msgid "The tool has been successfully registered."
-msgstr "The tool has been successfully registered."
+msgstr "La herramienta se registró correctamente."
 
 #: inc/class-tool.php:196
 msgid "The tool registration has been cancelled."
-msgstr "The tool registration has been cancelled."
+msgstr "El registro de la herramienta ha sido cancelado."
 
 #: inc/class-tool.php:583
 msgid "Deep link was not found."
-msgstr "Deep link was not found."
+msgstr "El vínculo profundo no ha sido encontrado."
 
 #: inc/class-tool.php:707
 msgid ""
 "Unauthorized registration request. Tool Consumer is not in whitelist of "
 "allowed domains."
 msgstr ""
-"Unauthorized registration request. Tool Consumer is not in whitelist of "
-"allowed domains."
+"Solicitud de registro no autorizada. La herramienta de consumidor no está en"
+" la lista blanca de dominios permitidos."
 
 #: inc/class-tool.php:762 inc/class-tool.php:785
 msgid "Sorry, the activity name uses a reserved word"
-msgstr "Sorry, the activity name uses a reserved word"
+msgstr "Lo siento, el nombre de la actividad usa una palabra reservada"
 
 #: pressbooks-lti-provider.php:24
 msgid "Cannot find Pressbooks install."
-msgstr "Cannot find Pressbooks install."
+msgstr "No se puede encontrar la instalación de Pressbooks."
 
 #: pressbooks-lti-provider.php:35
 msgid "Cannot find PDO for MySQL."
-msgstr "Cannot find PDO for MySQL."
+msgstr "No se puede encontrar PDO para MySQL."
 
 #: pressbooks-lti-provider.php:56
 msgid "Dependencies Missing"
-msgstr "Dependencies Missing"
+msgstr "Hay dependencias faltantes"
 
 #: pressbooks-lti-provider.php:57
 msgid ""
 "Please run <code>composer install</code> from the root of the Pressbooks LTI"
 " Provider plugin directory."
 msgstr ""
-"Please run <code>composer install</code> from the root of the Pressbooks LTI"
-" Provider plugin directory."
+"Ejecuta <code>composer install</code> desde la raíz del directorio del "
+"plugin Pressbooks LTI Provider."
 
 #: templates/book/settings.blade.php:5 templates/network/settings.blade.php:20
 msgid ""
 "Pressbooks will try to match the LTI User with their email. If, however, a "
 "matching Pressbooks user is not found then:"
 msgstr ""
-"Pressbooks will try to match the LTI User with their email. If, however, a "
-"matching Pressbooks user is not found then:"
+"Pressbooks intentará hacer que el usuario LTI coincida con su correo "
+"electrónico. Sin embargo, si no se encuentra el usuario de Pressbooks "
+"correspondiente:"
 
 #: templates/book/settings.blade.php:12
 #: templates/network/settings.blade.php:48
 msgid "Map Administrator to the following Pressbooks role"
-msgstr "Map Administrator to the following Pressbooks role"
+msgstr "Asignar a la administración el siguiente perfil de Pressbooks"
 
 #: templates/book/settings.blade.php:13
 #: templates/network/settings.blade.php:49
 msgid "Map Staff to the following Pressbooks role"
-msgstr "Map Staff to the following Pressbooks role"
+msgstr "Asignar al personal el siguiente perfil de Pressbooks"
 
 #: templates/book/settings.blade.php:14
 #: templates/network/settings.blade.php:50
 msgid "Map Learner to the following Pressbooks role"
-msgstr "Map Learner to the following Pressbooks role"
+msgstr "Asignar a los estudiantes el siguiente perfil de Pressbooks"
 
 #: templates/book/settings.blade.php:19
 #: templates/network/settings.blade.php:55
 msgid "Administrator"
-msgstr "Administrator"
+msgstr "Administrador"
 
 #: templates/book/settings.blade.php:20
 #: templates/network/settings.blade.php:56
@@ -211,39 +219,40 @@ msgstr "Editor"
 #: templates/book/settings.blade.php:21
 #: templates/network/settings.blade.php:57
 msgid "Author"
-msgstr "Author"
+msgstr "Autor"
 
 #: templates/book/settings.blade.php:22
 #: templates/network/settings.blade.php:58
 msgid "Contributor"
-msgstr "Contributor"
+msgstr "Colaborador"
 
 #: templates/book/settings.blade.php:23
 #: templates/network/settings.blade.php:59
 msgid "Subscriber"
-msgstr "Subscriber"
+msgstr "Suscriptor"
 
 #: templates/book/settings.blade.php:24
 #: templates/network/settings.blade.php:60
 msgid "Anonymous Guest"
-msgstr "Anonymous Guest"
+msgstr "Visitante anónimo"
 
 #: templates/book/settings.blade.php:32
 #: templates/network/settings.blade.php:68
 msgid "Appearance"
-msgstr "Appearance"
+msgstr "Apariencia"
 
 #: templates/book/settings.blade.php:35
 #: templates/network/settings.blade.php:71
 msgid ""
 "Display Pressbooks navigation elements in your LMS along with book content."
 msgstr ""
-"Display Pressbooks navigation elements in your LMS along with book content."
+"Mostrar elementos de navegación de Pressbooks en tu sistema de gestión del "
+"aprendizaje (LMS) junto con el contenido del libro."
 
 #: templates/book/settings.blade.php:39
 #: templates/network/settings.blade.php:75
 msgid "Display only book content in LMS."
-msgstr "Display only book content in LMS."
+msgstr "Mostrar solo el contenido del libro en el LMS."
 
 #: templates/book/settings.blade.php:43
 #: templates/network/settings.blade.php:79
@@ -253,7 +262,7 @@ msgstr "Common Cartridge"
 #: templates/book/settings.blade.php:45
 #: templates/network/settings.blade.php:81
 msgid "Export books as Common Cartridge files with LTI links."
-msgstr "Export books as Common Cartridge files with LTI links."
+msgstr "Exporta libros como archivos de Common Cartridge con enlaces LTI."
 
 #: templates/book/settings.blade.php:52
 #: templates/network/settings.blade.php:88
@@ -273,75 +282,75 @@ msgstr "1.3"
 #: templates/book/settings.blade.php:64
 #: templates/network/settings.blade.php:100
 msgid "Show all export versions"
-msgstr "Show all export versions"
+msgstr "Mostrar todas las versiones de exportación"
 
 #: templates/lti/register.blade.php:36
 msgid "Registration request for %s"
-msgstr "Registration request for %s"
+msgstr "Solicitud de registro para %s"
 
 #: templates/lti/register.blade.php:38
 msgid "Go back"
-msgstr "Go back"
+msgstr "Volver"
 
 #: templates/lti/register.blade.php:38
 msgid "Proceed with registration &rarr;"
-msgstr "Proceed with registration &rarr;"
+msgstr "Continuar con el registro &rarr;"
 
 #: templates/lti/selection.blade.php:26
 msgid "Content item selection request for %s"
-msgstr "Content item selection request for %s"
+msgstr "Solicitud de selección de contenido para %s"
 
 #: templates/lti/selection.blade.php:30
 msgid "Cover Page"
-msgstr "Cover Page"
+msgstr "Cubierta"
 
 #: templates/lti/selection.blade.php:33
 msgid "Front Matter"
-msgstr "Front Matter"
+msgstr "Páginas preliminares"
 
 #: templates/lti/selection.blade.php:38
 msgid "Chapter"
-msgstr "Chapter"
+msgstr "Capítulo"
 
 #: templates/lti/selection.blade.php:43
 msgid "Back Matter"
-msgstr "Back Matter"
+msgstr "Páginas finales"
 
 #: templates/lti/selection.blade.php:46
 msgid "Submit"
-msgstr "Submit"
+msgstr "Enviar"
 
 #: templates/network/consumer.blade.php:2
 msgid "Editing"
-msgstr "Editing"
+msgstr "Editar"
 
 #: templates/network/consumer.blade.php:2
 msgid "Adding"
-msgstr "Adding"
+msgstr "Añadir"
 
 #: templates/network/consumer.blade.php:2
 msgid "LTI Consumer"
-msgstr "LTI Consumer"
+msgstr "Consumidor LTI"
 
 #: templates/network/consumer.blade.php:4
 msgid "Back to LTI Consumers listing"
-msgstr "Back to LTI Consumers listing"
+msgstr "Regresar al catálogo de consumidores LTI"
 
 #: templates/network/consumer.blade.php:19
 msgid "Secret"
-msgstr "Secret"
+msgstr "Clave secreta"
 
 #: templates/network/consumer.blade.php:27
 msgid "Enable From"
-msgstr "Enable From"
+msgstr "Activar desde"
 
 #: templates/network/consumer.blade.php:31
 msgid "Enable Until"
-msgstr "Enable Until"
+msgstr "Activar hasta"
 
 #: templates/network/settings.blade.php:9
 msgid "LTI2 Registration Whitelist"
-msgstr "LTI2 Registration Whitelist"
+msgstr "Lista blanca de registro de LTI2"
 
 #: templates/network/settings.blade.php:13
 msgid ""
@@ -349,21 +358,21 @@ msgid ""
 "here, one domain per line. If the whitelist is empty then automatic "
 "registrations are disabled."
 msgstr ""
-"If you want to limit automatic registrations to certain domains add them "
-"here, one domain per line. If the whitelist is empty then automatic "
-"registrations are disabled."
+"Si deseas limitar los registros automáticos a determinados dominios, "
+"añádelos aquí, un dominio por línea. Cuando la lista blanca está vacía, los "
+"registros automáticos están desactivados."
 
 #: templates/network/settings.blade.php:18
 msgid "Sensible Defaults"
-msgstr "Sensible Defaults"
+msgstr "Valores por defecto razonables"
 
 #: templates/network/settings.blade.php:24
 msgid ""
 "Prompt for authentication to confirm matching with existing user on initial "
 "LTI launch"
 msgstr ""
-"Prompt for authentication to confirm matching with existing user on initial "
-"LTI launch"
+"Solicitar identificación para confirmar que coincide con un usuario "
+"existente durante el arranque inicial de LTI"
 
 #: templates/network/settings.blade.php:27
 #: templates/network/settings.blade.php:38
@@ -373,8 +382,10 @@ msgstr "No"
 #: templates/network/settings.blade.php:31
 #: templates/network/settings.blade.php:42
 msgid "Yes"
-msgstr "Yes"
+msgstr "Sí"
 
 #: templates/network/settings.blade.php:35
 msgid "Allow books to override role-mapping and Common Cartridge defaults"
-msgstr "Allow books to override role-mapping and Common Cartridge defaults"
+msgstr ""
+"Permitir que los libros reemplacen los ajustes por defecto de la asignación "
+"de perfiles y de Common Cartridge"
