@@ -1,0 +1,22 @@
+name: Generate MO from PO files
+
+on:
+  push:
+    branches:
+    - dev
+    paths:
+    - '**.po'
+
+jobs:
+  generate-mo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install xgettext
+      run: sudo apt-get install -y gettext
+    - name: Generate MO files
+      run: for file in languages/*.po ; do msgfmt $file -o `echo $file | sed 's/\(.*\.\)po/\1mo/'` ; done
+    - name: Commit updated MO files
+      uses: stefanzweifel/git-auto-commit-action@v4.1.1
+      with:
+        commit_message: 'Update MO files'
