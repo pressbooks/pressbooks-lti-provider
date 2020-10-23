@@ -1,0 +1,27 @@
+name: Update POT file
+
+on:
+  push:
+    branches:
+    - dev
+    paths:
+    - '**.php'
+    - '**.js'
+
+jobs:
+  update-pot:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update POT file
+      uses: platform-coop-toolkit/action-wp-pot-generator@master
+      with:
+        save_path: './languages'
+        item_slug: 'pressbooks-lti-provider'
+        domain: 'pressbooks-lti-provider'
+        package_name: 'Pressbooks LTI Provider'
+        headers: "{\"Report-Msgid-Bugs-To\":\"https://github.com/pressbooks/pressbooks-lti-provider/issues\"}"
+    - name: Commit updated POT file
+      uses: stefanzweifel/git-auto-commit-action@v4.1.1
+      with:
+        commit_message: 'Update languages/pressbooks-lti-provider.pot'
