@@ -5,7 +5,7 @@
         {!! wp_nonce_field( 'pb-lti-provider', '_wpnonce', true, false ) !!}
         <table class="form-table" role="none">
             <tr>
-                <th><label for="whitelist">{{ __('LTI2 Registration Whitelist', 'pressbooks-lti-provider') }}</label></th>
+                <th><label for="whitelist">{{ __('LTI2 Registration Allowlist', 'pressbooks-lti-provider') }}</label></th>
                 <td>
                     <textarea name="whitelist" id="whitelist" class="widefat" rows="10">{!! esc_textarea($options['whitelist']) !!}</textarea>
                     <p>
