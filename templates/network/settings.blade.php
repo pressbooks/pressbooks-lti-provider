@@ -9,7 +9,7 @@
                 <td>
                     <textarea name="whitelist" id="whitelist" class="widefat" rows="10">{!! esc_textarea($options['whitelist']) !!}</textarea>
                     <p>
-                        <em>{{ __("If you want to limit automatic registrations to certain domains add them here, one domain per line. If the whitelist is empty then automatic registrations are disabled.", 'pressbooks-lti-provider') }}</em>
+                        <em>{{ __("If you want to limit automatic registrations to certain domains add them here, one domain per line. If the allowlist is empty then automatic registrations are disabled.", 'pressbooks-lti-provider') }}</em>
                     </p>
                 </td>
             </tr>
