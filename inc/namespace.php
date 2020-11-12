@@ -43,12 +43,15 @@ function do_format( $format ) {
 	$controller = array_shift( $params );
 	$action = array_shift( $params );
 	if ( 'lti' === $controller ) {
-		if ( \Pressbooks\Book::isBook() || 'createbook' === $action ) {
+		if ( \Pressbooks\Book::isBook() || $action === 'createbook' ) {
+			if ( $action === 'createbook' ) {
+				$params['method'] = $action;
+				$action = 'launch';
+			}
 			// Book
 			$admin = Admin::init();
 			$controller = new Controller( $admin );
-			$params['method'] = $action;
-			$controller->handleRequest( 'launch', $params );
+			$controller->handleRequest( $action, $params );
 			do_exit();
 		} elseif ( ctype_digit( strval( $action ) ) && get_blog_details( $action ) !== false ) {
 			$blog_id = $action;
