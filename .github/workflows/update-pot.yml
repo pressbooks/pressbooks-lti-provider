@@ -11,15 +11,16 @@ on:
 jobs:
   update-pot:
     runs-on: ubuntu-latest
+    if: github.repository == ‘pressbooks/pressbooks-lti-provider’
     steps:
     - uses: actions/checkout@v2
     - name: Update POT file
-      uses: platform-coop-toolkit/action-wp-pot-generator@master
+      uses: pressbooks/action-pressbooks-make-pot@main
       with:
-        save_path: './languages'
-        item_slug: 'pressbooks-lti-provider'
-        domain: 'pressbooks-lti-provider'
-        package_name: 'Pressbooks LTI Provider'
+        path: './languages'
+        slug: 'pressbooks-lti-provider'
+        textdomain: 'pressbooks-lti-provider'
+        name: 'Pressbooks LTI Provider'
         headers: "{\"Report-Msgid-Bugs-To\":\"https://github.com/pressbooks/pressbooks-lti-provider/issues\"}"
     - name: Commit updated POT file
       uses: stefanzweifel/git-auto-commit-action@v4.1.1
