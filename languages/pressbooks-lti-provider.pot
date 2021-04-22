@@ -1,5 +1,5 @@
-# Copyright (C) 2020 Pressbooks (Book Oven Inc.)
-# This file is distributed under the same license as the Pressbooks LTI Provider plugin.
+# Copyright (C) 2021 Pressbooks (Book Oven Inc.)
+# This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: Pressbooks LTI Provider 1.3.5\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2020-11-17T23:50:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: pressbooks-lti-provider\n"
 
 #. Plugin Name of the plugin
@@ -177,6 +177,27 @@ msgstr ""
 
 #: pressbooks-lti-provider.php:57
 msgid "Please run <code>composer install</code> from the root of the Pressbooks LTI Provider plugin directory."
+msgstr ""
+
+#: composer.json
+#: package.json
+msgctxt "block description"
+msgid "A plugin which turns Pressbooks into an LTI provider."
+msgstr ""
+
+#: composer.json
+msgctxt "block keyword"
+msgid "pressbooks"
+msgstr ""
+
+#: composer.json
+msgctxt "block keyword"
+msgid "lti"
+msgstr ""
+
+#: composer.json
+msgctxt "block keyword"
+msgid "lms"
 msgstr ""
 
 #: templates/book/settings.blade.php:5

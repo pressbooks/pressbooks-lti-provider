@@ -19,7 +19,7 @@
                 <td><input name="secret" id="secret" type="text" value="{{ $options['secret'] }}" class="regular-text" required @if ($options['ID'])readonly="readonly"@endif/></td>
             </tr>
             <tr>
-                <th>{{ __(' Enabled', 'pressbooks-cas-sso') }}</th>
+                <th>{{ __('Enabled', 'pressbooks-cas-sso') }}</th>
                 <td><label><input name="enabled" id="enabled" type="checkbox" value="1" {!! checked( $options['enabled'] ) !!}/></label></td>
             </tr>
             <tr>
