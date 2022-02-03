@@ -30,7 +30,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 	 * @param string $token Optional. User's session token to use for this cookie.
 	 * @since 2.5.0
 	 * @since 4.3.0 Added the `$token` parameter.
-	 *
 	 */
 	function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token = '' ) {
 		if ( $remember ) {
@@ -41,7 +40,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 			 * @param int $user_id User ID.
 			 * @param bool $remember Whether to remember the user login. Default false.
 			 * @since 2.8.0
-			 *
 			 */
 			$expiration = time() + apply_filters( 'auth_cookie_expiration', 14 * DAY_IN_SECONDS, $user_id, $remember );
 
@@ -69,7 +67,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 		 * @param bool $secure Whether the connection is secure.
 		 * @param int $user_id User ID.
 		 * @since 3.1.0
-		 *
 		 */
 		$secure = apply_filters( 'secure_auth_cookie', $secure, $user_id );
 
@@ -80,7 +77,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 		 * @param int $user_id User ID.
 		 * @param bool $secure Whether the connection is secure.
 		 * @since 3.1.0
-		 *
 		 */
 		$secure_logged_in_cookie = apply_filters( 'secure_logged_in_cookie', $secure_logged_in_cookie, $user_id, $secure );
 
@@ -113,7 +109,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 		 * @param string $token User's session token to use for this cookie.
 		 * @since 2.5.0
 		 * @since 4.9.0 The `$token` parameter was added.
-		 *
 		 */
 		do_action( 'set_auth_cookie', $auth_cookie, $expire, $expiration, $user_id, $scheme, $token );
 
@@ -130,7 +125,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 		 * @param string $token User's session token to use for this cookie.
 		 * @since 2.6.0
 		 * @since 4.9.0 The `$token` parameter was added.
-		 *
 		 */
 		do_action( 'set_logged_in_cookie', $logged_in_cookie, $expire, $expiration, $user_id, 'logged_in', $token );
 
@@ -139,7 +133,6 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
 		 *
 		 * @param bool $send Whether to send auth cookies to the client.
 		 * @since 4.7.4
-		 *
 		 */
 		if ( ! apply_filters( 'send_auth_cookies', true ) ) {
 			return;
@@ -185,6 +178,7 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) {
  *  Function to mimic setcookie() function behaviour without PHP 7.3 as
  *  as a requirement to set SameSite flag. This function does not handle exceptional
  *  cases well (to keep its functionality minimal); Do not use for any other purpose.
+ *
  * @param $name
  * @param $value
  * @param array $options

@@ -42,6 +42,7 @@ class Tool extends ToolProvider\ToolProvider {
 	/**
 	 * Tool constructor.
 	 * Launched by do_format()
+	 *
 	 * @see \PressbooksLtiProvider\do_format
 	 *
 	 * @param \IMSGlobal\LTI\ToolProvider\DataConnector\DataConnector $data_connector
@@ -739,7 +740,6 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @return bool|string
 	 * @since 1.4.0
-	 *
 	 */
 	public function buildAndValidateUrl( $resource_link_title ) {
 		global $domain;
@@ -841,7 +841,6 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @return int|\WP_Error
 	 * @since 1.4.0
-	 *
 	 */
 	public function createNewBook( $new_book_url, $title, $user_id, $resource_link_id, $context_id ) {
 		$url    = untrailingslashit( $new_book_url );
@@ -868,7 +867,6 @@ class Tool extends ToolProvider\ToolProvider {
 	 *
 	 * @return bool
 	 * @since 1.4.0
-	 *
 	 */
 	public function validateLtiBookExists( $url, $resource_link_id, $context_id ) {
 		$parts = domain_and_path( $url );

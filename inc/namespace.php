@@ -24,7 +24,7 @@ function globally_unique_identifier( $site_option = false ) {
 		if ( function_exists( 'com_create_guid' ) === true ) {
 			$guid = trim( com_create_guid(), '{}' );
 		} else {
-			$guid = sprintf( '%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 16384, 20479 ), mt_rand( 32768, 49151 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ), mt_rand( 0, 65535 ) );
+			$guid = sprintf( '%04X%04X-%04X-%04X-%04X-%04X%04X%04X', wp_rand( 0, 65535 ), wp_rand( 0, 65535 ), wp_rand( 0, 65535 ), wp_rand( 16384, 20479 ), wp_rand( 32768, 49151 ), wp_rand( 0, 65535 ), wp_rand( 0, 65535 ), wp_rand( 0, 65535 ) );
 		}
 		$site_option ? update_site_option( Admin::OPTION_GUID, $guid ) : update_option( Admin::OPTION_GUID, $guid );
 	}
