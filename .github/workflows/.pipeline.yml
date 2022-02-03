@@ -1,0 +1,101 @@
+name: CI workflow
+on:
+  push:
+    branches: [ dev ]
+    tags:
+      - '*.*.*'
+  pull_request:
+    branches: [ dev ]
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.3, 7.4 ]
+        os: [ ubuntu-20.04 ]
+        wordpress: [ 5.9 ]
+        experimental: [ false ]
+        include:
+          - php: 8.0
+            os: ubuntu-20.04
+            wordpress: latest
+            experimental: true
+    name: Test - PHP ${{ matrix.php }} - WP ${{ matrix.wordpress }}
+
+    env:
+      WP_VERSION: ${{ matrix.wordpress }}
+      WP_MULTISITE: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Start required services
+        run: sudo systemctl start mysql.service
+
+      - name: Cache Composer packages
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ matrix.php }}-php-${{ hashFiles('**/composer.lock') }}
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpcs, composer:v1
+          coverage: pcov
+
+      - name: Install Node dependencies
+        run: |
+          node -v
+          npm install
+          npm run build
+        if: matrix.experimental == false
+
+      - name: Install PHP dependencies
+        run: |
+          export PATH="$HOME/.composer/vendor/bin:$PATH"
+          composer install --no-interaction
+          git clone --depth=1 https://github.com/pressbooks/pressbooks.git ../pressbooks
+          cd ../pressbooks && composer install --no-dev
+          cd ../pressbooks-lti-provider
+
+      - name: Run lint
+        run: npm run lint
+        if: matrix.experimental == false
+
+      - name: Run PHP CodeSniffer
+        run: composer standards
+
+      - name: Install WP tests
+        run: bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.wordpress }}
+
+      - name: Run PHP Tests
+        run: vendor/bin/phpunit
+        if: matrix.experimental == true
+
+      - name: Run PHP Tests and PCOV
+        run: composer test-coverage
+        if: matrix.experimental == false
+
+      - name: Upload Coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
+        if: matrix.experimental == false && matrix.php == 7.3
+
+      - name: Prepare Build
+        run: npm run build
+        if: matrix.experimental == false
