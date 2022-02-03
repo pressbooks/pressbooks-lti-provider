@@ -1,7 +1,5 @@
 let path = require( 'path' );
 let mix = require( 'laravel-mix' );
-let normalizeNewline = require( 'normalize-newline' );
-let fs = require( 'fs' );
 
 /*
  |--------------------------------------------------------------------------
@@ -14,20 +12,6 @@ let fs = require( 'fs' );
  |
  */
 
-// Normalize Newlines
-const normalizeNewlines = ( dir ) => {
-	fs.readdirSync( dir ).forEach( function( file ) {
-		file = path.join( dir, file );
-		fs.readFile( file, 'utf8', function( err, buffer ) {
-			if ( err ) return console.log( err );
-			buffer = normalizeNewline( buffer );
-			fs.writeFile( file, buffer, 'utf8', function( err ) {
-				if ( err ) return console.log( err );
-			} );
-		} );
-	} );
-};
-
 mix
 	.version()
 	.options( { processCssUrls: false } )
@@ -36,7 +20,3 @@ mix
 	.sass( 'assets/src/styles/pressbooks-cc-exports.scss', 'assets/dist/styles/' )
 	.sass( 'assets/src/styles/pressbooks-lti-consumers.scss', 'assets/dist/styles/' )
 	.copyDirectory( 'assets/src/images', 'assets/dist/images' )
-	.then( () => {
-		normalizeNewlines( 'assets/dist/scripts/' );
-		normalizeNewlines( 'assets/dist/styles/' );
-	} );

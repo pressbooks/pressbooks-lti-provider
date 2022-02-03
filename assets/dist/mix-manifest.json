@@ -1,5 +1,10 @@
 {
-    "/scripts/pressbooks-lti-provider.js": "/scripts/pressbooks-lti-provider.js?id=e7337054e5710f70c7a6",
-    "/styles/pressbooks-cc-exports.css": "/styles/pressbooks-cc-exports.css?id=e2cfcfd2c0eda955903c",
-    "/styles/pressbooks-lti-consumers.css": "/styles/pressbooks-lti-consumers.css?id=322bb49cd5965a77bcaa"
+    "/scripts/pressbooks-lti-provider.js": "/scripts/pressbooks-lti-provider.js?id=8cae939d3c2669e64c20",
+    "/styles/pressbooks-lti-consumers.css": "/styles/pressbooks-lti-consumers.css?id=07e7436f8ff05bd4d6b8",
+    "/styles/pressbooks-cc-exports.css": "/styles/pressbooks-cc-exports.css?id=165671683017870fd9cd",
+    "/images/book.png": "/images/book.png?id=045f1d42841df309c104",
+    "/images/imscc-36.png": "/images/imscc-36.png?id=196a3a426bfcf116c0b1",
+    "/images/imscc-48.png": "/images/imscc-48.png?id=71694d8194e4bf35546e",
+    "/images/imscc-72.png": "/images/imscc-72.png?id=3b76f15d23008e08b06b",
+    "/images/imscc-96.png": "/images/imscc-96.png?id=efb9b3f8ee02f52ef915"
 }
