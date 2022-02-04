@@ -23,8 +23,8 @@ class ThinCCTest extends \WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$this->thincc11 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12( [] );
 		$this->thincc12 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12( [] );
 		$this->thincc13 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge13( [] );

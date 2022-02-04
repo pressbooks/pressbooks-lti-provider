@@ -47,8 +47,8 @@ class ToolTest extends \WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$connector = PressbooksLtiProvider\Database::getConnector();
 		$tool      = new PressbooksLtiProvider\Tool( $connector );
 		$tool->setAdmin( $this->getMockAdmin() );

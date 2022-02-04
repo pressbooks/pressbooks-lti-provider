@@ -10,8 +10,8 @@ class AdminTest extends \WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$GLOBALS['hook_suffix'] = 'mock';
 		$this->admin = new \PressbooksLtiProvider\Admin();
 	}
