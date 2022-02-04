@@ -34,7 +34,7 @@ class NamespaceTest extends \WP_UnitTestCase {
 		ob_start();
 		\PressbooksLtiProvider\do_format( 'lti' );
 		$buffer = ob_get_clean();
-		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
+		$this->assertStringContainsString( 'Invalid or missing lti_message_type parameter', $buffer );
 
 		// Root site
 		$book_id = get_current_blog_id();
@@ -48,7 +48,7 @@ class NamespaceTest extends \WP_UnitTestCase {
 		ob_start();
 		\PressbooksLtiProvider\do_format( "lti/{$book_id}" );
 		$buffer = ob_get_clean();
-		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
+		$this->assertStringContainsString( 'Invalid or missing lti_message_type parameter', $buffer );
 
 		$_POST['resource_link_title'] = 'Book created from tool launcher';
 		$_POST['resource_link_id'] = '1';
@@ -59,7 +59,7 @@ class NamespaceTest extends \WP_UnitTestCase {
 		ob_start();
 		\PressbooksLtiProvider\do_format( "lti/createbook" );
 		$buffer = ob_get_clean();
-		$this->assertContains( 'Invalid or missing lti_message_type parameter', $buffer );
+		$this->assertStringContainsString( 'Invalid or missing lti_message_type parameter', $buffer );
 	}
 
 	public function test_session_relax() {

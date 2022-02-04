@@ -166,17 +166,17 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->_book();
 		$this->tool->setParams( [ 'back-matter', 'appendix' ] );
 		$this->tool->setupDeepLink();
-		$this->assertContains( 'http', $this->tool->getRedirectUrl() );
+		$this->assertStringContainsString( 'http', $this->tool->getRedirectUrl() );
 	}
 
 	public function test_renderContentItemForm() {
 		$buffer = $this->tool->renderContentItemForm( 'https://pressbooks.test' );
-		$this->assertContains( '</form>', $buffer );
+		$this->assertStringContainsString( '</form>', $buffer );
 	}
 
 	public function test_renderRegisterForm() {
 		$buffer = $this->tool->renderRegisterForm( 'https://pressbooks.test/yes', 'https://pressbooks.test/no' );
-		$this->assertContains( '</html>', $buffer );
+		$this->assertStringContainsString( '</html>', $buffer );
 	}
 
 	public function test_validateRegistrationRequest() {
