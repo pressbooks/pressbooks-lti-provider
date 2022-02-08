@@ -47,8 +47,8 @@ class ToolTest extends \WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$connector = PressbooksLtiProvider\Database::getConnector();
 		$tool      = new PressbooksLtiProvider\Tool( $connector );
 		$tool->setAdmin( $this->getMockAdmin() );
@@ -166,17 +166,17 @@ class ToolTest extends \WP_UnitTestCase {
 		$this->_book();
 		$this->tool->setParams( [ 'back-matter', 'appendix' ] );
 		$this->tool->setupDeepLink();
-		$this->assertContains( 'http', $this->tool->getRedirectUrl() );
+		$this->assertStringContainsString( 'http', $this->tool->getRedirectUrl() );
 	}
 
 	public function test_renderContentItemForm() {
 		$buffer = $this->tool->renderContentItemForm( 'https://pressbooks.test' );
-		$this->assertContains( '</form>', $buffer );
+		$this->assertStringContainsString( '</form>', $buffer );
 	}
 
 	public function test_renderRegisterForm() {
 		$buffer = $this->tool->renderRegisterForm( 'https://pressbooks.test/yes', 'https://pressbooks.test/no' );
-		$this->assertContains( '</html>', $buffer );
+		$this->assertStringContainsString( '</html>', $buffer );
 	}
 
 	public function test_validateRegistrationRequest() {
@@ -283,7 +283,7 @@ class ToolTest extends \WP_UnitTestCase {
 		$id = get_current_user_id();
 		$happy_path = [ 'http://example.org/mymoodleactivity/', 'Course: My Moodle Activity', $id, '33', '12345' ];
 		$maybe_book = $this->tool->createNewBook( $happy_path[0], $happy_path[1], $happy_path[2], $happy_path[3], $happy_path[4] );
-		$this->assertInternalType( 'int', $maybe_book );
+		$this->assertIsInt( $maybe_book );
 
 		$options = get_blog_option( $maybe_book, 'pressbooks_lti_consumer_context' );
 		$this->assertEquals( '33', $options['resource_link_id'] );

@@ -23,8 +23,8 @@ class ThinCCTest extends \WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$this->thincc11 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12( [] );
 		$this->thincc12 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge12( [] );
 		$this->thincc13 = new PressbooksLtiProvider\Modules\Export\ThinCC\CommonCartridge13( [] );
@@ -58,16 +58,16 @@ class ThinCCTest extends \WP_UnitTestCase {
 	public function test_identifiers() {
 		$this->_book();
 		$xml = $this->thincc12->identifiers();
-		$this->assertContains( '</item>', $xml );
-		$this->assertContains( 'identifier=', $xml );
-		$this->assertContains( 'identifierref=', $xml );
+		$this->assertStringContainsString( '</item>', $xml );
+		$this->assertStringContainsString( 'identifier=', $xml );
+		$this->assertStringContainsString( 'identifierref=', $xml );
 	}
 
 	public function test_resources() {
 		$this->_book();
 		$xml = $this->thincc12->resources();
-		$this->assertContains( '</resource>', $xml );
-		$this->assertContains( '<file href=', $xml );
+		$this->assertStringContainsString( '</resource>', $xml );
+		$this->assertStringContainsString( '<file href=', $xml );
 	}
 
 	public function test_createResources() {

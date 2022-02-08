@@ -219,7 +219,8 @@ class Table extends \WP_List_Table {
 			];
 		}
 
-		/* The WP_List_Table class does not handle pagination for us, so we need
+		/*
+		 * The WP_List_Table class does not handle pagination for us, so we need
 		 * to ensure that the data is trimmed to only the current page. We can use
 		 * array_slice() to
 		 */

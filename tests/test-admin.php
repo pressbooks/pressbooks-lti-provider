@@ -10,8 +10,8 @@ class AdminTest extends \WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$GLOBALS['hook_suffix'] = 'mock';
 		$this->admin = new \PressbooksLtiProvider\Admin();
 	}
@@ -79,8 +79,8 @@ class AdminTest extends \WP_UnitTestCase {
 		ob_start();
 		$this->admin->hideNavigation();
 		$buffer = ob_get_clean();
-		$this->assertContains( 'no-navigation', $buffer );
-		$this->assertContains( '</script>', $buffer );
+		$this->assertStringContainsString( 'no-navigation', $buffer );
+		$this->assertStringContainsString( '</script>', $buffer );
 	}
 
 	public function test_addConsumersMenu() {
@@ -99,14 +99,14 @@ class AdminTest extends \WP_UnitTestCase {
 		ob_start();
 		$this->admin->printConsumersMenu();
 		$buffer = ob_get_clean();
-		$this->assertContains( '</form>', $buffer );
+		$this->assertStringContainsString( '</form>', $buffer );
 	}
 
 	public function test_printConsumerForm() {
 		ob_start();
 		$this->admin->printConsumerForm();
 		$buffer = ob_get_clean();
-		$this->assertContains( '</form>', $buffer );
+		$this->assertStringContainsString( '</form>', $buffer );
 	}
 
 	public function test_addSettingsMenu() {
@@ -118,7 +118,7 @@ class AdminTest extends \WP_UnitTestCase {
 		ob_start();
 		$this->admin->printSettingsMenu();
 		$buffer = ob_get_clean();
-		$this->assertContains( '</form>', $buffer );
+		$this->assertStringContainsString( '</form>', $buffer );
 	}
 
 	public function test_settings() {
@@ -171,7 +171,7 @@ class AdminTest extends \WP_UnitTestCase {
 		ob_start();
 		$this->admin->printBookSettingsMenu();
 		$buffer = ob_get_clean();
-		$this->assertContains( '</form>', $buffer );
+		$this->assertStringContainsString( '</form>', $buffer );
 	}
 
 	public function test_bookSettings() {
