@@ -23,9 +23,9 @@ class NamespaceTest extends \WP_UnitTestCase {
 
 	public function test_globally_unique_identifier() {
 		$guid = \PressbooksLtiProvider\globally_unique_identifier(); // Book
-		$this->assertRegExp( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid );
+		$this->assertMatchesRegularExpression( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid );
 		$guid = \PressbooksLtiProvider\globally_unique_identifier( true ); // Site
-		$this->assertRegExp( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid );
+		$this->assertMatchesRegularExpression( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid );
 	}
 
 	public function test_do_format() {
