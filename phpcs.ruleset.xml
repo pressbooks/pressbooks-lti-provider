@@ -26,4 +26,7 @@
     </rule>
     <!-- Disable all rules for these files: -->
     <exclude-pattern>*.blade.php</exclude-pattern>
+	<!-- Run against the PHPCompatibility ruleset -->
+	<rule ref="PHPCompatibility"/>
+	<config name="testVersion" value="7.3-7.4"/>
 </ruleset>
