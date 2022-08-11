@@ -252,14 +252,13 @@ EOJS;
 			'enable_until' => $consumer->enableUntil ? date( 'Y-m-d', $consumer->enableUntil ) : '',
 			'protected' => $consumer->protected,
 		];
-		$html = blade()->render(
-			'network.consumer', [
+		echo blade()->render(
+			'PressbooksLtiProvider::network.consumer', [
 				'form_url' => network_admin_url( '/admin.php?page=pb_lti_consumers&action=edit' ),
 				'back_url' => network_admin_url( '/admin.php?page=pb_lti_consumers' ),
 				'options' => $options,
 			]
 		);
-		echo $html;
 	}
 
 	/**
@@ -327,13 +326,12 @@ EOJS;
 		if ( $this->saveSettings() ) {
 			echo '<div id="message" role="status" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
 		}
-		$html = blade()->render(
-			'network.settings', [
+		echo blade()->render(
+			'PressbooksLtiProvider::network.settings', [
 				'form_url' => network_admin_url( '/admin.php?page=pb_lti_settings' ),
 				'options' => $this->getSettings(),
 			]
 		);
-		echo $html;
 	}
 
 	/**
@@ -417,13 +415,12 @@ EOJS;
 		if ( $this->saveBookSettings() ) {
 			echo '<div id="message" role="status" class="updated notice is-dismissible"><p>' . __( 'Settings saved.' ) . '</p></div>';
 		}
-		$html = blade()->render(
-			'book.settings', [
+		echo blade()->render(
+			'PressbooksLtiProvider::book.settings', [
 				'form_url' => admin_url( '/admin.php?page=pb_lti_settings' ),
 				'options' => $this->getBookSettings(),
 			]
 		);
-		echo $html;
 	}
 
 	/**

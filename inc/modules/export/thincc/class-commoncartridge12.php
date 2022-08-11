@@ -327,7 +327,7 @@ class CommonCartridge12 extends Export {
 	 */
 	public function render( $view, $data ) {
 		$version = str_replace( '.', '_', $this->version );
-		return blade()->render( "thincc.{$version}.{$view}", $data );
+		return blade()->render( "PressbooksLtiProvider::thincc.{$version}.{$view}", $data );
 	}
 
 	/**

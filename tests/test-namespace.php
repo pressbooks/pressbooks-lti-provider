@@ -95,8 +95,9 @@ class NamespaceTest extends \WP_UnitTestCase {
 	}
 
 	public function test_blade() {
-		$blade = \PressbooksLtiProvider\blade();
-		$this->assertTrue( is_object( $blade ) );
+		$this->assertTrue(
+			is_object( \PressbooksLtiProvider\blade() )
+		);
 	}
 
 	public function test_is_json() {
