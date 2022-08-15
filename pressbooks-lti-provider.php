@@ -77,7 +77,7 @@ require( __DIR__ . '/inc/samesite/samesite.php' );
 
 register_activation_hook( __FILE__, [ '\PressbooksLtiProvider\Database', 'installTables' ] );
 add_action( 'plugins_loaded', function() {
-	\Pressbooks\Container::get( 'Blade' )->addNamespace( 'PressbooksLtiProvider', __DIR__ . '/templates' );
+	\Pressbooks\Container::get( 'PBlade' )->addNamespace( 'PressbooksLtiProvider', __DIR__ . '/templates' );
 } );
 add_action( 'plugins_loaded', [ '\PressbooksLtiProvider\Admin', 'init' ] );
 add_action( 'pb_do_format', '\PressbooksLtiProvider\do_format' );
