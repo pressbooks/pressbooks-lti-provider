@@ -131,7 +131,7 @@ function login_errors( $errors, $redirect_to ) {
 }
 
 function blade() {
-	return Container::get( 'PBlade' );
+	return Container::get( 'Blade' );
 }
 
 /**
