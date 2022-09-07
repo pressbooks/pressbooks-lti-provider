@@ -594,15 +594,13 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @return string
 	 */
 	public function renderContentItemForm( $url ) {
-		$html = blade()->render(
-			'lti.selection', [
+		return blade()->render(
+			'PressbooksLtiProvider::lti.selection', [
 				'title' => get_bloginfo( 'name' ),
 				'url' => $url,
 				'book_structure' => Book::getBookStructure(),
 			]
 		);
-
-		return $html;
 	}
 
 	/**
@@ -614,15 +612,13 @@ class Tool extends ToolProvider\ToolProvider {
 	 * @return string
 	 */
 	public function renderRegisterForm( $success_url, $cancel_url ) {
-		$html = blade()->render(
-			'lti.register', [
+		return blade()->render(
+			'PressbooksLtiProvider::lti.register', [
 				'title' => get_bloginfo( 'name' ),
 				'success_url' => $success_url,
 				'cancel_url' => $cancel_url,
 			]
 		);
-
-		return $html;
 	}
 
 	/**
