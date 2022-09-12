@@ -1,11 +1,14 @@
 # Pressbooks LTI Provider 
-**Contributors:** conner_bw, greatislander  
-**Tags:** pressbooks, lti, lms  
-**Requires at least:** 5.9  
-**Tested up to:** 5.9.3
-**Stable tag:** 1.3.6
-**License:** GPLv3 or later  
-**License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
+Contributors: conner_bw, greatislander  
+Tags: pressbooks, lti, lms  
+Requires at least: 6.0  
+Tested up to: 6.0.2
+Stable tag: 2.0.0
+Requires PHP: 7.4
+License: GPLv3 or later  
+License URI: https://www.gnu.org/licenses/gpl-3.0.html  
+
+NOTE: This plugin is no longer being used by Pressbooks and has been [deprecated](https://pressbooks.community/t/planned-deprecation-notice-pressbooks-lti-provider-plugin/1715). We have archived this repo, as it is no longer being maintained.
 
 This plugin turns Pressbooks into an LTI provider.
 
@@ -147,12 +150,15 @@ Thanks to [Ed Beck](http://ed-beck.com/), [Bracken Mosbacker](https://github.com
 
 ## Changelog 
 
-### 1.3.6
-* See: https://github.com/pressbooks/pressbooks-lti-provider/releases/tag/1.3.6
+### 2.0.0
+* See: https://github.com/pressbooks/pressbooks-lti-provider/releases/tag/2.0.0
 * Full release history available at: https://github.com/pressbooks/pressbooks-lti-provider/releases
 
 
 ## Upgrade Notice 
+
+### 2.0.0
+Pressbooks LTI Provider 2.0.0 requires Pressbooks >= 6.0.0
 
 ### 1.3.6
 Pressbooks LTI Provider requires PHP 7.4

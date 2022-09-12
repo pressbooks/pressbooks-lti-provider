@@ -1,31 +1,29 @@
 name: Update translations from Transifex
 
-on:
-  push:
-    branches:
-    - dev
+on: workflow_dispatch
 
 jobs:
   update-translations:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[tx-pull]')"
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Transifex Client
-      run: sudo pip install transifex-client
-    - name: Pull translations from Transifex
-      run: tx pull -a --minimum-perc=25
-      env:
-        TX_TOKEN: ${{ secrets.TX_TOKEN }}
-    - name: Install xgettext
-      run: sudo apt-get install -y gettext
-    - name: Generate MO files
-      run: for file in languages/*.po ; do msgfmt $file -o `echo $file | sed 's/\(.*\.\)po/\1mo/'` ; done
-    - name: Create pull request with updated content
-      uses: peter-evans/create-pull-request@v3
-      with:
-        commit-message: 'chore: update translations'
-        title: 'chore: update translations'
-        body: 'Update translations from [Transifex](https://www.transifex.com/pressbooks/pressbooks-lti-provider/).'
-        branch: update-translations
-        base: dev
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT_FOR_GITHUB_ACTIONS }}
+      - name: Install Transifex Client
+        run: sudo pip install transifex-client
+      - name: Pull translations from Transifex
+        run: tx pull --all --force --minimum-perc=25
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer, wp-cli/wp-cli-bundle
+      - name: Generate MO files
+        run: wp i18n make-mo languages
+      - name: Commit updated translation files
+        uses: stefanzweifel/git-auto-commit-action@v4.13.1
+        with:
+          commit_message: 'chore(l10n): update translations'
+          file_pattern: '*.mo'

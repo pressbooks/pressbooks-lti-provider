@@ -56,7 +56,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: phpcs, composer:v1
+          tools: phpcs, composer
           coverage: pcov
 
       - name: Install Node dependencies

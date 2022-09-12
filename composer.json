@@ -34,7 +34,6 @@
 		"phpcompatibility/php-compatibility": "^9.3"
 	},
 	"require-dev": {
-		"wpreadme2markdown/wp2md": "^3.0",
 		"yoast/phpunit-polyfills": "^1.0.1",
 		"pressbooks/coding-standards": "^1.1"
 	},
@@ -70,9 +69,6 @@
 		],
 		"fix": [
 			"vendor/bin/phpcbf --standard=phpcs.ruleset.xml *.php inc/ bin/"
-		],
-		"readme": [
-			"vendor/bin/wp2md -i readme.txt -o README.md"
 		]
 	}
 }
