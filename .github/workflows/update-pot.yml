@@ -21,7 +21,7 @@ jobs:
           php-version: '7.4'
           tools: composer, wp-cli/wp-cli-bundle
       - name: Update POT file
-        run: wp i18n make-pot . languages/pressbooks-lti-provider.pot --require=vendor/autoload.php --domain=pressbooks-lti-provider --slug=pressbooks-lti-provider --package-name="Pressbooks LTI Provider" --headers="{\"Report-Msgid-Bugs-To\":\"https://github.com/pressbooks/pressbooks-lti-provider/issues\"}"
+        run: wp i18n make-pot . languages/pressbooks-lti-provider.pot --domain=pressbooks-lti-provider --slug=pressbooks-lti-provider --package-name="Pressbooks LTI Provider" --headers="{\"Report-Msgid-Bugs-To\":\"https://github.com/pressbooks/pressbooks-lti-provider/issues\"}"
       - name: Commit updated POT file
         uses: stefanzweifel/git-auto-commit-action@v4.13.1
         with:
